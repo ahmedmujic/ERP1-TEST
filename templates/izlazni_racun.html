@@ -1,0 +1,82 @@
+{% extends "home-page.html"%}
+
+
+{% block content%}
+<!-- Navbar -->
+  <nav class="navbar fixed-top navbar-expand-lg navbar-light white scrolling-navbar">
+    <div class="container">
+
+      <!-- Brand -->
+      <a class="navbar-brand waves-effect"  target="_self">
+        <strong class="blue-text">Product summary</strong>
+      </a>
+  <ul class="navbar-nav nav-flex-icons">
+          <li class="nav-item">
+            <a class="nav-link waves-effect" href='/'>
+              <span class="clearfix d-none d-sm-inline-block"> Home </span>
+            </a>
+          </li>
+          </ul>
+      <!-- Collapse -->
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <!-- Links -->
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
+       
+
+      </div>
+
+    </div>
+    
+  </nav>
+
+  <!-- Navbar -->
+<div class="table-responsive" style="margin-top: 80px">
+  <table class="table">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Naziv</th>
+         <th scope="col">Cijena/kom</th>
+        <th scope="col">Količina</th>
+         <th scope="col">Ukupna cijena</th>
+      </tr>
+    </thead>
+    <tbody>
+    {% for racun in racuni %}
+
+      <tr>
+        <th scope="row">Sifra</th>
+        <td>{{racun}}</td>
+        <td>{{racun.cijena}}</td>
+       <td><a href="{% url 'Remove_from_Chart' item=order.item.price %}"><i class="fas fa-minus mr-3"></i></a>{{naziv.kolicina}}<a href="{% url 'Chart' item=order.item.price %}"><i class="fas fa-plus ml-3"></i></a></td>
+       <td>{{racun.cijena}} KM <a href="{% url 'Clean' item=order %}"><i class="fas fa-trash-alt ml-3"></i></a></td>
+        </tr>
+    {% endfor %}
+    <tr>
+     <td colspan = "4"> Order total</td>
+     <td>{{racun.cijena}} KM</td>
+     </tr>
+
+     <tr>
+      <td ><a href="NewBill" class="btn btn-primary "> Napravi novi račun </a>
+      {% if orders.items.count != 0 %}<a href="checkout" class="btn btn-warning "> Proceed Cart  </a> </td>{% endif %}
+     </tr>
+
+    </tbody>
+  </table>
+</div>
+<div style="margin-top=50px;">
+    {% if messages %}
+    
+    {% for message in messages %}
+        <div class="alert alert-primary" role="alert">{{message}}</div>
+    {% endfor %}
+    
+{% endif %}
+</div>
+{% endblock %}

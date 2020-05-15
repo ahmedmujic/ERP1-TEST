@@ -1,0 +1,16 @@
+{% extends "home-page.html"%}
+{% block content%}
+<div style="display: flex;justify-content: center;">
+<form class="border border-light p-5 col-5 mt-5" action="NewBill" method='GET'>
+ 
+    {% csrf_token %}
+    <p class="h4 mb-4 text-center">Novi račun</p>
+
+    <input class="form-control mb-4" id="defaultLoginFormPassword" type="date" placeholder="Naziv artikla" name="datum">
+    <button class="btn btn-info btn-block my-4" type="submit" >Kreiraj!</button>
+
+   
+</form>
+
+</div>
+{% endblock %}

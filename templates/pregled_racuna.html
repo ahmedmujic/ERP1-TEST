@@ -1,0 +1,86 @@
+{% extends "home-page.html"%}
+
+
+{% block content%}
+<!-- Navbar -->
+  <nav class="navbar fixed-top navbar-expand-lg navbar-light white scrolling-navbar">
+    <div class="container">
+
+      <!-- Brand -->
+      <a class="navbar-brand waves-effect"  target="_self">
+        <strong class="blue-text">Ulazni računi</strong>
+      </a>
+  <ul class="navbar-nav nav-flex-icons">
+          <li class="nav-item">
+            <a class="nav-link waves-effect" href='/'>
+              <span class="clearfix d-none d-sm-inline-block"> </span>
+            </a>
+          </li>
+          </ul>
+      <!-- Collapse -->
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <!-- Links -->
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
+       
+
+      </div>
+
+    </div>
+    
+  </nav>
+
+  <!-- Navbar -->
+<div class="table-responsive" style="margin-top: 80px">
+  <table class="table">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Šifra</th>
+         <th scope="col">Tip</th>
+        <th scope="col">Datum računa</th>
+         <th scope="col">Ukupna cijena</th>
+      </tr>
+    </thead>
+    <tbody>
+    {% for racun in racuni %}
+
+     <tr>
+     
+     <div>
+        <th scope="row">Račun br.{{forloop.counter}}</th>
+       
+        <td> {{racun.id}}</td>
+        <td>{{racun.tip}}</td>
+        <td>{{racun.datum_racuna}}</td>
+        <td>{{racun.get_ukupno_racun}} KM </td>
+        <td><a href="{% url "PregledRacuna1" racun=racun.id %}" method="post"><i class="fas fa-file-invoice"></i> </a></td>
+       {% comment %} <td><a ><i class="fas fa-minus mr-3"></i></a>{{racun.datum}}<a><i class="fas fa-plus ml-3"></i></a></td>
+       <td>{{racun.tip}} KM <a ><i class="fas fa-trash-alt ml-3"></i></a></td>  {% endcomment %}
+       <div>
+      
+        </tr>
+        {% endfor %}
+
+     
+      <td ><a href="NewRacun" class="btn btn-primary "> Napravi novi račun </a>
+      
+    
+    </tbody>
+  </table>
+  
+</div>
+<div style="margin-top=50px;">
+    {% if messages %}
+    
+    {% for message in messages %}
+        <div class="alert alert-primary" role="alert">{{message}}</div>
+    {% endfor %}
+    
+{% endif %}
+</div>
+{% endblock %}

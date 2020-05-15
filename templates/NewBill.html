@@ -1,0 +1,67 @@
+{% extends "home-page.html"%}
+{% block content%}
+<div style="display: flex;justify-content: center;">
+<form class="border border-light p-5 col-5 mt-5" action="NewBill" method='POST'>
+ 
+    {% csrf_token %}
+    <p class="h4 mb-4 text-center">Novi račun</p>
+    <input class="form-control mb-4" id="defaultLoginFormPassword" type="date" placeholder="Naziv artikla" name="datum">
+    <select class="browser-default custom-select mb-5"
+    name="selekcija">
+    <option selected >Odaberi tip računa...</option>
+    <option >Ulazni</option>
+    <option >Izlazni</option>
+    </select>
+    <div id="artikli" >
+    <input class="form-control mb-4" id="defaultLoginFormPassword" type="text" placeholder="Naziv artikla" name="naziv">
+    <input class="form-control mb-4" id="defaultLoginFormPassword" type="number" placeholder="Količina" name="kolicina">
+    <input type="number" step="0.01" class="form-control mb-4" placeholder="Cijena" name="cijena">
+    <textarea id="textarea" class="form-control mb-4" placeholder="Opis" name="opis"></textarea>
+    <hr>
+    </div>
+    
+
+    
+    <button class="btn btn-info btn-block my-4" type="submit" >Kreiraj!</button>
+
+   
+</form>
+
+</div>
+<button class="btn btn-info btn-block my-4" onclick="Dodaj()">Dodaj artikal!</button>
+<script>
+function Dodaj()
+{
+    var dugme1= document.createElement("input");
+    dugme1.setAttribute("id","defaultLoginFormPassword");
+    dugme1.setAttribute("class","form-control mb-4");
+    dugme1.setAttribute("type","text");
+    dugme1.setAttribute("placeholder","Naziv artikla");
+    dugme1.setAttribute("name","naziv");
+    var dugme2= document.createElement("input");
+    dugme2.setAttribute("id","defaultLoginFormPassword");
+    dugme2.setAttribute("class","form-control mb-4");
+    dugme2.setAttribute("type","number");
+    dugme2.setAttribute("placeholder","kolicina");
+    dugme2.setAttribute("name","kolicina");
+    var dugme3= document.createElement("input");
+    dugme3.setAttribute("id","defaultLoginFormPassword");
+    dugme3.setAttribute("class","form-control mb-4");
+    dugme3.setAttribute("type","number");
+    dugme3.setAttribute("placeholder","Cijena");
+    dugme3.setAttribute("name","cijena");
+    var dugme4= document.createElement("textarea");
+    dugme4.setAttribute("id","textarea");
+    dugme4.setAttribute("class","form-control mb-4");
+    dugme4.setAttribute("placeholder","Opis");
+    dugme4.setAttribute("name","opis");
+    var dugme5= document.createElement("hr");
+    document.getElementById("artikli").appendChild(dugme1)
+    document.getElementById("artikli").appendChild(dugme2)
+    document.getElementById("artikli").appendChild(dugme3)
+    document.getElementById("artikli").appendChild(dugme4)
+    document.getElementById("artikli").appendChild(dugme5)
+    
+}
+</script>
+{% endblock %}
