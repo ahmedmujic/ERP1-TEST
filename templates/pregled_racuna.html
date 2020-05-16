@@ -42,8 +42,13 @@
         <th scope="col">#</th>
         <th scope="col">Šifra</th>
          <th scope="col">Tip</th>
-        <th scope="col">Datum računa</th>
-         <th scope="col">Ukupna cijena</th>
+        <th scope="col">Datum izdavanja računa</th>
+         <th scope="col">Rok otplate računa</th>
+        <th scope="col">Naziv partnera</th>
+        <th scope="col">Porezni broj partnera</th>
+        <th scope="col">Ukupna cijena</th>
+        <th scope="col">Osnovica</th>
+        <th scope="col">PDV(KM)</th>
       </tr>
     </thead>
     <tbody>
@@ -56,8 +61,13 @@
        
         <td> {{racun.id}}</td>
         <td>{{racun.tip}}</td>
-        <td>{{racun.datum_racuna}}</td>
+        <td>{{racun.datum_racuna1}}</td>
+        <td>{{racun.rok_otplate1}}</td>
+        <td>{{racun.partner.naziv}}</td>porezni_broj
+        <td>{{racun.partner.porezni_broj}}</td>
         <td>{{racun.get_ukupno_racun}} KM </td>
+        <td>{{racun.osnovica}} KM </td>
+        <td>{{racun.pdv}} KM </td>
         <td><a href="{% url "PregledRacuna1" racun=racun.id %}" method="post"><i class="fas fa-file-invoice"></i> </a></td>
        {% comment %} <td><a ><i class="fas fa-minus mr-3"></i></a>{{racun.datum}}<a><i class="fas fa-plus ml-3"></i></a></td>
        <td>{{racun.tip}} KM <a ><i class="fas fa-trash-alt ml-3"></i></a></td>  {% endcomment %}

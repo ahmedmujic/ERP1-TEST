@@ -44,6 +44,7 @@
          <th scope="col">Naziv</th>
         <th scope="col">Cijena bez pdv-a</th>
          <th scope="col">Cijena sa pdv-om</th>
+         <th scope="col">Popust</th>
          <th scope="col">Količina</th>
           <th scope="col">Opis</th>
           <th scope="col">Ukupno</th>
@@ -58,9 +59,10 @@
         <td>{{racun.naziv}}</td>
         <td>{{racun.cijena_bez_pdv}}</td>
         <td>{{racun.cijena_s_pd}}</td>
+        <td>{{racun.popust}}%</td>
         <td>{{racun.kolicina}}</td>
         <td>{{racun.opis}}</td>
-        <td>{{racun.get_ukupno}} KM</td>
+        <td>{{racun.cijena_s_pd}} KM</td>
        {% comment %} <td><a ><i class="fas fa-minus mr-3"></i></a>{{racun.datum}}<a><i class="fas fa-plus ml-3"></i></a></td>
        <td>{{racun.tip}} KM <a ><i class="fas fa-trash-alt ml-3"></i></a></td> {% endcomment %}
         </tr>

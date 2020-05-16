@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from .models import Asortiman, Racun, izlazni_rac, ulazni_rac
+from .models import Asortiman, Racun, izlazni_rac, ulazni_rac, Partner, Ugovor
 from django.utils import timezone
 from django.contrib import messages
 from django.http import HttpResponseRedirect
@@ -159,18 +159,28 @@ from django.template.defaulttags import register
 
 def NewBill(request):
     if request.method == 'POST':
+        naziv = request.POST.get('naziv_partner', False)
+        sifra = request.POST.get('sifra_partner', False)
+        mail = request.POST.get('mail_partner', False)
+        adresa = request.POST.get('adresa_partner', False)
+        drzava = request.POST.get('drzava', False)
+        novi_partner = Partner.objects.create(
+            user=request.user, naziv=naziv, email=mail, drzava=drzava, porezni_broj=sifra, adresa=adresa)
         date = request.POST.get('datum', False)
+        rok_otplate1 = request.POST.get('datum_rok', False)
         selekcija = request.POST.get('selekcija', False)
         novi_racun1 = Racun.objects.create(
-            user=request.user, datum_racuna=date, tip=selekcija)
+            user=request.user, datum_racuna1=date, tip=selekcija, rok_otplate1=rok_otplate1)
         naziv = request.POST.getlist('naziv', False)
+
+        popust = request.POST.getlist('popust', False)
         kolicina = request.POST.getlist('kolicina', False)
         cijena = request.POST.getlist('cijena', False)
         opis = request.POST.getlist('opis', False)
         for i in range(len(naziv)):
             novi_racun = Asortiman.objects.create(user=request.user,
-                                                  naziv=naziv[i], opis=opis[i], kolicina=kolicina[i], cijena_bez_pdv=cijena[i])
-            novi_racun.cijena_s_pdv(float(cijena[i]))
+                                                  naziv=naziv[i], opis=opis[i], kolicina=kolicina[i], cijena_bez_pdv=cijena[i], popust=float(popust[i]))
+            novi_racun.cijena_s_pdv(float(cijena[i]), float(popust[i]))
             novi_racun.save()
             novi_racun1.asortiman.add(novi_racun)
         if selekcija == "Ulazni":
@@ -179,8 +189,15 @@ def NewBill(request):
         elif selekcija == "Izlazni":
             novi_racun1.racuni_ulazni = ulazni_rac.objects.get(
                 user=request.user)
+        novi_racun1.partner = novi_partner
 
-        novi_racun1.save()
+        
+        novi_racun1.osnovica()
+        novi_racun1.pdv
+
+
+
+        novi_racun1.save
         return render(request, "NewBill.html")
     if request.method == 'GET':
         return render(request, "NewBill.html")
@@ -188,7 +205,7 @@ def NewBill(request):
 
 def UlazniRacuniView(request):
     racun = Racun.objects.filter(
-        user=request.user, racuni_ulazni__isnull=True)
+        user=request.user, racuni_ulazni__isnull=False)
     context = {
         'racuni': racun
 
