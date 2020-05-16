@@ -3,8 +3,9 @@
 {% get_countries as countries %}
 {% block content%}
 <div style="display: flex;justify-content: center;">
-<form class="border border-light p-5 col-5 mt-5" action="NewBill" method='POST' id="forma">
+<form class="border border-light p-5 col-5 mt-5" action="NewBill" method='POST' id="forma" enctype="multipart/form-data">
  
+<div id="forma1">
     {% csrf_token %}
     
     <input class="form-control mb-4" id="defaultLoginFormPassword" type="text" placeholder="Naziv partnera" name="naziv_partner">
@@ -21,18 +22,23 @@
   <input type="radio" class="custom-control-input" id="defaultChecked" name="defaultExampleRadios" checked onclick="brisi()">
   <label class="custom-control-label" for="defaultChecked">Bez ugovora</label>
 </div>
-
+<div id="ugovor-info" class="mt-5" style="display:none;">
+<input class="form-control mb-4" id="defaultLoginFormPassword" type="textfield" placeholder="Kratak opis" name="ugovor_sadrzaj">
+  <input class="form-control mb-4" id="defaultLoginFormPassword" type="date" placeholder="Naziv artikla" name="ugovor_datum_potpis">
+   <input class="form-control mb-4" id="defaultLoginFormPassword" type="date" placeholder="Naziv artikla" name="ugovor_datum_vazenje">
+</div>
 <div class="input-group mt-5" id ="file_input" style="display:none;">
+
   <div class="input-group-prepend">
     <span class="input-group-text" id="inputGroupFileAddon01">Upload</span>
   </div>
   <div class="custom-file">
     <input type="file" class="custom-file-input" id="inputGroupFile01"
-      aria-describedby="inputGroupFileAddon01">
+      aria-describedby="inputGroupFileAddon01" name="file1">
     <label class="custom-file-label" for="inputGroupFile01">Choose file</label>
   </div>
 </div>
-<label id="ins">
+<label id="ins" >
 <select class="browser-default custom-select mb-5 mt-4" name="drzava" required="" id="id_drzava">
   <option value="" selected="">(Izaberite državu)</option>
 
@@ -549,61 +555,111 @@
 </select>
 
     </select>
+    
     <div id="artikli" >
-    <input class="form-control mb-4" id="defaultLoginFormPassword" type="text" placeholder="Naziv artikla" name="naziv">
-    <input class="form-control mb-4" id="defaultLoginFormPassword" type="number" placeholder="Količina" name="kolicina">
-    <input type="number" step="0.01" class="form-control mb-4" placeholder="Cijena" name="cijena">
-    <div class="form-control mb-4" style="display:flex; flex-wrap:none; align-items:center; border:0px solid grey;"><input max="100" accuracy="2" min="0" class="form-control" id="defaultLoginFormPassword" type="number" placeholder="Popust" name="popust" style="text-align:left; width:100%"><span id="percent-sign">%</span></div>
+    <input class="form-control mb-4" id="defaultLoginFormPassword" type="text" placeholder="Naziv artikla" name="naziv_artikal">
+    <select class="browser-default custom-select mb-5"
+    name="kategorija">
+    
+    <option selected >Odaberite kateogriju</option>
+    <option >Artikal</option>
+    <option >Usluga</option>
+</select>
+    <input class="form-control mb-4" id="defaultLoginFormPassword" type="number" placeholder="Količina" name="kolicina_artikal">
+    <input type="number" step="0.01" class="form-control mb-4" placeholder="Cijena" name="cijena_artikal">
+    <div class="form-control mb-4" style="display:flex; flex-wrap:none; align-items:center; border:0px solid grey;"><input max="100" accuracy="2" min="0" class="form-control" id="defaultLoginFormPassword" type="number" placeholder="Popust" name="popust_artikal" style="text-align:left; width:100%"><span id="percent-sign">%</span></div>
 
-    <textarea id="textarea" class="form-control mb-4" placeholder="Opis" name="opis"></textarea>
+    <textarea id="textarea" class="form-control mb-4" placeholder="Opis" name="opis_artikal"></textarea>
     <hr>
     </div>
+    <div id="usluga" >
+    <input class="form-control mb-4" id="defaultLoginFormPassword" type="text" placeholder="Naziv usluga" name="naziv_usluga">
+    <input class="form-control mb-4" id="defaultLoginFormPassword" type="number" placeholder="Sati" name="sati_usluga">
     
+    <input type="number" step="0.01" class="form-control mb-4" placeholder="Cijena" name="cijena_usluga">
+    <div class="form-control mb-4" style="display:flex; flex-wrap:none; align-items:center; border:0px solid grey;"><input max="100" accuracy="2" min="0" class="form-control" id="defaultLoginFormPassword" type="number" placeholder="Popust" name="popust_usluga" style="text-align:left; width:100%"><span id="percent-sign">%</span></div>
+
+    <textarea id="textarea" class="form-control mb-4" placeholder="Opis" name="opis_usluga"></textarea>
+    <hr>
+    </div>
+    </div>
 
     
-    <button class="btn btn-info btn-block my-4" type="submit" >Kreiraj!</button>
+    <button class="btn btn-info btn-block my-4" type="submit" id="kreiraj" >Kreiraj!</button>
 
    
 </form>
 
 </div>
 <button class="btn btn-info btn-block my-4" onclick="Dodaj()">Dodaj artikal!</button>
+<button class="btn btn-info btn-block my-4" onclick="DodajUsluga()">Dodaj uslugu!</button>
 <script>
 function Dodaj()
 {
+  var itm = document.getElementById("artikli")
+  var cln = itm.cloneNode(true);
+  document.getElementById("forma1").appendChild(cln);
+}
+{% comment %} function Dodaj()
+{
+  <select class="browser-default custom-select mb-5"
+    name="kategorija">
+    
+    <option selected >Odaberite kateogriju</option>
+    <option >Artikal</option>
+    <option >Usluga</option>
+</select>
+    var dugme0= document.createElement("select");
+    dugme0.setAttribute("class","browser-default custom-select mb-5");
+    dugme0.setAttribute("name","kategorija");
+    var dug12= document.createElement("option");
+    var teks = document.createTextNode("Artikal")
+    dug12.appendChild(teks)
+    var dug13= document.createElement("option");
+    var teks1 = document.createTextNode("Artikal");
+    dug13.appendChild(teks1)
+    dugme0.appendChild(dug13)
+    dugme0.appendChild(dug13)
     var dugme1= document.createElement("input");
     dugme1.setAttribute("id","defaultLoginFormPassword");
     dugme1.setAttribute("class","form-control mb-4");
     dugme1.setAttribute("type","text");
     dugme1.setAttribute("placeholder","Naziv artikla");
-    dugme1.setAttribute("name","naziv");
+    dugme1.setAttribute("name","naziv_artikal");
     var dugme2= document.createElement("input");
     dugme2.setAttribute("id","defaultLoginFormPassword");
     dugme2.setAttribute("class","form-control mb-4");
     dugme2.setAttribute("type","number");
     dugme2.setAttribute("placeholder","kolicina");
-    dugme2.setAttribute("name","kolicina");
+    dugme2.setAttribute("name","kolicina_artikal");
     var dugme3= document.createElement("input");
     dugme3.setAttribute("id","defaultLoginFormPassword");
     dugme3.setAttribute("class","form-control mb-4");
     dugme3.setAttribute("type","number");
     dugme3.setAttribute("placeholder","Cijena");
-    dugme3.setAttribute("name","cijena");
+    dugme3.setAttribute("name","cijena_artikal");
     var dugme4= document.createElement("textarea");
     dugme4.setAttribute("id","textarea");
     dugme4.setAttribute("class","form-control mb-4");
     dugme4.setAttribute("placeholder","Opis");
-    dugme4.setAttribute("name","opis");
+    dugme4.setAttribute("name","opis_artikal");
     var dugme5= document.createElement("hr");
     document.getElementById("artikli").appendChild(dugme1)
     document.getElementById("artikli").appendChild(dugme2)
     document.getElementById("artikli").appendChild(dugme3)
     document.getElementById("artikli").appendChild(dugme4)
     document.getElementById("artikli").appendChild(dugme5)
+} {% endcomment %}
+function DodajUsluga()
+{
+    var itm = document.getElementById("usluga")
+  var cln = itm.cloneNode(true);
+  document.getElementById("forma1").appendChild(cln);
 }
 function stvori()
 {   
     document.getElementById("file_input").style.display="flex";
+    document.getElementById("ugovor-info").style.display="flex";
      //var dugme61= document.createElement("div");
        // dugme61.setAttribute("class","file-upload-wrapper");
        // dugme61.setAttribute("id","file12");
@@ -619,6 +675,7 @@ function stvori()
 function brisi()
 {
     document.getElementById("file_input").style.display="none";
+     document.getElementById("ugovor-info").style.display="none";
     //var element = document.getElementById('file12');
     //        element.parentNode.removeChild(element);
 }

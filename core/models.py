@@ -73,19 +73,30 @@ class FormInfoadress(models.Model):
 
 
 class Asortiman(models.Model):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL,
-                             on_delete=models.CASCADE)
     naziv = models.CharField(max_length=100)
     cijena_bez_pdv = models.FloatField(default=100)
     cijena_s_pd = models.FloatField(default=1.0)
-    kolicina = models.FloatField(default=1)
     opis = models.TextField(default="ovo je to")
     popust = models.FloatField(default=0)
+    kolicina = models.FloatField(default=0)
 
     def cijena_s_pdv(self, cijena, popust):
         self.cijena_s_pd = cijena + ((17 / 100) * cijena)
-        self.cijena_s_pd = (self.cijena_s_pd - (self.cijena_s_pd * (popust / 100.0)))
- 
+        self.cijena_s_pd = (self.cijena_s_pd -
+                            (self.cijena_s_pd * (popust / 100.0)))
+
+
+class Kategorija(models.Model):
+    naziv = models.CharField(max_length=50)
+
+
+class Artikal(Asortiman):
+    kategorija = models.ForeignKey(Kategorija, on_delete=models.CASCADE)
+
+
+class Usluga(Asortiman):
+    rok_izvrsenja = models.DateField(blank=True, null=True)
+
 
 TIP_RACUNA = [
     ('ulazni', 'Ulazni'),
@@ -103,18 +114,20 @@ class izlazni_rac(models.Model):
                              on_delete=models.CASCADE)
 
 
-class Komercijala(models.Model):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL,
-                             on_delete=models.CASCADE)
-    glavni_komercijalista = models.CharField(max_length=50)
-
-
-class Ugovor(models.Model): 
+class Ugovor(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL,
                              on_delete=models.CASCADE)
     sadrzaj_ugovora = models.TextField()
     datum_potpisivanja = models.DateField()
-    komercijala = models.ManyToManyField(Komercijala)
+    vazenje = models.DateField()
+    file_ugovor = models.FileField(upload_to='documents/%Y/%m/%d')
+
+
+class Komercijala(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL,
+                             on_delete=models.CASCADE)
+    glavni_komercijalista = models.CharField(max_length=50)
+    ugovor = models.ManyToManyField(Ugovor)
 
 
 class Partner(models.Model):
@@ -150,13 +163,15 @@ class Racun(models.Model):
 
     def pdv_km(self):
         for artikal in self.asortiman.all():
-            self.ukupno1 = (self.ukupno1 + (artikal.cijena_s_pd * artikal.kolicina))
+            self.ukupno1 = (
+                self.ukupno1 + (artikal.cijena_s_pd * artikal.kolicina))
         self.pdv = (self.ukupno1 * 0.17)
 
-    def osnovica(self):
-        for artikal in self.asortiman.all():
-            self.ukupno1 = (self.ukupno1 + (artikal.cijena_s_pd * artikal.kolicina))
-        self.osnovica = (self.ukupno1 - (self.ukupno1 * 0.17))
+    # def osnovica(self):
+    #     for artikal in self.asortiman.all():
+    #         self.ukupno1 = (
+    #             self.ukupno1 + (artikal.cijena_s_pd * artikal.kolicina))
+    #     self.osnovica = (self.ukupno1 - (self.ukupno1 * 0.17))
 
     def get_ukupno_racun(self):
         for artikal in self.asortiman.all():

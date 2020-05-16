@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from .models import Asortiman, Racun, izlazni_rac, ulazni_rac, Partner, Ugovor
+from .models import Asortiman, Racun, izlazni_rac, ulazni_rac, Partner, Ugovor, Artikal, Kategorija, Usluga
 from django.utils import timezone
 from django.contrib import messages
 from django.http import HttpResponseRedirect
@@ -159,6 +159,13 @@ from django.template.defaulttags import register
 
 def NewBill(request):
     if request.method == 'POST':
+        docfile = request.FILES.get('file1', False)
+        datum_ugovora = request.POST.get('ugovor_datum_potpis', False)
+        datum_ugovora1 = request.POST.get('ugovor_datum_vazenje', False)
+        sadrzaj_ugovora = request.POST.get('ugovor_sadrzaj', False)
+        newdoc = Ugovor.objects.create(user=request.user,
+                                       file_ugovor=docfile, sadrzaj_ugovora=sadrzaj_ugovora, datum_potpisivanja=datum_ugovora, vazenje=datum_ugovora1)
+        newdoc.save()
         naziv = request.POST.get('naziv_partner', False)
         sifra = request.POST.get('sifra_partner', False)
         mail = request.POST.get('mail_partner', False)
@@ -166,20 +173,35 @@ def NewBill(request):
         drzava = request.POST.get('drzava', False)
         novi_partner = Partner.objects.create(
             user=request.user, naziv=naziv, email=mail, drzava=drzava, porezni_broj=sifra, adresa=adresa)
+        novi_partner.ugovor.add(newdoc)
         date = request.POST.get('datum', False)
         rok_otplate1 = request.POST.get('datum_rok', False)
         selekcija = request.POST.get('selekcija', False)
         novi_racun1 = Racun.objects.create(
             user=request.user, datum_racuna1=date, tip=selekcija, rok_otplate1=rok_otplate1)
-        naziv = request.POST.getlist('naziv', False)
-
-        popust = request.POST.getlist('popust', False)
-        kolicina = request.POST.getlist('kolicina', False)
-        cijena = request.POST.getlist('cijena', False)
-        opis = request.POST.getlist('opis', False)
+        naziv = request.POST.getlist('naziv_artikal', False)
+        popust = request.POST.getlist('popust_artikal', False)
+        kolicina = request.POST.getlist('kolicina_artikal', False)
+        cijena = request.POST.getlist('cijena_artikal', False)
+        opis = request.POST.getlist('opis_artikal', False)
+        selekcija = request.POST.getlist('kategorija', False)
         for i in range(len(naziv)):
-            novi_racun = Asortiman.objects.create(user=request.user,
-                                                  naziv=naziv[i], opis=opis[i], kolicina=kolicina[i], cijena_bez_pdv=cijena[i], popust=float(popust[i]))
+            kategorija, created = Kategorija.objects.get_or_create(
+                naziv=selekcija[i])
+            novi_racun = Artikal.objects.create(
+                naziv=naziv[i], opis=opis[i], kolicina=kolicina[i], cijena_bez_pdv=cijena[i], popust=float(popust[i]), kategorija=kategorija)
+
+            novi_racun.cijena_s_pdv(float(cijena[i]), float(popust[i]))
+            novi_racun.save()
+            novi_racun1.asortiman.add(novi_racun)
+        naziv_usluga = request.POST.getlist('naziv_usluga', False)
+        popust_usluga = request.POST.getlist('popust_usluga', False)
+        kolicina_usluga = request.POST.getlist('sati_usluga', False)
+        cijena_usluga = request.POST.getlist('cijena_usluga', False)
+        opis_usluga = request.POST.getlist('opis_usluga', False)
+        for i in range(len(naziv_usluga)):
+            novi_racun = Usluga.objects.create(
+                naziv=naziv_usluga[i], opis=opis_usluga[i], kolicina=kolicina_usluga[i], cijena_bez_pdv=cijena_usluga[i], popust=float(popust_usluga[i]))
             novi_racun.cijena_s_pdv(float(cijena[i]), float(popust[i]))
             novi_racun.save()
             novi_racun1.asortiman.add(novi_racun)
@@ -191,11 +213,8 @@ def NewBill(request):
                 user=request.user)
         novi_racun1.partner = novi_partner
 
-        
-        novi_racun1.osnovica()
+        # novi_racun1.osnovica()
         novi_racun1.pdv
-
-
 
         novi_racun1.save
         return render(request, "NewBill.html")
