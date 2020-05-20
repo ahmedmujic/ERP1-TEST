@@ -9,11 +9,11 @@
     {% csrf_token %}
     
     <input class="form-control mb-4" id="defaultLoginFormPassword" type="text" placeholder="Naziv partnera" name="naziv_partner">
-    <input class="form-control mb-4" id="defaultLoginFormPassword" type="int" placeholder="Šifra partnera" name="sifra_partner">
+    <input class="form-control mb-4" id="defaultLoginFormPassword" type="number" placeholder="Šifra partnera" name="sifra_partner">
     <input class="form-control mb-4" id="defaultLoginFormPassword" type="email" placeholder="Mail partnera" name="mail_partner">
     <!-- Default unchecked -->
 <div class="custom-control custom-radio" >
-  <input type="radio" class="custom-control-input" id="defaultUnchecked" name="defaultExampleRadios" onclick="stvori()">
+  <input type="radio" class="custom-control-input" id="defaultUnchecked" name="defaultExampleRadios" onclick="stvori()" value="S_ugovorom">
   <label class="custom-control-label" for="defaultUnchecked" >S ugovorom</label>
 </div>
 
@@ -550,8 +550,8 @@
     name="selekcija">
     
     <option selected >Odaberi tip računa...</option>
-    <option >Ulazni</option>
-    <option >Izlazni</option>
+    <option value="Ulazni">Ulazni</option>
+    <option value="Izlazni">Izlazni</option>
 </select>
 
     </select>

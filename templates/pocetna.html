@@ -1,0 +1,257 @@
+
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+<script src='https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js'></script>
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+<!-- Optional theme -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+<script>
+{% block jquery %}
+var tip='line'
+var endpoint = '/api/chart/data/'+ 2020
+var defaultData = []
+var labels = [];
+$.ajax({
+    async: "false",
+    method: "GET",
+    url: endpoint,
+    success: function(data){
+        labels = data.labels
+        defaultData = data.default
+        defaultData2 = data.default2
+        ulazni_sve = data.ulazni_sve
+        console.log(ulazni_sve)
+        
+        select(ulazni_sve)
+        setChart(2020, labels, defaultData, tip)
+        
+    },
+    error: function(error_data){
+        console.log("error")
+        console.log(error_data)
+    }
+})
+
+function setChart(value, labels, defaultData, tip1){
+    var ctx = document.getElementById("myChart");
+    var ctx2 = document.getElementById("myChart2");
+    var myChart = new Chart(ctx2, {
+    type: tip1,
+    data: {
+        labels: labels,
+        datasets: [{
+            label: 'Prihodi za ' + value + ' godinu',
+            data: defaultData,
+            backgroundColor: [
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(255, 206, 86, 0.2)',
+                'rgba(75, 192, 192, 0.2)',
+                'rgba(153, 102, 255, 0.2)',
+                'rgba(255, 159, 64, 0.2)'
+            ],
+            borderColor: [
+                'rgba(255,55,255,1)',
+                'rgba(54, 162, 235, 1)',
+                'rgba(255, 206, 86, 1)',
+                'rgba(75, 192, 192, 1)',
+                'rgba(153, 102, 255, 1)',
+                'rgba(255, 159, 64, 1)'
+            ],
+            borderWidth: 1
+        
+        
+        },
+        {
+            label: 'Rashodi za ' + value + ' godinu',
+            data: defaultData2,
+            backgroundColor: [
+                'rgba(15, 99, 132, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(255, 206, 86, 0.2)',
+                'rgba(75, 192, 192, 0.2)',
+                'rgba(153, 102, 255, 0.2)',
+                'rgba(255, 159, 64, 0.2)'
+            ],
+            borderColor: [
+                'rgba(255,55,255,1)',
+                'rgba(54, 162, 235, 1)',
+                'rgba(255, 206, 86, 1)',
+                'rgba(75, 192, 192, 1)',
+                'rgba(153, 102, 255, 1)',
+                'rgba(255, 159, 64, 1)'
+            ],
+            borderWidth: 1
+        
+        
+        }
+        ]
+    },
+    options: {
+        scales: {
+            yAxes: [{
+                ticks: {
+                    beginAtZero:true
+                }
+            }]
+        }
+    }
+});
+
+    var myChart = new Chart(ctx, {
+    type: 'polarArea',
+    data: {
+        labels: labels,
+        datasets: [{
+            label: '# of Votes',
+            data: defaultData,
+            backgroundColor: [
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(255, 206, 86, 0.2)',
+                'rgba(75, 192, 192, 0.2)',
+                'rgba(153, 102, 255, 0.2)',
+                'rgba(255, 159, 64, 0.2)'
+            ],
+            borderColor: [
+                'rgba(255,99,132,1)',
+                'rgba(54, 162, 235, 1)',
+                'rgba(255, 206, 86, 1)',
+                'rgba(75, 192, 192, 1)',
+                'rgba(153, 102, 255, 1)',
+                'rgba(255, 159, 64, 1)'
+            ],
+            borderWidth: 1
+        }]
+    },
+    options: {
+        scales: {
+            yAxes: [{
+                ticks: {
+                    beginAtZero:true
+                }
+            }]
+        }
+    }
+});
+//document.url="Pocetna"
+}
+function uniq_fast(a) {
+    var seen = {};
+    var out = [];
+    var len = a.length;
+    var j = 0;
+    for(var i = 0; i < len; i++) {
+         var item = a[i];
+         if(seen[item] !== 1) {
+               seen[item] = 1;
+               out[j++] = item;
+         }
+    }
+    return out;
+}
+// var ctx = document.getElementById("myChart");
+function select(value_ulazni)
+{
+    var sele=document.getElementById('select')
+    console.log("sddsf" + value_ulazni)
+    value_ulazni=uniq_fast(value_ulazni)
+    for (var i=0;i<value_ulazni.length;i++)
+    {
+        console.log(value_ulazni[i])
+    }
+    for (var i=0;i<value_ulazni.length;i++)
+    {
+        var node1=document.createElement('option')
+        var text=document.createTextNode(""+value_ulazni[i])
+        node1.appendChild(text)
+        node1.setAttribute("onselect","funkcija()")
+        node1.setAttribute("value",""+value_ulazni[i])
+        sele.appendChild(node1)
+    }
+}
+var vrijednost
+function funkcija(value)
+{
+    vrijednost=value
+    console.log(value)
+    var endpoint = '/api/chart/data/'+ value
+    var defaultData = []
+    var labels = [];
+$.ajax({
+    method: "GET",
+    url: endpoint,
+    success: function(data){
+        labels = data.labels
+        defaultData = data.default
+        defaultData2 = data.default2
+        ulazni_sve = data.ulazni_sve
+        setChart(vrijednost, labels, defaultData, tip)
+        
+    },
+    error: function(error_data){
+        console.log("error")
+        console.log(error_data)
+    }
+})
+}
+function funkcija_tip_charta(value1)
+{
+    tip=value1;
+   /* $.ajax({
+    method: "GET",
+    url: endpoint,
+    success: function(data){
+        labels = data.labels
+        defaultData = data.default
+        defaultData2 = data.default2
+        ulazni_sve = data.ulazni_sve
+        setChart(vrijednost, labels, defaultData, tip)
+        
+    },
+    error: function(error_data){
+        console.log("error")
+        console.log(error_data)
+    }
+})
+    */
+var temp = jQuery.extend(true, {}, data);
+temp.type = value1; // The new chart type
+myChart = new Chart(ctx, temp);
+}
+{% endblock %}
+</script>
+
+{% block content %}
+<select id="select" name="selekcija" onChange="funkcija(this.value)">
+<option value="" disabled selected>Select your option</option>
+</select>
+
+</select>
+<select id="select" name="selekcija" onChange="funkcija_tip_charta(this.value)">
+<option value="" disabled selected>Select your chart</option>
+<option value="bar">Bar</option>
+<option value="line">Line</option>
+<option value="radar">Rine</option>
+<option value="polarArea">Polar area</option>
+</select>
+
+</select>
+<div class='row'>
+    <div class='col-sm-12'>
+        <h1>Hello World</h1>
+        <div class='col-sm-6'>
+            <canvas id="myChart2" width="400" height="400"></canvas>
+        </div>
+
+
+    </div>
+</div>
+
+{% endblock content %}

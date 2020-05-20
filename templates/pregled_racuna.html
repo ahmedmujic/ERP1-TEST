@@ -66,7 +66,7 @@
         <td>{{racun.partner.naziv}}</td>porezni_broj
         <td>{{racun.partner.porezni_broj}}</td>
         <td>{{racun.get_ukupno_racun}} KM </td>
-        {% comment %} <td>{{racun.osnovica}} KM </td> {% endcomment %}
+        <td>{{racun.osnovica}} KM </td> 
         <td>{{racun.pdv}} KM </td>
         <td><a href="{% url "PregledRacuna1" racun=racun.id %}" method="post"><i class="fas fa-file-invoice"></i> </a></td>
        {% comment %} <td><a ><i class="fas fa-minus mr-3"></i></a>{{racun.datum}}<a><i class="fas fa-plus ml-3"></i></a></td>

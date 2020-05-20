@@ -2,6 +2,7 @@ from django.db import models
 from django.conf import settings
 from django_countries.fields import CountryField
 from datetime import timezone
+import computed_property
 CHATEGORY_CHOISES = (
     ('S', 'Shirt'),
     ('SW', 'Sport wear'),
@@ -72,18 +73,22 @@ class FormInfoadress(models.Model):
         return self.user.username
 
 
+class GlavnaKnjiga(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL,
+                             on_delete=models.CASCADE)
+
+
 class Asortiman(models.Model):
     naziv = models.CharField(max_length=100)
     cijena_bez_pdv = models.FloatField(default=100)
-    cijena_s_pd = models.FloatField(default=1.0)
+    cijena_s_pdvom = models.FloatField(default=1.0)
     opis = models.TextField(default="ovo je to")
     popust = models.FloatField(default=0)
     kolicina = models.FloatField(default=0)
 
     def cijena_s_pdv(self, cijena, popust):
-        self.cijena_s_pd = cijena + ((17 / 100) * cijena)
-        self.cijena_s_pd = (self.cijena_s_pd -
-                            (self.cijena_s_pd * (popust / 100.0)))
+        cijena_s_pdv = cijena + ((17 / 100) * cijena)
+        return (cijena_s_pdv - (cijena_s_pdv * (popust / 100.0)))
 
 
 class Kategorija(models.Model):
@@ -107,11 +112,19 @@ TIP_RACUNA = [
 class ulazni_rac(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL,
                              on_delete=models.CASCADE)
+    title = models.CharField(default="Ulazni_Racun", max_length=50)
+
+    def __str__(self):
+        return self.title
 
 
 class izlazni_rac(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL,
                              on_delete=models.CASCADE)
+    title = models.CharField(default="Izlazni_Racun", max_length=50)
+
+    def __str__(self):
+        return self.title
 
 
 class Ugovor(models.Model):
@@ -121,6 +134,8 @@ class Ugovor(models.Model):
     datum_potpisivanja = models.DateField()
     vazenje = models.DateField()
     file_ugovor = models.FileField(upload_to='documents/%Y/%m/%d')
+    glavna_knjiga1 = models.ForeignKey(
+        GlavnaKnjiga, on_delete=models.CASCADE, related_name='GlavnaKnjiga_id_id_id_id', null=True, blank=True)
 
 
 class Komercijala(models.Model):
@@ -146,35 +161,46 @@ class Racun(models.Model):
                              on_delete=models.CASCADE)
     asortiman = models.ManyToManyField(Asortiman)
     racuni_izlazni = models.ForeignKey(
-        izlazni_rac, on_delete=models.CASCADE, related_name='izlazni_rac_id_id', null=True, blank=True)
+        izlazni_rac, on_delete=models.CASCADE, null=True, blank=True)
 
     racuni_ulazni = models.ForeignKey(
-        ulazni_rac, on_delete=models.CASCADE, related_name='ulazni_rac_id_id', null=True, blank=True)
+        ulazni_rac, on_delete=models.CASCADE, null=True, blank=True)
 
     partner = models.ForeignKey(
         Partner, on_delete=models.CASCADE, related_name='Partner_id_id', null=True, blank=True)
+    glavna_knjiga = models.ForeignKey(
+        GlavnaKnjiga, on_delete=models.CASCADE, related_name='GlavnaKnjiga_id_id', null=True, blank=True)
     tip = models.CharField(
         max_length=120, choices=TIP_RACUNA, default='Ulazni')
     datum_racuna1 = models.DateField()
     rok_otplate1 = models.DateField()
     ukupno1 = models.FloatField(default=0.0)
-    osnovica = models.FloatField(default=0.0)
+    osnovica1 = models.FloatField(default=0.0)
     pdv = models.FloatField(default=0.0)
 
     def pdv_km(self):
         for artikal in self.asortiman.all():
             self.ukupno1 = (
-                self.ukupno1 + (artikal.cijena_s_pd * artikal.kolicina))
-        self.pdv = (self.ukupno1 * 0.17)
+                self.ukupno1 + (artikal.cijena_s_pdvom * artikal.kolicina))
+        return (self.ukupno1 * 0.17)
 
-    # def osnovica(self):
-    #     for artikal in self.asortiman.all():
-    #         self.ukupno1 = (
-    #             self.ukupno1 + (artikal.cijena_s_pd * artikal.kolicina))
-    #     self.osnovica = (self.ukupno1 - (self.ukupno1 * 0.17))
+    def osnovica(self):
+        return (self.ukupno1 - (self.ukupno1 * 0.17))
 
-    def get_ukupno_racun(self):
-        for artikal in self.asortiman.all():
-            self.ukupno1 = (
-                self.ukupno1 + (artikal.cijena_s_pd * artikal.kolicina))
-        return self.ukupno1
+    def get_ukupno_racun(self, cijena):
+        return cijena
+
+
+class Budzet(models.Model):
+    title = models.CharField(default="Budzet", max_length=50)
+    ukupno = models.FloatField(default=0.0)
+    troskovi = models.FloatField(default=0.0)
+    prihodi = models.FloatField(default=0.0)
+    glavna_knjiga = models.ForeignKey(
+        GlavnaKnjiga, on_delete=models.CASCADE, related_name='GlavnaKnjiga_id_id_id', null=True, blank=True)
+
+    def __str__(self):
+        return self.title
+
+    def ukupno_budzet(self):
+        self.ukupno = self.prihodi - self.troskovi
