@@ -1,0 +1,169 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+
+  <title>The HTML5 Herald</title>
+  <meta name="description" content="The HTML5 Herald">
+  <meta name="author" content="SitePoint">
+
+  <title>Material Design Bootstrap</title>
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="{% static 'https://use.fontawesome.com/releases/v5.11.2/css/all.css'%}">
+  <!-- Bootstrap core CSS -->
+  <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+  <!-- Material Design Bootstrap -->
+  <link href="{% static 'css/mdb.min.css'%}" rel="stylesheet">
+  <!-- Your custom styles (optional) -->
+  <link href="{% static 'css/style.min.css'%}" rel="stylesheet">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css">
+
+</head>
+
+<body>
+<style type="text/css">
+    html,
+    body,
+    header,
+    .carousel {
+      height: 60vh;
+    }
+
+    @media (max-width: 740px) {
+
+      html,
+      body,
+      header,
+      .carousel {
+        height: 100vh;
+      }
+    }
+
+    @media (min-width: 800px) and (max-width: 850px) {
+
+      html,
+      body,
+      header,
+      .carousel {
+        height: 100vh;
+      }
+    }
+  </style>
+  <style>
+
+th
+{
+    border-collapse:collapse;
+    border-spacing:0;
+    text-align:center;
+    vertical-align:middle;
+}
+.table thead th {
+    vertical-align: middle;
+    border-bottom: 2px solid #dee2e6;
+}
+thead
+{
+    background-color: #EDF3F5;
+    
+}
+thead th
+{
+    height:100px;
+    text-align: center;
+}
+thead #drugiRed th
+{
+    height:80px;
+}
+.btn
+{
+    border-radius:20px;
+    width:180px;
+    height:50px;
+}
+body
+{
+        height: 100vh;
+}
+*
+{
+    text-align: center;
+}
+</style>
+<nav class="navbar navbar-expand-lg navbar-dark primary-color d-flex justify-content-center">
+
+  <!-- Navbar brand -->
+  <a class="navbar-brand" href="#">KNJIGA ULAZNIH RAČUNA</a>
+
+ 
+
+</nav>
+<!--/.Navbar-->
+<!--Table-->
+<table id="tablePreview" class="table table-bordered">
+<!--Table head-->
+  <thead >
+  <tr>
+    <th rowspan="2" style="font-size: large; padding:0px; font-weight:400;">Redni broj</th>
+      <th colspan="3" style="font-size: 24px; padding:0px; font-weight:500;">Račun</th>
+      <th colspan="2" style="font-size: 24px; padding:0px; font-weight:500;">Kupac (primatelj dobara ili usluga)</th>
+      <th rowspan="2" style="font-size: large; padding:0px; font-weight:400;">Datum knjiženja</th>
+      <th rowspan="2" style="font-size: large; padding:0px; font-weight:400;">Ukupan iznos</th>
+      <th rowspan="2" style="font-size: large; padding:0px; font-weight:400;">Osnovica</th>
+      <th rowspan="2" style="font-size: large; padding:0px; font-weight:400;">PDV</th>
+  </tr>
+    <tr id="drugiRed">
+      
+      <th>Broj izdavanja</th>
+      <th>Datum</th>
+      <th>Rok otplate</th>
+      <th>Naziv</th>
+      <th>Porezni broj</th>
+    </tr>
+  </thead>
+  <!--Table head-->
+  <!--Table body-->
+  <tbody>
+  {% for racun in racuni %}
+    <tr>
+      <th scope="row">{{forloop.counter}}</th>
+      <td>{{racun.id}}</td>
+      <td>{{racun.datum_racuna1}}</td>
+      <td>{{racun.rok_otplate1}}</td>
+      <td>{{racun.partner.naziv}}</td>
+      <td>{{racun.partner.porezni_broj}}</td>
+      <td>@mdo</td>
+      <td>{{racun.ukupno1}} KM</td>
+      <td>{{racun.osnovica1}} KM</td>
+      <td>{{racun.pdv}} KM</td>
+    </tr>
+{% endfor %}
+  </tbody>
+
+</table>
+
+<table id="tablePreview" class="table table-bordered" style=" bottom:0; width: 100%; margin:0px;">
+<thead>
+<tr>
+      <th ><div style="display:flex; justify-content:center; align-items:center; flex-direction:column">0,000 KM dugovanja<button type="button" class="btn btn-primary">Lista dužnika</button></div></th>
+      <th ><div style="display:flex; justify-content:center; align-items:center; flex-direction:column; line-height: 0.5;"><p>UKUPNO 0,000 KM</p><p>Osnovica: 0,000 KM</p><p>PDV: 0,000 KM</p></div></th>
+</tr>
+    </thead>
+</table>
+</body>
+<script type="text/javascript" src="{% static 'js/jquery-3.4.1.min.js'%}"></script>
+<!-- Bootstrap tooltips -->
+<script type="text/javascript" src="{% static 'js/popper.min.js'%}"></script>
+<!-- Bootstrap core JavaScript -->
+<script type="text/javascript" src="{% static 'js/bootstrap.min.js'%}"></script>
+<!-- MDB core JavaScript -->
+<script type="text/javascript" src="{% static 'js/mdb.min.js'%}"></script>
+<!-- Initializations -->
+<script type="text/javascript">
+  // Animations initialization
+  new WOW().init();
+
+</script>
+</html>

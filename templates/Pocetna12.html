@@ -1,0 +1,295 @@
+{% extends "home-page.html"%}
+{% block content %}
+<!DOCTYPE html>
+
+{% load static %}
+
+
+<link href="{% static 'css/styles.css' %}" rel="stylesheet">
+    <title>Tim 05</title>
+
+<body>
+    <div class="header">
+        <div class="logo">
+        
+            <img src="{% static 'img/logotim05.PNG' %}" alt="">
+        </div>
+        <div class="info">
+            <a href="#">O nama</a>
+            <a href="#">Kontakt</a>
+        </div>
+    </div>
+    {% comment %} <div class="content">
+       <div class="prvicont">
+           <br><br>
+           <p>Dobrodošli  </p>  
+           <p>Knjigovodstveni servis dizajniran za poduzetnike i knjigovođe</p>
+            <br>
+           <div class="login">
+              <a href="#"><p>Log in</p></a>
+           </div>
+       </div> <br> <br>
+       <div class="drugicont">
+           <div class="tekst"> 
+               <p class="naslov">Glavna knjiga i <br> druge evidencije</p>
+               <p class="desc">
+                   Neophodna evidencija glavne knjige i svih drugih segmenata bez 
+                   koje poslovanje ne može funkcionisati sada možete pronaći na jednom mjestu, uz 
+                   pomoć softvera koji je prilagođen svakom obliku poslovanja.
+               </p>
+           </div>
+           <div class="tekst">
+            <p class="naslov">Sistemski obračuni</p>
+            <p class="desc">
+                    Obračuni PDV-a, prihoda i rashoda oduvijek su bili mukotrpan posao. TIM05 se 
+                    pobrinuo da taj posao više ne radite Vi već softver koji će Vam uštedjeti
+                    veliki broj sati rada te omogućiti pravilan obračun bez grešaka.
+            </p>
+           </div>
+           <div class="tekst">
+            <p class="naslov">Statistika i izvještaji</p>
+            <p class="desc">
+                Jasan uvid u poslovanje firme kako na dnevnom tako i na godišnjem nivou koje sada možete
+                pronaći uz par klikova i na taj način uštedjeti svoje vrijeme i novac.
+            </p>
+           </div>
+       </div>
+    </div> {% endcomment %}
+
+<div class="container my-5 py-5 z-depth-1 animated fadeIn" id="cont">
+
+    <!--Section: Content-->
+    <section class="px-md-5 mx-md-5 text-center dark-grey-text">
+
+      <!--Grid row-->
+      <div class="row">
+
+        <!--Grid column-->
+        <div class="col-md-6 mb-4 mb-md-0">
+
+          <h3 class="font-weight-bold">Knjigovodstveni servis dizajniran za poduzetnike i knjigovođe</h3>
+
+          <p style="color:white;opacity:0.7;" >Obračuni PDV-a, prihoda i rashoda oduvijek su bili mukotrpan posao. TIM05 se 
+                    pobrinuo da taj posao više ne radite Vi već softver koji će Vam uštedjeti
+                    veliki broj sati rada te omogućiti pravilan obračun bez grešaka.
+                    Obračuni PDV-a, prihoda i rashoda oduvijek su bili mukotrpan posao. TIM05 se 
+                    pobrinuo da taj posao više ne radite Vi već softver koji će Vam uštedjeti
+                    veliki broj sati rada te omogućiti pravilan obračun bez grešaka.
+                    Jasan uvid u poslovanje firme kako na dnevnom tako i na godišnjem nivou koje sada možete
+                pronaći uz par klikova i na taj način uštedjeti svoje vrijeme i novac.</p>
+
+          <a class="btn btn-purple btn-md ml-0" href="{% url 'Login' %}" role="button">Log in</a>
+
+          <hr class="my-5">
+
+          <p class="font-weight-bold">Prati nas na:</p>
+
+          <!--Facebook-->
+          <a href="#" class="mx-1" role="button"><i class="fab fa-facebook-f"></i></a>
+          <a href="#" class="mx-1" role="button"><i class="fab fa-twitter"></i></a>
+          <a href="#" class="mx-1" role="button"><i class="fab fa-linkedin-in"></i></a>
+          <a href="#" class="mx-1" role="button"><i class="fab fa-instagram"></i></a>
+          <a href="#" class="mx-1" role="button"><i class="fab fa-pinterest"></i></a>
+          <a href="#" class="mx-1" role="button"><i class="fab fa-youtube"></i></a>
+          <a href="#" class="mx-1" role="button"><i class="fab fa-github"></i></a>
+          <a href="#" class="mx-1" role="button"><i class="fab fa-stack-overflow"></i></a>
+
+        </div>
+        <!--Grid column-->
+
+        <!--Grid column-->
+        <div class="col-md-5 mb-4 mb-md-0">
+
+          <img src="https://mdbootstrap.com/img/Others/screens1.png" class="img-fluid" alt="">
+
+        </div>
+        <!--Grid column-->
+
+      </div>
+      <!--Grid row-->
+
+
+    </section>
+    <!--Section: Content-->
+
+
+  </div>
+  </div>
+  <div class="container my-5 z-depth-1 animated fadeIn">
+
+
+  <!--Section: Content-->
+  <section class="dark-grey-text">
+
+    <div class="row pr-lg-5">
+      <div class="col-md-7 mb-4">
+
+        <div class="view">
+          <img src="https://mdbootstrap.com/img/illustrations/graphics(4).png" class="img-fluid" alt="smaple image">
+        </div>
+
+      </div>
+      <div class="col-md-5 d-flex align-items-center">
+        <div>
+          
+          <h3 class="font-weight-bold mb-4">Ko smo mi?</h3>
+
+        	<p>Lorem ipsum dolor sit amet consectetur adip elit. Maiores deleniti explicabo voluptatem quisquam nulla asperiores aspernatur aperiam voluptate et consectetur minima delectus, fugiat eum soluta blanditiis adipisci, velit dolore magnam.</p>
+
+        	<button type="button" class="btn btn-orange btn-rounded mx-0">Download</button>
+
+        </div>
+      </div>
+    </div>
+
+  </section>
+  <!--Section: Content-->
+
+
+</div>
+<div class="container my-5 animated fadeIn">
+
+
+  <!--Section: Content-->
+  <section class="team-section text-center dark-grey-text">
+
+    <!-- Section heading -->
+    <h3 class="font-weight-bold pb-2 mb-4">TIM 05</h3>
+    <!-- Section description -->
+    <p class="text-muted w-responsive mx-auto mb-5">Upoznajte se sa članovima tima.</p>
+      <div class="row2">
+<div class="col-lg-3 col-md-6 mb-4">
+        <div class="avatar mx-auto">
+          <img src="{% static 'img/MujicAhmed.jpg'%}" class="rounded-circle z-depth-1"
+            alt="Sample avatar">
+        </div>
+        <h5 class="font-weight-bold mt-4 mb-3">Mujić Ahmed</h5>
+        <p class="text-uppercase blue-text"><strong>Vođa tima (Backend) </strong></p>
+        <p class="grey-text">Perspiciatis repellendus ad odit consequuntur, eveniet earum nisi qui consectetur
+          totam officia voluptates perferendis voluptatibus aut.</p>
+        <ul class="list-unstyled mb-0">
+          <!-- Facebook -->
+          <a class="p-2 fa-lg fb-ic">
+            <i class="fab fa-facebook-f blue-text"> </i>
+          </a>
+          <!-- Github -->
+          <a class="p-2 fa-lg ins-ic">
+            <i class="fab fa-github blue-text"> </i>
+          </a>
+        </ul>
+      </div>
+      </div>
+    <!-- Grid row -->
+    <div class="row">
+
+      <!-- Grid column -->
+      <div class="col-lg-3 col-md-6 mb-4">
+        <div class="avatar mx-auto">
+          <img src="{% static 'img/Amina.jpg'%}" class="rounded-circle z-depth-1"
+            alt="Sample avatar">
+        </div>
+        <h5 class="font-weight-bold mt-4 mb-3">Mujezinović Amina</h5>
+        <p class="text-uppercase blue-text"><strong>FRONT END</strong></p>
+        <p class="grey-text">Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur,
+          adipisci sed quia non numquam modi tempora eius.</p>
+        <ul class="list-unstyled mb-0">
+          <!-- Facebook -->
+          <a class="p-2 fa-lg fb-ic">
+            <i class="fab fa-facebook-f blue-text"> </i>
+          </a>
+          <!-- Twitter -->
+          <a class="p-2 fa-lg tw-ic">
+            <i class="fab fa-twitter blue-text"> </i>
+          </a>
+          <!-- Instagram -->
+          <a class="p-2 fa-lg ins-ic">
+            <i class="fab fa-instagram blue-text"> </i>
+          </a>
+        </ul>
+      </div>
+      <!-- Grid column -->
+
+      <!-- Grid column -->
+      <div class="col-lg-3 col-md-6 mb-4">
+        <div class="avatar mx-auto">
+          <img src="{% static 'img/Aida.jpg'%}" class="rounded-circle z-depth-1"
+            alt="Sample avatar">
+        </div>
+        <h5 class="font-weight-bold mt-4 mb-3">Mujčinović Aida</h5>
+        <p class="text-uppercase blue-text"><strong>FRONT END</strong></p>
+        <p class="grey-text">Sed ut perspiciatis unde omnis iste natus error sit voluptatem ipsa accusantium
+          doloremque rem laudantium totam aperiam.</p>
+        <ul class="list-unstyled mb-0">
+          <!-- Facebook -->
+          <a class="p-2 fa-lg fb-ic">
+            <i class="fab fa-facebook-f blue-text"> </i>
+          </a>
+          <!-- Instagram -->
+          <a class="p-2 fa-lg ins-ic">
+            <i class="fab fa-instagram blue-text"> </i>
+          </a>
+        </ul>
+      </div>
+      <!-- Grid column -->
+
+      <!-- Grid column -->
+      <div class="col-lg-3 col-md-6 mb-4">
+        <div class="avatar mx-auto">
+          <img src={% static 'img/Kaknjo.jpg'%} class="rounded-circle z-depth-1"
+            alt="Sample avatar">
+        </div>
+        <h5 class="font-weight-bold mt-4 mb-3">Kaknjo Harun</h5>
+        <p class="text-uppercase blue-text"><strong>BACKEND</strong></p>
+        <p class="grey-text">Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt
+          mollit anim est fugiat nulla id eu laborum.</p>
+        <ul class="list-unstyled mb-0">
+          <!-- Facebook -->
+          <a class="p-2 fa-lg fb-ic">
+            <i class="fab fa-facebook-f blue-text"> </i>
+          </a>
+          <!-- Instagram -->
+          <a class="p-2 fa-lg ins-ic">
+            <i class="fab fa-instagram blue-text"> </i>
+          </a>
+          <!-- Dribbble -->
+          <a class="p-2 fa-lg ins-ic">
+            <i class="fab fa-dribbble blue-text"> </i>
+          </a>
+        </ul>
+      </div>
+      <!-- Grid column -->
+
+      <!-- Grid column -->
+      <div class="col-lg-3 col-md-6 mb-4">
+        <div class="avatar mx-auto">
+          <img src={% static 'img/Malkoc.jpg'%} class="rounded-circle z-depth-1"
+            alt="Sample avatar">
+        </div>
+        <h5 class="font-weight-bold mt-4 mb-3">Malkoč Muhamed</h5>
+        <p class="text-uppercase blue-text"><strong>FRONT END</strong></p>
+        <p class="grey-text">Perspiciatis repellendus ad odit consequuntur, eveniet earum nisi qui consectetur
+          totam officia voluptates perferendis voluptatibus aut.</p>
+        <ul class="list-unstyled mb-0">
+          <!-- Facebook -->
+          <a class="p-2 fa-lg fb-ic">
+            <i class="fab fa-facebook-f blue-text"> </i>
+          </a>
+          <!-- Github -->
+          <a class="p-2 fa-lg ins-ic">
+            <i class="fab fa-github blue-text"> </i>
+          </a>
+        </ul>
+      </div>
+      <!-- Grid column -->
+
+    </div>
+    <!-- Grid row -->
+
+  </section>
+  <!--Section: Content-->
+
+
+</div>
+</body>
+</html>
+{% endblock %}

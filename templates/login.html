@@ -1,0 +1,25 @@
+{% extends "home-page.html"%}
+{% block content %}
+<!DOCTYPE html>
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/styles1.css' %}">
+    <title>Login</title>
+    <div class="container animated fadeIn">
+        <img src="{% static 'img/loginlogo.PNG' %}" alt="">
+        <h1>Pridruži se TIM05 porodici!</h1>
+        <h2>Računovodstvo nikad nije bilo jednostavnije</h2>
+        <form action="">
+            <input type="text" id="txt" name="txt" placeholder="Username" required>
+            <br>
+            <input type="password" id="pwd" name="pwd" placeholder="Password" required>
+            <br>
+            <input type="submit" class="sub" value="Log in">
+        </form>
+    </div>
+</html>
+{% endblock %}

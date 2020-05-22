@@ -95,10 +95,6 @@ class Kategorija(models.Model):
     naziv = models.CharField(max_length=50)
 
 
-class Artikal(Asortiman):
-    kategorija = models.ForeignKey(Kategorija, on_delete=models.CASCADE)
-
-
 class Usluga(Asortiman):
     rok_izvrsenja = models.DateField(blank=True, null=True)
 
@@ -127,12 +123,21 @@ class izlazni_rac(models.Model):
         return self.title
 
 
+TIP_UGOVORA = [
+    ('ugovor o djelu', 'Ugovor o djelu'),
+    ('na daljinu', 'Na daljinu'),
+    ('potpisani', 'Potpisani')
+]
+
+
 class Ugovor(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL,
                              on_delete=models.CASCADE)
     sadrzaj_ugovora = models.TextField()
     datum_potpisivanja = models.DateField()
     vazenje = models.DateField()
+    tip = models.CharField(
+        max_length=120, choices=TIP_UGOVORA, default='Ugovor o djelu')
     file_ugovor = models.FileField(upload_to='documents/%Y/%m/%d')
     glavna_knjiga1 = models.ForeignKey(
         GlavnaKnjiga, on_delete=models.CASCADE, related_name='GlavnaKnjiga_id_id_id_id', null=True, blank=True)
@@ -145,6 +150,10 @@ class Komercijala(models.Model):
     ugovor = models.ManyToManyField(Ugovor)
 
 
+class DugPartner(models.Model):
+    iznos = models.FloatField(default=0.0)
+
+
 class Partner(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL,
                              on_delete=models.CASCADE)
@@ -154,6 +163,20 @@ class Partner(models.Model):
     porezni_broj = models.IntegerField()
     adresa = models.CharField(max_length=100)
     ugovor = models.ManyToManyField(Ugovor)
+    dugovanje = models.ManyToManyField(DugPartner)
+
+
+class Avans(models.Model):
+    iznos = models.FloatField(default=0.0)
+    datum_validnosti = models.DateField()
+    napomena = models.TextField()
+    partner = models.ManyToManyField(Partner)
+
+
+class Artikal(Asortiman):
+    kategorija = models.ForeignKey(Kategorija, on_delete=models.CASCADE)
+    dobavljac = models.ForeignKey(
+        Partner, on_delete=models.CASCADE, related_name='Partner_id1_id', null=True, blank=True)
 
 
 class Racun(models.Model):
@@ -182,13 +205,13 @@ class Racun(models.Model):
         for artikal in self.asortiman.all():
             self.ukupno1 = (
                 self.ukupno1 + (artikal.cijena_s_pdvom * artikal.kolicina))
-        return (self.ukupno1 * 0.17)
+        return round((self.ukupno1 * 0.17), 2)
 
     def osnovica(self):
-        return (self.ukupno1 - (self.ukupno1 * 0.17))
+        return round((self.ukupno1 - (self.ukupno1 * 0.17)), 2)
 
     def get_ukupno_racun(self, cijena):
-        return cijena
+        return round(cijena, 2)
 
 
 class Budzet(models.Model):

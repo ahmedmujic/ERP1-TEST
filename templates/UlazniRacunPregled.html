@@ -1,0 +1,314 @@
+{% extends "home-page.html"%}
+{% block content %}
+
+
+<!--Navbar-->
+<script>
+{% comment %} function myFunction() {
+  var input, filter, table, tr, td, i, txtValue;
+  input = document.getElementById("myInput");
+  filter = input.value.toUpperCase();
+  table = document.getElementById("tbody");
+  tr = table.getElementsByTagName("tr");
+  for (i = 0; i < tr.length; i++) {
+    td = tr[i].getElementsByTagName("td")[0];
+    if (td) {
+      txtValue = td.textContent || td.innerText;
+      if (txtValue.toUpperCase().indexOf(filter) > -1) {
+        tr[i].style.display = "";
+      } else {
+        tr[i].style.display = "none";
+      }
+    }       
+  }
+}  {% endcomment %}
+
+</script>
+<style>
+
+th
+{
+    border-collapse:collapse;
+    border-spacing:0;
+    text-align:center;
+    vertical-align:middle;
+}
+.table thead th {
+    vertical-align: middle;
+    border-bottom: 2px solid #dee2e6;
+}
+thead
+{
+    background-color: #EDF3F5;
+    
+}
+thead th
+{
+    height:100px;
+    text-align: center;
+}
+thead #drugiRed th
+{
+    height:80px;
+}
+.btn
+{
+    border-radius:20px;
+    width:180px;
+    height:50px;
+}
+body
+{
+        height: 100vh;
+}
+*
+{
+    vertical-align: middle;
+    text-align: center;
+}
+.grid-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-template-rows: 1fr 1fr 1fr;
+  gap: 1px 1px;
+}
+.search
+{
+  display: flex;
+  align-items:center;
+  justify-content:center;
+}
+.navbar-nav
+{
+  align-items:center;
+}
+.navbar.navbar-dark form .md-form input
+{
+  text-align:left;
+}
+.mr-auto, .mx-auto {
+    margin-left: auto!important;
+    margin-right: auto!important;
+}
+.naslov
+{
+  font-weight:800;
+}
+.dropdown-menu
+{
+  
+  left:1;
+}
+.dropdown-toggle::after
+{
+  display:none;
+}
+#ugovor-info
+{
+  display:flex;
+}
+}
+</style>
+<nav class="navbar navbar-expand-lg navbar-dark primary-color pb-2 pt-2 ">
+<ul class="navbar-nav mr-auto" >
+    <li> <a class="navbar-brand" href="#" id="naslov" style="font-size: 25px; padding:0px; font-weight:300;">Knjiga ulaznih računa</a></li></li>
+        </ul>
+         <ul class="navbar-nav nav-flex-icons">
+      <!-- Basic dropdown -->
+   <li class="nav-item">   
+    <a class="dropdown-toggle mr-4" type="button" data-toggle="dropdown" aria-haspopup="true"
+      aria-expanded="false" style="color:white;">Pretraži<i class="fas fa-search ml-2"></i></a> 
+    <form class="animated fadeIn dropdown-menu " style="right:0;left:auto;background-color:rgba(66,133,244, 1);padding:10px;border:0px;" action="Ulazni" method="post">
+      {% csrf_token %}
+      {% comment %} <select class="dropdown-item browser-default custom-select mb-5" data-toggle="dropdown" type="button"  aria-haspopup="true"
+      aria-expanded="false" style="opacity:0.3;">
+      <option class="dropdown-item" selected> Tip plaćanja</option>
+      <option class="dropdown-item" value="Kartica"> Kartica</option>
+      <option class="dropdown-item" value="Paypal"> Paypal</option>
+      <option class="dropdown-item" value="Master"> Master</option>
+
+      </select> {% endcomment %}
+      
+      <div>
+      <div class="md-form">
+       <input style="color:black;"  id="inputMDEx" class="form-control" type="text" placeholder="Naziv partnera" name="naziv_partner">
+      
+      </div>
+      </div>
+      <div id="ugovor-info">
+      <div class="mr-2">
+      <label style="color:white">Računi od</label>
+      <input class="form-control mb-4" id="defaultLoginFormPassword"  type="date" placeholder="Naziv artikla" name="datum_od" style="opacity:0.3;">
+      </div>
+      <div>
+      <label for="defaultLoginFormPassword" style="color:white">Računi do</label>
+      <input class="form-control mb-4" id="defaultLoginFormPassword" type="date"  placeholder="Naziv artikla" name="datum_do" style="opacity:0.3;">
+      
+      </div>
+      </div>
+ 
+      
+      
+      <div class="dropdown-divider"></div>
+      <button class="dropdown-item" type="submit" style="color:green;">Traži</button>
+    </form> 
+ </li>  
+<!-- Basic dropdown -->
+<li>
+         {% comment %} <form method="post" id="forma" action="Izlazni" class="form-inline" >
+          {% csrf_token %}
+            <div class="md-form my-0">
+               
+                <input class="form-control mb-4" id="defaultLoginFormPassword" type="text" placeholder="Naziv partnera" name="naziv_partner">
+            </div>
+        </form>  {% endcomment %}
+    </div>
+     </li>
+        </ul>
+</nav>
+{% comment %} <nav class="navbar navbar-expand-lg navbar-dark primary-color d-flex justify-content-center align-items-center" style="padding:0px 20px 0px 20px;">
+  <!-- Navbar brand -->
+  <ul class="navbar-nav mr-auto">
+    <li> <a class="navbar-brand" href="#" id="naslov">KNJIGA IZLAZNIH RAČUNA</a></li>
+        </ul>
+
+        <!-- Right -->
+        <ul class="navbar-nav nav-flex-icons">
+          <li class="nav-item" id="search">
+            <form method="GET" id="forma">
+    <div class="md-form active-cyan-2 mb-3" >
+        <input type="text" id="form1" name="q"  class="form-control" value="{{ request.GET.q }}" placeholder="Traži račun..">
+      
+       <button class="btn" type="submit" name="action" style="display:none">Search</button>
+    </div>
+</form>
+ 
+          </li>
+           <li class="nav-item" id="search">
+          <i class="fas fa-search mt-3"></i>
+           </li>
+            </ul>
+ 
+    
+
+</nav> {% endcomment %}
+
+<!--/.Navbar-->
+<!--Table-->
+<table id="tablePreview" class="table table-bordered ">
+<!--Table head-->
+  <thead >
+  <tr class="animated fadeIn ">
+    <th rowspan="2" style="font-size: large; padding:0px; font-weight:400;">Redni broj</th>
+      <th colspan="3" style="font-size: 24px; padding:0px; font-weight:500;">Račun</th>
+      <th colspan="2" style="font-size: 24px; padding:0px; font-weight:500;">Kupac</th>
+      <th rowspan="2" style="font-size: large; padding:0px; font-weight:400;">Datum knjiženja</th>
+      <th rowspan="2" style="font-size: large; padding:0px; font-weight:400;">Ukupan iznos</th>
+      <th rowspan="2" style="font-size: large; padding:0px; font-weight:400;">Osnovica</th>
+      <th rowspan="2" style="font-size: large; padding:0px; font-weight:400;">PDV</th>
+  </tr>
+    <tr id="drugiRed">
+      
+      <th>Broj izdavanja</th>
+      <th>Datum</th>
+      <th>Rok otplate</th>
+      <th>Naziv</th>
+      <th>Porezni broj</th>
+    </tr>
+  </thead>
+  <!--Table head-->
+  <!--Table body-->
+  <tbody>
+  {% if racun_trazeni %}
+  {% for racun in racun_trazeni %}
+  <tr style="background-color:rgba(139, 240, 193, 0.5);" class="animated fadeIn">
+      <th scope="row">Traženi račun: {{forloop.counter}}</th>
+      <td>{{racun.id}}</td>
+      <td>{{racun.datum_racuna1}}</td>
+      <td>{{racun.rok_otplate1}}</td>
+      <td>{{racun.partner.naziv}}</td>
+      <td>{{racun.partner.porezni_broj}}</td>
+      <td>{{racun.partner.porezni_broj}}</td>
+      <td>{{racun.ukupno1}} KMasd</td>
+      <td>{{racun.osnovica1}} KM</td>
+      <td>{{racun.pdv}} KM</td>
+    </tr>
+    {% endfor %}
+  {% endif %}
+  {% for racun in page_obj %}
+    <tr class="animated fadeIn">
+      <th scope="row">{{forloop.counter}}</th>
+      <td>{{racun.id}}</td>
+      <td>{{racun.datum_racuna1}}</td>
+      <td>{{racun.rok_otplate1}}</td>
+      <td>{{racun.partner.naziv}}</td>
+      <td>{{racun.partner.porezni_broj}}</td>
+      <td>{{racun.partner.porezni_broj}}</td>
+      <td>{{racun.ukupno1}} KM</td>
+      <td>{{racun.osnovica1}} KM</td>
+      <td>{{racun.pdv}} KM</td>
+    </tr>
+{% endfor %}
+  </tbody>
+
+</table>
+<div>
+<nav class="d-flex justify-content-center wow fadeIn mt-5">
+        <ul class="pagination pg-blue">
+          {% if page_obj.has_previous %}
+          <!--Arrow left-->
+          <li class="page-item">
+            <a class="page-link" href="?page={{ page_obj.previous_page_number }}" aria-label="Previous">
+              <span aria-hidden="true">&laquo;</span>
+            </a>
+          </li>
+          {% endif %}
+          <li class="page-item active">
+            <span class="page-link">
+              Stranica {{ page_obj.number }} od {{ page_obj.paginator.num_pages }}
+            </span>
+
+          </li>
+
+          {% if page_obj.has_next %}
+          <li class="page-item">
+            <a class="page-link" href="?page={{ page_obj.next_page_number }}" aria-label="Next">
+              <span aria-hidden="true">&raquo;</span>
+            </a>
+          </li>
+          {% endif %}
+        </ul>
+      </nav>
+     </div> 
+      <!--Pagination-
+
+<table  class="table table-bordered" style=" bottom:0; width: 100%; margin:0px;">
+<thead>
+<tr>
+      <th ><div style="display:flex; justify-content:center; align-items:center; flex-direction:column">0,000 KM dugovanja<button type="button" class="btn btn-primary">Lista dužnika</button></div></th>
+      <th ><div style="display:flex; justify-content:center; align-items:center; flex-direction:column; line-height: 0.5;"><p>UKUPNO {{ukupno}}</p><p>Osnovica: {{osnovica}} KM</p><p>PDV: {{pdv}} KM</p></div></th>
+</tr>
+    </thead>
+</table>
+
+
+
+<!--Table-->
+
+{% if page_obj|length > 5 %}
+<div style=" position:relative;bottom:0; width: 100%; margin:0px;">
+{% else %}
+<div style=" position:fixed;bottom:0; width: 100%; margin:0px;">
+{% endif %}
+ <table id="tablePreview" class="table table-bordered" >
+<thead>
+<tr>
+      <th ><div style="display:flex; justify-content:center; align-items:center; flex-direction:column">0,000 KM dugovanja<button type="button" class="btn btn-primary">Lista dužnika</button></div></th>
+      <th ><div style="display:flex; justify-content:center; align-items:center; flex-direction:column; line-height: 0.5;"><p>UKUPNO {{ukupno}}</p><p>Osnovica: {{osnovica}} KM</p><p>PDV: {{pdv}} KM</p></div></th>
+</tr>
+    </thead>
+</table>
+</div>
+
+
+{% endblock %}

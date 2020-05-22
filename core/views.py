@@ -15,6 +15,7 @@ from rest_framework import authentication, permissions
 from django.contrib.auth.models import User
 import datetime
 import json
+from dateutil.parser import parse
 
 
 def Pocetna(request):
@@ -380,3 +381,210 @@ def PregledRacuna1(request, racun):
 
     }
     return render(request, "pregled_artikala.html", context)
+
+
+def PregledRacunaIzlazni(request):
+    trazeni_racuni = []
+    ukupno2 = 0
+    racun_trazeni = 0
+
+    # if request.method == "POST":
+    #     klijent = request.POST.qet('klijent_ime', False)
+    #     trazeni_racuni.append(Racun.objects.filter(
+    #         partner__naziv__contains=query))
+    ukupno_svi = 0
+    racuni = Racun.objects.filter(tip="Izlazni")
+    for racun in racuni:
+        ukupno_svi = ukupno_svi + racun.ukupno1
+    paginator = Paginator(racuni, 6)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+    context = {
+        'racuni': racuni,
+        'ukupno': round(ukupno_svi, 2),
+        'osnovica': round((ukupno_svi - (ukupno_svi * 0.17)), 2),
+        'pdv': round((ukupno_svi * 0.17), 2),
+        'page_obj': page_obj
+
+    }
+    if request.method == "POST":
+        my_date1 = request.POST.get('datum_od', False)
+        my_date2 = request.POST.get('datum_do', False)
+        klijent = request.POST.get('naziv_partner', False)
+        if my_date1 and my_date2:
+            datum = Racun.objects.filter(tip="Izlazni")
+            mdate1 = datetime.datetime.strptime(my_date1, "%Y-%m-%d").date()
+            mdate2 = datetime.datetime.strptime(my_date2, "%Y-%m-%d").date()
+            for racun in datum:
+                if racun.datum_racuna1 > mdate1 and racun.datum_racuna1 < mdate2:
+                    trazeni_racuni.append(racun)
+        if klijent:
+            klijenti = Racun.objects.filter(partner__naziv__contains=klijent)
+            for klijen in klijenti:
+                trazeni_racuni.append(klijen)
+        context = {
+            'racuni': racuni,
+            'ukupno': round(ukupno_svi, 2),
+            'osnovica': round((ukupno_svi - (ukupno_svi * 0.17)), 2),
+            'pdv': round((ukupno_svi * 0.17), 2),
+            'page_obj': page_obj,
+            'racun_trazeni': trazeni_racuni
+
+        }
+        return render(request, "IzlazniRacunPregled.html", context)
+    else:
+        return render(request, "IzlazniRacunPregled.html", context)
+
+
+def PregledRacunaUlazni(request):
+    trazeni_racuni = []
+    ukupno2 = 0
+    racun_trazeni = 0
+    ukupno_svi = 0
+    racuni = Racun.objects.filter(tip="Ulazni")
+    for racun in racuni:
+        ukupno_svi = ukupno_svi + racun.ukupno1
+    paginator = Paginator(racuni, 6)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+    context = {
+        'racuni': racuni,
+        'ukupno': round(ukupno_svi, 2),
+        'osnovica': round((ukupno_svi - (ukupno_svi * 0.17)), 2),
+        'pdv': round((ukupno_svi * 0.17), 2),
+        'page_obj': page_obj
+
+    }
+    if request.method == "POST":
+        my_date1 = request.POST.get('datum_od', False)
+        my_date2 = request.POST.get('datum_do', False)
+        klijent = request.POST.get('naziv_partner', False)
+        if my_date1 and my_date2:
+            datum = Racun.objects.filter(tip="Ulazni")
+            mdate1 = datetime.datetime.strptime(my_date1, "%Y-%m-%d").date()
+            mdate2 = datetime.datetime.strptime(my_date2, "%Y-%m-%d").date()
+            for racun in datum:
+                if racun.datum_racuna1 > mdate1 and racun.datum_racuna1 < mdate2:
+                    trazeni_racuni.append(racun)
+        if klijent:
+            klijenti = Racun.objects.filter(partner__naziv__contains=klijent)
+            for klijen in klijenti:
+                trazeni_racuni.append(klijen)
+        context = {
+            'racuni': racuni,
+            'ukupno': round(ukupno_svi, 2),
+            'osnovica': round((ukupno_svi - (ukupno_svi * 0.17)), 2),
+            'pdv': round((ukupno_svi * 0.17), 2),
+            'page_obj': page_obj,
+            'racun_trazeni': trazeni_racuni
+
+        }
+        return render(request, "UlazniRacunPregled.html", context)
+    else:
+        return render(request, "UlazniRacunPregled.html", context)
+
+
+def Pocetna12(request):
+    return render(request, "Pocetna12.html")
+
+
+def Login(request):
+    return render(request, "login.html")
+
+
+def Artikli(request):
+    trazeni_artikli = []
+    ukupno2 = 0
+    racun_trazeni = 0
+    ukupno_svi = 0
+    racuni = Artikal.objects.all()
+    paginator = Paginator(racuni, 8)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+    context = {
+        'artikli': racuni,
+        'ukupno': round(ukupno_svi, 2),
+        'osnovica': round((ukupno_svi - (ukupno_svi * 0.17)), 2),
+        'pdv': round((ukupno_svi * 0.17), 2),
+        'page_obj': page_obj
+
+    }
+    if request.method == "POST":
+        artikal_naziv = request.POST.get('naziv_artikal', False)
+        cijena1 = request.POST.get('cijena_od', False)
+        cijena2 = request.POST.get('cijena_do', False)
+        racuni1 = Asortiman.objects.all().select_related('artikal')
+        things = Asortiman.objects.filter(
+            naziv__contains=artikal_naziv).select_related('artikal')
+        if cijena1 and cijena2:
+            for artikal12 in racuni1:
+                if artikal12.cijena_s_pdvom > float(cijena1) and artikal12.cijena_s_pdvom < float(cijena2):
+                    trazeni_artikli.append(artikal12)
+        if artikal_naziv:
+            for artikal in things:
+                trazeni_artikli.append(artikal)
+        # if klijent:
+        #     klijenti = Racun.objects.filter(partner__naziv__contains=klijent)
+        #     for klijen in klijenti:
+        #         trazeni_artikli.append(klijen)
+        context = {
+            'artikli': racuni,
+            'ukupno': round(ukupno_svi, 2),
+            'osnovica': round((ukupno_svi - (ukupno_svi * 0.17)), 2),
+            'pdv': round((ukupno_svi * 0.17), 2),
+            'page_obj': page_obj,
+            'racun_trazeni': trazeni_artikli
+
+        }
+        return render(request, "artikli.html", context)
+    else:
+        return render(request, "artikli.html", context)
+
+
+def Usluge(request):
+    trazeni_artikli = []
+    ukupno2 = 0
+    racun_trazeni = 0
+    ukupno_svi = 0
+    racuni = Asortiman.objects.all().select_related('usluga')
+    paginator = Paginator(racuni, 8)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+    context = {
+        'artikli': racuni,
+        'ukupno': round(ukupno_svi, 2),
+        'osnovica': round((ukupno_svi - (ukupno_svi * 0.17)), 2),
+        'pdv': round((ukupno_svi * 0.17), 2),
+        'page_obj': page_obj
+
+    }
+    if request.method == "POST":
+        artikal_naziv = request.POST.get('naziv_artikal', False)
+        cijena1 = request.POST.get('cijena_od', False)
+        cijena2 = request.POST.get('cijena_do', False)
+        racuni1 = Asortiman.objects.all().select_related('usluga')
+        things = Asortiman.objects.filter(
+            naziv__contains=artikal_naziv).select_related('usluga')
+        if cijena1 and cijena2:
+            for artikal12 in racuni1:
+                if artikal12.cijena_s_pdvom > float(cijena1) and artikal12.cijena_s_pdvom < float(cijena2):
+                    trazeni_artikli.append(artikal12)
+        if artikal_naziv:
+            for artikal in things:
+                trazeni_artikli.append(artikal)
+        # if klijent:
+        #     klijenti = Racun.objects.filter(partner__naziv__contains=klijent)
+        #     for klijen in klijenti:
+        #         trazeni_artikli.append(klijen)
+        context = {
+            'artikli': racuni,
+            'ukupno': round(ukupno_svi, 2),
+            'osnovica': round((ukupno_svi - (ukupno_svi * 0.17)), 2),
+            'pdv': round((ukupno_svi * 0.17), 2),
+            'page_obj': page_obj,
+            'racun_trazeni': trazeni_artikli
+
+        }
+        return render(request, "usluge.html", context)
+    else:
+        return render(request, "usluge.html", context)
