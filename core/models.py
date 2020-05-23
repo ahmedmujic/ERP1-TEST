@@ -130,26 +130,6 @@ TIP_UGOVORA = [
 ]
 
 
-class Ugovor(models.Model):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL,
-                             on_delete=models.CASCADE)
-    sadrzaj_ugovora = models.TextField()
-    datum_potpisivanja = models.DateField()
-    vazenje = models.DateField()
-    tip = models.CharField(
-        max_length=120, choices=TIP_UGOVORA, default='Ugovor o djelu')
-    file_ugovor = models.FileField(upload_to='documents/%Y/%m/%d')
-    glavna_knjiga1 = models.ForeignKey(
-        GlavnaKnjiga, on_delete=models.CASCADE, related_name='GlavnaKnjiga_id_id_id_id', null=True, blank=True)
-
-
-class Komercijala(models.Model):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL,
-                             on_delete=models.CASCADE)
-    glavni_komercijalista = models.CharField(max_length=50)
-    ugovor = models.ManyToManyField(Ugovor)
-
-
 class DugPartner(models.Model):
     iznos = models.FloatField(default=0.0)
 
@@ -162,15 +142,37 @@ class Partner(models.Model):
     drzava = CountryField(blank_label='(Izaberite državu)')
     porezni_broj = models.IntegerField()
     adresa = models.CharField(max_length=100)
-    ugovor = models.ManyToManyField(Ugovor)
-    dugovanje = models.ManyToManyField(DugPartner)
+    iznos = models.FloatField(default=0.0)
+    dugovanje = models.ManyToManyField(DugPartner, null=True, blank=True)
+
+    def dug(self):
+        ukupno = 0
+        for dug in self.dugovanje.all():
+            ukupno = ukupno + dug.iznos
+        return ukupno
+
+
+class Ugovor(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL,
+                             on_delete=models.CASCADE)
+    sadrzaj_ugovora = models.TextField()
+    datum_potpisivanja = models.DateField()
+    vazenje = models.DateField()
+    partner = models.ForeignKey(
+        Partner, on_delete=models.CASCADE, related_name='GlavnaKnjiga_id_id_id_id2', null=True, blank=True)
+    tip = models.CharField(
+        max_length=120, choices=TIP_UGOVORA, default='Ugovor o djelu')
+    file_ugovor = models.FileField(upload_to='documents/%Y/%m/%d')
+    glavna_knjiga1 = models.ForeignKey(
+        GlavnaKnjiga, on_delete=models.CASCADE, related_name='GlavnaKnjiga_id_id_id_id', null=True, blank=True)
 
 
 class Avans(models.Model):
     iznos = models.FloatField(default=0.0)
     datum_validnosti = models.DateField()
     napomena = models.TextField()
-    partner = models.ManyToManyField(Partner)
+    partner = models.ForeignKey(Partner, on_delete=models.CASCADE,
+                                related_name='Avans_id_id_id_id2', null=True, blank=True)
 
 
 class Artikal(Asortiman):
@@ -227,3 +229,32 @@ class Budzet(models.Model):
 
     def ukupno_budzet(self):
         self.ukupno = self.prihodi - self.troskovi
+
+
+class Komercijala(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL,
+                             on_delete=models.CASCADE)
+    glavni_komercijalista = models.CharField(max_length=50)
+    ugovor = models.ManyToManyField(Ugovor)
+
+
+class Konto(models.Model):
+    glavna_knjiga = models.ForeignKey(GlavnaKnjiga, on_delete=models.CASCADE,
+                                      related_name='GlavnaKnjiga_id12_id_id', null=True, blank=True)
+    sifra_konta = models.FloatField(default=0.0)
+    naziv = models.CharField(max_length=50, default="Konto1")
+
+
+class Nabavka(models.Model):
+    datum = models.DateField()
+    razlog = models.FileField()
+    s_ugovor = models.ManyToManyField(Ugovor, blank=True, null=True)
+    partneri = models.ManyToManyField(Partner, blank=True, null=True)
+    racuni = models.ManyToManyField(Racun)
+    iznos = models.FloatField(default=0.0)
+
+    def Ukupno(self):
+        ukupno = 0
+        for racun in self.racuni.all():
+            ukupno = ukupno + racun.ukupno1
+        self.iznos = ukupno

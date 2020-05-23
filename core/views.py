@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from .models import Asortiman, Racun, izlazni_rac, ulazni_rac, Partner, Ugovor, Artikal, Kategorija, Usluga, Budzet
+from .models import Asortiman, Racun, izlazni_rac, ulazni_rac, Nabavka, Partner, DugPartner, Ugovor, Artikal, Kategorija, Usluga, Budzet, Avans, Konto
 from django.utils import timezone
 from django.contrib import messages
 from django.http import HttpResponseRedirect
@@ -19,7 +19,7 @@ from dateutil.parser import parse
 
 
 def Pocetna(request):
-    return render(request, 'pocetna.html', {"customers": 10})
+    return render(request, 'Home_page.html',)
 
 
 def racunajMjesec(racuni):
@@ -588,3 +588,233 @@ def Usluge(request):
         return render(request, "usluge.html", context)
     else:
         return render(request, "usluge.html", context)
+
+
+def Ugovori(request):
+    trazeni_artikli = []
+    ukupno2 = 0
+    racun_trazeni = 0
+    ukupno_svi = 0
+    racuni = Ugovor.objects.all()
+    paginator = Paginator(racuni, 8)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+    context = {
+        'artikli': racuni,
+        'ukupno': round(ukupno_svi, 2),
+        'osnovica': round((ukupno_svi - (ukupno_svi * 0.17)), 2),
+        'pdv': round((ukupno_svi * 0.17), 2),
+        'page_obj': page_obj
+
+    }
+    if request.method == "POST":
+        artikal_naziv = request.POST.get('naziv_artikal', False)
+        my_date1 = request.POST.get('cijena_od', False)
+        my_date2 = request.POST.get('cijena_do', False)
+        racuni1 = Ugovor.objects.all()
+        things = Ugovor.objects.filter(
+            partner__naziv__contains=artikal_naziv)
+        if my_date1 and my_date2:
+            datum = Ugovor.objects.all()
+            mdate1 = datetime.datetime.strptime(my_date1, "%Y-%m-%d").date()
+            mdate2 = datetime.datetime.strptime(my_date2, "%Y-%m-%d").date()
+            for ugovor in datum:
+                if ugovor.datum_potpisivanja > mdate1 and ugovor.datum_potpisivanja < mdate2:
+                    trazeni_artikli.append(ugovor)
+        if artikal_naziv:
+            for artikal in things:
+                trazeni_artikli.append(artikal)
+        # if klijent:
+        #     klijenti = Racun.objects.filter(partner__naziv__contains=klijent)
+        #     for klijen in klijenti:
+        #         trazeni_artikli.append(klijen)
+        context = {
+            'artikli': racuni,
+            'ukupno': round(ukupno_svi, 2),
+            'osnovica': round((ukupno_svi - (ukupno_svi * 0.17)), 2),
+            'pdv': round((ukupno_svi * 0.17), 2),
+            'page_obj': page_obj,
+            'racun_trazeni': trazeni_artikli
+
+        }
+        return render(request, "ugovori.html", context)
+    else:
+        return render(request, "ugovori.html", context)
+
+
+class Pregled():
+    def get_metoda(self, sadrzaj, page_number):
+        self.sadrzaj = sadrzaj
+        self.page_number = page_number
+        trazeni_artikli = []
+        ukupno2 = 0
+        racun_trazeni = 0
+        ukupno_svi = 0
+        paginator = Paginator(self.sadrzaj, 8)
+        page_obj = paginator.get_page(self.page_number)
+        context = {
+            'artikli': self.sadrzaj,
+            'ukupno': round(ukupno_svi, 2),
+            'osnovica': round((ukupno_svi - (ukupno_svi * 0.17)), 2),
+            'pdv': round((ukupno_svi * 0.17), 2),
+            'page_obj': page_obj
+
+        }
+        return context
+
+    def post_metoda_datum(self, sadrzaj, page_number, naziv, prva, druga, things):
+        self.sadrzaj = sadrzaj
+        self.page_number = page_number
+        self.naziv = naziv
+        self.prva = prva
+        self.druga = druga
+        self.things = things
+        trazeni_artikli = []
+        if prva and druga:
+            prva1 = datetime.datetime.strptime(my_date1, "%Y-%m-%d").date()
+            druga1 = datetime.datetime.strptime(my_date2, "%Y-%m-%d").date()
+            for pojedinacno in sadrzaj:
+                if ugovor.datum > mdate1 and ugovor.datum < mdate2:
+                    trazeni_artikli.append(ugovor)
+        if naziv:
+            for artikal in things:
+                trazeni_artikli.append(artikal)
+        paginator = Paginator(self.sadrzaj, 8)
+        page_obj = paginator.get_page(self.page_number)
+        context = {
+            'artikli': self.sadrzaj,
+            # 'ukupno': round(ukupno_svi, 2),
+            # 'osnovica': round((ukupno_svi - (ukupno_svi * 0.17)), 2),
+            # 'pdv': round((ukupno_svi * 0.17), 2),
+            'page_obj': page_obj,
+            'racun_trazeni': trazeni_artikli
+
+        }
+        return context
+
+    def post_metoda(self, sadrzaj, page_number, naziv, prva, druga, things):
+        self.sadrzaj = sadrzaj
+        self.page_number = page_number
+        self.naziv = naziv
+        self.prva = prva
+        self.druga = druga
+        self.things = things
+        trazeni_artikli = []
+        if prva and prva:
+            for racun in sadrzaj:
+                if racun.iznos > float(prva) and racun.iznos < float(druga):
+                    trazeni_artikli.append(racun)
+        # if prva and druga:
+        #     prva1 = datetime.datetime.strptime(my_date1, "%Y-%m-%d").date()
+        #     druga1 = datetime.datetime.strptime(my_date2, "%Y-%m-%d").date()
+        #     for pojedinacno in sadrzaj:
+        #         if ugovor.datum_potpisivanja > mdate1 and ugovor.datum_potpisivanja < mdate2:
+        #             trazeni_artikli.append(ugovor)
+        if naziv:
+            for artikal in things:
+                trazeni_artikli.append(artikal)
+        paginator = Paginator(self.sadrzaj, 8)
+        page_obj = paginator.get_page(self.page_number)
+        context = {
+            'artikli': self.sadrzaj,
+            # 'ukupno': round(ukupno_svi, 2),
+            # 'osnovica': round((ukupno_svi - (ukupno_svi * 0.17)), 2),
+            # 'pdv': round((ukupno_svi * 0.17), 2),
+            'page_obj': page_obj,
+            'racun_trazeni': trazeni_artikli
+
+        }
+        return context
+
+    def __init__(self):
+        self.sadrzaj = None
+        self.page_number = None
+        self.naziv = None
+        self.prva = None
+        self.druga = None
+        self.things = None
+
+
+def Avansi(request):
+    sadrzaj = Avans.objects.all()
+    page_number = request.GET.get('page')
+    if request.method == "GET":
+        cont1 = Pregled()
+        context = cont1.get_metoda(sadrzaj, page_number)
+        return render(request, "avansi.html", context)
+    if request.method == "POST":
+        artikal_naziv = request.POST.get('naziv_artikal', False)
+        things = Avans.objects.filter(
+            partner__naziv__contains=artikal_naziv)
+        my_date1 = request.POST.get('cijena_od', False)
+        my_date2 = request.POST.get('cijena_do', False)
+        cont1 = Pregled()
+        context = cont1.post_metoda(sadrzaj, page_number,
+                                    artikal_naziv, my_date1, my_date2, things)
+        return render(request, "avansi.html", context)
+
+
+def Konto1(request):
+    sadrzaj = Konto.objects.all()
+    page_number = request.GET.get('page')
+    if request.method == "GET":
+        cont1 = Pregled()
+        context = cont1.get_metoda(sadrzaj, page_number)
+        return render(request, "konto.html", context)
+    if request.method == "POST":
+        artikal_naziv = request.POST.get('naziv_artikal', False)
+        things = Konto.objects.filter(
+            naziv__contains=artikal_naziv)
+        my_date1 = request.POST.get('cijena_od', False)
+        my_date2 = request.POST.get('cijena_do', False)
+        cont1 = Pregled()
+        context = cont1.post_metoda(sadrzaj, page_number,
+                                    artikal_naziv, my_date1, my_date2, things)
+        return render(request, "konto.html", context)
+
+
+def Partneri(request):
+    sadrzaj = Partner.objects.all()
+    page_number = request.GET.get('page')
+    if request.method == "GET":
+        for partner in sadrzaj:
+            partner.iznos = partner.dug()
+            partner.save()
+        cont1 = Pregled()
+        context = cont1.get_metoda(sadrzaj, page_number)
+        return render(request, "partneri.html", context)
+    if request.method == "POST":
+        for partner in sadrzaj:
+            partner.iznos = partner.dug()
+        artikal_naziv = request.POST.get('naziv_artikal', False)
+        things = Partner.objects.filter(
+            naziv__contains=artikal_naziv)
+        my_date1 = request.POST.get('cijena_od', False)
+        my_date2 = request.POST.get('cijena_do', False)
+        cont1 = Pregled()
+        context = cont1.post_metoda(sadrzaj, page_number,
+                                    artikal_naziv, my_date1, my_date2, things)
+        return render(request, "partneri.html", context)
+
+
+def Nabavke(request):
+    sadrzaj = Nabavka.objects.all()
+    for sadrza in sadrzaj:
+        sadrza.Ukupno()
+    page_number = request.GET.get('page')
+    if request.method == "GET":
+        cont1 = Pregled()
+        context = cont1.get_metoda(sadrzaj, page_number)
+        return render(request, "nabavke.html", context)
+    if request.method == "POST":
+        for partner in sadrzaj:
+            partner.iznos = partner.dug()
+        artikal_naziv = request.POST.get('naziv_artikal', False)
+        things = Nabavka.objects.filter(
+            naziv__contains=artikal_naziv)
+        my_date1 = request.POST.get('cijena_od', False)
+        my_date2 = request.POST.get('cijena_do', False)
+        cont1 = Pregled()
+        context = cont1.post_metoda(sadrzaj, page_number,
+                                    artikal_naziv, my_date1, my_date2, things)
+        return render(request, "nabavke.html", context)

@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css">
+    <link rel="stylesheet" href="{% static 'css/stilovi.css' %}">
+    <!-- Bootstrap core CSS -->
+  <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+  <!-- Material Design Bootstrap -->
+  <link href="{% static 'css/mdb.min.css'%}" rel="stylesheet">
+  <script type="text/javascript" src="{% static 'js/jquery-3.4.1.min.js'%}"></script>
+<!-- Bootstrap tooltips -->
+<script type="text/javascript" src="{% static 'js/popper.min.js'%}"></script>
+<!-- Bootstrap core JavaScript -->
+<script type="text/javascript" src="{% static 'js/bootstrap.min.js'%}"></script>
+<!-- MDB core JavaScript -->
+<script type="text/javascript" src="{% static 'js/mdb.min.js'%}"></script>
+<!-- Initializations -->
+<script type="text/javascript">
+  // Animations initialization
+  new WOW().init();
+  </script>
+    <title>Document</title>
+    
+</head>
+<script>
+$('.toggler').live('click',function(){
+  $(this).parent().children().toggle();  //swaps the display:none between the two spans
+  $(this).parent().parent().find('.toggled_content').slideToggle();  //swap the display of the main content with slide action
+
+});
+</script>
+<body>
+<nav class="navbar navbar-expand-lg navbar-dark primary-color pb-2 pt-2 ">
+<ul class="navbar-nav mr-auto" >
+    <li> <a class="navbar-brand" href="#" id="naslov" style="font-size: 25px; padding:0px; font-weight:300;">Dashboard</a></li></li>
+        </ul>
+         <ul class="navbar-nav nav-flex-icons">
+      <!-- Basic dropdown -->
+   <li class="navbar-brand" style="display: flex;
+  justify-content: center;
+  align-items: center;">   
+    Log out  <i class="fas fa-cog ml-1"></i> 
+    </nav>
+<div class="cijeli">
+
+ {% comment %} <nav class="navbar navbar-expand-lg navbar-dark primary-color pb-2 pt-2 ">
+  <div class="prvaTraka">
+    <div class="odjava"><i class="fas fa-cog"></i><p class="logout">Log out</p></div>
+    </div>
+  </nav> {% endcomment %}
+  <div class="sadrzaj">
+    <div class="navbar12">
+      <div class="lijevi">
+          <img src="https://cdn.pixabay.com/photo/2017/02/23/13/05/profile-2092113_960_720.png" alt="" class="user">
+          <h3 class="name">IME PREZIME</h3>
+      </div>
+          <div class="menu">
+        <div class="dropdown"><button class="dropbtn"><i class="fas fa-home "></i>Home</button></div>
+          <div class="dropdown">
+            <button class="dropbtn"><i class="fas fa-book-open"></i>Glavna knjiga<i class="fas fa-angle-down"></i></button>
+            <div class="">
+            <div class="dropdown-content">
+            
+              <a href="#" class="animated jackInTheBox">Ulazni računi</a>
+              <a href="#" class="animated jackInTheBox">Izlazni računi</a>
+              <a href="#" class="animated jackInTheBox">Kreiranje računa</a>
+              <a href="#" class="animated jackInTheBox">Blagajna</a>
+              <a href="#" class="animated jackInTheBox">Konto</a>
+            </div>
+            </div>
+          </div>
+          <div class="dropdown"><button class="dropbtn"><i class="far fa-money-bill-alt"></i>Transakcije</button></div>
+          <div class="dropdown">
+            <button class="dropbtn"><i class="fas fa-shopping-cart"></i>Asortiman<i class="fas fa-angle-down"></i></button>
+            <div class="dropdown-content">
+              <a href="#">Artikli</a>
+              <a href="#">Usluge</a>
+            </div>
+          </div>
+          <div class="dropdown">
+            <button class="dropbtn"><i class="fas fa-users"></i>Partneri<i class="fas fa-angle-down"></i></button>
+            <div class="dropdown-content">
+              <a href="#">Partneri</a>
+              <a href="#">Ugovori</a>
+            </div>
+          </div>
+          <div class="dropdown">
+            <button class="dropbtn"><i class="fas fa-chart-bar"></i>Izvještaji<i class="fas fa-angle-down"></i></button>
+            <div class="dropdown-content">
+              <a href="#">Bilans</a>
+              <a href="#">Dnevni izvještaj</a>
+              <a href="#">Mjesečni izvještaj</a>
+            </div>
+          </div>
+          <div class="dropdown">
+            <button class="dropbtn"><i class="fas fa-shopping-basket"></i>Nabavke<i class="fas fa-angle-down"></i></button>
+            <div class="dropdown-content">
+              <a href="#">Nabavke</a>
+              <a href="#">Ponude</a>
+              <a href="#">Avansi</a>
+            </div>
+          </div>
+          <div class="dropdown">
+            <button class="dropbtn"><i class="fas fa-clipboard-list"></i>Projekti<i class="fas fa-angle-down"></i></button>
+            <div class="dropdown-content">
+              <a href="#">Projekti</a>
+              <a href="#">Tenderi</a>
+            </div>
+          </div>
+          </div>
+          <div class="informacije">
+              <p>Naziv firme<br>Adresa<br>Porezni broj:00000</p>
+          </div>
+        </div>
+        <div class="desni" >
+          <div class="tim" style="margin-bottom:-30px;"><div class="dobrodosli">Welcome to</div><img src="{% static 'img/loginlogo.png' %}" class="logo mt-2"></div>
+            <div class="dugmad">
+              <div class="container my-5 py-5">
+
+
+  <!-- Section: Block Content -->
+  <section class="">
+
+    <!--Grid row-->
+    <div class="row">
+
+      <!--Grid column-->
+      <div class="col-lg-4 ">
+
+        <!-- Admin card -->
+        <div class="card mt-3">
+
+          <div class="">
+            <div class="far fa-lg primary-color z-depth-2 p-2 ml-3 mt-n3 rounded text-white"><img src="{% static 'img/slika.png' %}" style="height: 50px; width:50px"></div>
+            <div class="float-right text-right p-3">
+              <small>Budzet</small>
+              <p class="text-uppercase text-muted mb-1"></p>
+              <h4 class="font-weight-bold mb-0">23 000KM</h4>
+            </div>
+          </div>
+
+          <div class="card-body pt-0">
+            <div class="progress md-progress">
+              <div class="progress-bar bg-success" role="progressbar" style="width: 100%" aria-valuenow="5" aria-valuemin="0"
+                aria-valuemax="100"></div>
+            </div>
+            <p class="card-text">Stanje je zadovoljavajuće </p>
+          </div>
+
+        </div>
+        <!-- Admin card -->
+
+      </div>
+      <!--Grid column-->
+
+      <!--Grid column-->
+      <div class="col-lg-4 col-md-6 mb-4">
+
+        <!-- Admin card -->
+        <div class="card mt-3">
+
+          <div class="">
+           <div class="far fa-lg primary-color z-depth-2 p-3 ml-3 mt-n3 rounded text-white"><img src="{% static 'img/3.png' %}" style="height: 40px; width:40px"></div>
+            <div class="float-right text-right p-3">
+            <small>Nabavke:</small>
+              <p class="text-uppercase text-muted mb-1"></p>
+              <h4 class="font-weight-bold mb-0">3534 KM</h4>
+            </div>
+          </div>
+
+          <div class="card-body pt-0">
+            <div class="progress md-progress">
+              <div class="progress-bar bg-danger" role="progressbar" style="width: 46%" aria-valuenow="46" aria-valuemin="0"
+                aria-valuemax="100"></div>
+            </div>
+            <p class="card-text">Worse than last week (46%)</p>
+          </div>
+
+        </div>
+        <!-- Admin card -->
+
+      </div>
+      <!--Grid column-->
+
+      <!--Grid column-->
+      <div class="col-lg-4 col-md-6 mb-4">
+
+        <!-- Admin card -->
+        <div class="card mt-3">
+
+          <div class="">
+            <div class="far fa-lg primary-color z-depth-2 p-2 ml-3 mt-n3 rounded text-white" style="height: 70px; width:70px;"><img class="ml-1"src="{% static 'img/2.png' %}" style="height: 50px; width:40px;"></div>
+            <div class="float-right text-right p-3">
+            <small>Prodaje</small>
+              <p class="text-uppercase text-muted mb-1"></p>
+              <h4 class="font-weight-bold mb-0">6564 KM</h4>
+            </div>
+          </div>
+
+          <div class="card-body pt-0">
+            <div class="progress md-progress">
+              <div class="progress-bar bg-success" role="progressbar" style="width: 31%" aria-valuenow="31" aria-valuemin="0"
+                aria-valuemax="100"></div>
+            </div>
+            <p class="card-text">Better than last week (31%)</p>
+          </div>
+
+        </div>
+        <!-- Admin card -->
+
+      </div>
+      <!--Grid column-->
+
+    </div>
+    <!--Grid row-->
+
+  </section>
+  <!--Section: Content-->
+
+
+</div>
+
+            </div>
+              <div class="grafik-obavijesti" style="margin-top:-100px;">
+                <div class="dugme-grafik">
+                  <div class="dropdown">
+                    <button class="dropbtn">Vrsta izvještaja<i class="fas fa-angle-down"></i></button>
+                    <div class="dropdown-content">
+                      <a href="#">Mjesečni</a>
+                      <a href="#">Sedmični</a>
+                      <a href="#">Dnevni</a>
+                    </div>
+                  </div>
+                  <div class="dropdown">
+                    <button class="dropbtn">Tip grafikona<i class="fas fa-angle-down"></i></button>
+                    <div class="dropdown-content">
+                      <a href="#">Linijski</a>
+                      <a href="#">Prstenasti</a>
+                    </div>
+                  </div>
+                </div>
+                <div class="desni-ugao">
+                <div class="grafik"></div>
+                <div class="profili">
+                <div class="obavijesti">
+                  <button><img src="{% static 'img/zvono.png' %}" class="zvono">Pregledaj obavijesti</button>
+                </div>
+                <div class="profil">
+                  <button><img src="https://cdn.pixabay.com/photo/2017/02/23/13/05/profile-2092113_960_720.png" class="korisnik">Pregledaj profil</button>
+                </div>
+              </div>
+              </div>
+              </div>
+            </div>
+      </div>
+      <div class="drugaTraka">
+        <p>Sva prva zadržana &copy TIM05</p>
+      </div>
+    </div>
+</body>
+</html>
