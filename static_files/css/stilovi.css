@@ -1,10 +1,20 @@
 *
 {padding:0px;
 margin: 0px;
+
 }
 .cijeli
 {
+  background-image: url('https://mdbootstrap.com/img/Photos/Others/gradient2.png');
+  transition: background 1s linear;
+  background-repeat: no-repeat;
+  background-size: cover;
   height: 100%;
+}
+html
+{
+background-image: url('https://mdbootstrap.com/img/Photos/Others/gradient2.png');
+z-index: 1000;
 }
 .prvaTraka
 {background-color:#5F7BEC;
@@ -99,7 +109,6 @@ justify-content: center;
 border: none;
 border-radius: 15px;
 width: 770px;
-background-color: white;
 height: 50px;
 text-decoration: none;
 font-size: larger;}
@@ -112,7 +121,7 @@ height: 33px;}
 .sadrzaj
 {display: grid;
 grid-template-columns: repeat(4,1fr);
-background-color: #D3DAEC;
+
 }
 .slika
 {width: 40px;
@@ -146,15 +155,16 @@ color:white;}
 height: 80px;}
 .slika2
 {margin-bottom:60px;}
-.dugme-grafik
+.dugme-grafika
 {display: flex;
 flex-direction: row;
 margin-top: 50px;}
-.grafik{
+.grafika{
   margin-top: 30px;
-  background-color: whitesmoke;
   height: 385px;
   width: 600px;
+  background-color: rgba(255,255,255,0.4);
+  border-radius: 5px;
 }
 .desni-ugao
 {display: grid;
@@ -165,6 +175,7 @@ flex-direction: column;
 margin-top: 50px;
 width: 150px;
 margin-left: 40px;
+opacity: 0.5;
 }
 .zvono,
 .korisnik
@@ -183,7 +194,11 @@ width: 150px;}
 {background-color: #5F7BEC;
 color:whitesmoke;}
 .drugaTraka
-{background-color:#5F7BEC;
+{
+
+bottom: 0;
+
+background-color:#5F7BEC;
 height: 30px;}
 p
 {float: right;
@@ -207,4 +222,8 @@ text-decoration: none;}
 .menu i
 {
   margin-right: 5px;
+}
+#drop1
+{
+  width: 93%;
 }

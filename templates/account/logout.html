@@ -1,21 +1,29 @@
-{% extends "account/base.html" %}
+{% extends "home-page.html"%}
 
 {% load i18n %}
-
+{% load static %}
 {% block head_title %}{% trans "Sign Out" %}{% endblock %}
 
 {% block content %}
-<h1>{% trans "Sign Out" %}</h1>
+ <div class="container animated fadeIn" style="display:flex;justify-content:center;text-align:center;">
+        <div><img src="{% static 'img/loginlogo.PNG' %}" alt="">
+        <h1>Vratite nam se opet!</h1>
+        <h3>Vaš tim 05</h3>
+        </div>
+        </div>
+        <div class="ml-2">
+<h1>{% trans "Odjava" %}</h1>
 
-<p>{% trans 'Are you sure you want to sign out?' %}</p>
+<p>{% trans 'Jeste li sigurni da se želite odjaviti?' %}</p>
 
 <form method="post" action="{% url 'account_logout' %}">
   {% csrf_token %}
   {% if redirect_field_value %}
   <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}"/>
   {% endif %}
-  <button type="submit">{% trans 'Sign Out' %}</button>
+  <button type="submit" class="btn btn-danger">{% trans 'Da' %}</button>
+  <a href="{% url 'Pocetna' %}" style="color: white;"><div  class="btn btn-success">{% trans 'Ne' %}</div>
 </form>
 
-
+</div>
 {% endblock %}

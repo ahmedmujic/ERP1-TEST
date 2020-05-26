@@ -26,11 +26,231 @@
     
 </head>
 <script>
-$('.toggler').live('click',function(){
-  $(this).parent().children().toggle();  //swaps the display:none between the two spans
-  $(this).parent().parent().find('.toggled_content').slideToggle();  //swap the display of the main content with slide action
+{% block jquery %}
+var tip='line'
+var endpoint = '/api/chart/data/'+ 2020
+var defaultData = []
+var labels = [];
+$.ajax({
+    async: "false",
+    method: "GET",
+    url: endpoint,
+    success: function(data){
+        labels = data.labels
+        defaultData = data.default
+        defaultData2 = data.default2
+        ulazni_sve = data.ulazni_sve
+        console.log(ulazni_sve)
+        
+        //select(ulazni_sve)
+        setChart(2020, labels, defaultData, tip)
+        
+    },
+    error: function(error_data){
+        console.log("error")
+        console.log(error_data)
+    }
+})
 
+function setChart(value, labels, defaultData, tip1){
+    var ctx = document.getElementById("myChart");
+    var ctx2 = document.getElementById("myChart2");
+    var myChart = new Chart(ctx2, {
+    type: tip1,
+    data: {
+        labels: labels,
+        datasets: [{
+            label: 'Prihodi za ' + value + ' godinu',
+            data: defaultData,
+            backgroundColor: [
+                'rgba(255, 99, 132, 0.3)',
+                'rgba(54, 162, 235, 0.3)',
+                'rgba(255, 206, 86, 0.3)',
+                'rgba(75, 192, 192, 0.3)',
+                'rgba(153, 102, 255, 0.3)',
+                'rgba(255, 159, 64, 0.3)'
+            ],
+            borderColor: [
+                'rgba(255,55,255,1)',
+                'rgba(54, 162, 235, 1)',
+                'rgba(255, 206, 86, 1)',
+                'rgba(75, 192, 192, 1)',
+                'rgba(153, 102, 255, 1)',
+                'rgba(255, 159, 64, 1)'
+            ],
+            borderWidth: 1
+        
+        
+        },
+        {
+            label: 'Rashodi za ' + value + ' godinu',
+            data: defaultData2,
+            backgroundColor: [
+                'rgba(15, 99, 132, 0.3)',
+                'rgba(54, 162, 235,0.3)',
+                'rgba(255, 206, 86, 0.3)',
+                'rgba(75, 192, 192, 0.3)',
+                'rgba(153, 102, 255,0.3)',
+                'rgba(255, 159, 64, 0.3)'
+            ],
+            borderColor: [
+                'rgba(255,55,255,1)',
+                'rgba(54, 162, 235, 1)',
+                'rgba(255, 206, 86, 1)',
+                'rgba(75, 192, 192, 1)',
+                'rgba(153, 102, 255, 1)',
+                'rgba(255, 159, 64, 1)'
+            ],
+            borderWidth: 1
+        
+        
+        }
+        ]
+    },
+    options: {
+        scales: {
+            yAxes: [{
+                ticks: {
+                    beginAtZero:true
+                }
+            }]
+        }
+    }
 });
+
+    var myChart = new Chart(ctx, {
+    type: 'polarArea',
+    data: {
+        labels: labels,
+        datasets: [{
+            label: '# of Votes',
+            data: defaultData,
+            backgroundColor: [
+                'rgba(255, 99, 132, 0.3)',
+                'rgba(54, 162, 235, 0.3)',
+                'rgba(255, 206, 86, 0.3)',
+                'rgba(75, 192, 192,0.3)',
+                'rgba(153, 102, 255, 0.3)',
+                'rgba(255, 159, 64, 0.3)'
+            ],
+            borderColor: [
+                'rgba(255,99,132,1)',
+                'rgba(54, 162, 235, 1)',
+                'rgba(255, 206, 86, 1)',
+                'rgba(75, 192, 192, 1)',
+                'rgba(153, 102, 255, 1)',
+                'rgba(255, 159, 64, 1)'
+            ],
+            borderWidth: 1
+        }]
+    },
+    options: {
+        scales: {
+            yAxes: [{
+                ticks: {
+                    beginAtZero:true
+                }
+            }]
+        }
+    }
+});
+//document.url="Pocetna"
+}
+function uniq_fast(a) {
+    var seen = {};
+    var out = [];
+    var len = a.length;
+    var j = 0;
+    for(var i = 0; i < len; i++) {
+         var item = a[i];
+         if(seen[item] !== 1) {
+               seen[item] = 1;
+               out[j++] = item;
+         }
+    }
+    return out;
+}
+// var ctx = document.getElementById("myChart");
+{% comment %} function select(value_ulazni)
+{
+    var sele=document.getElementById('select')
+    console.log("sddsf" + value_ulazni)
+    value_ulazni=uniq_fast(value_ulazni)
+    for (var i=0;i<value_ulazni.length;i++)
+    {
+        console.log(value_ulazni[i])
+    }
+    for (var i=0;i<value_ulazni.length;i++)
+    {
+        var node1=document.createElement('option')
+        var text=document.createTextNode(""+value_ulazni[i])
+        node1.appendChild(text)
+        node1.setAttribute("onselect","funkcija()")
+        node1.setAttribute("value",""+value_ulazni[i])
+        sele.appendChild(node1)
+    }
+} {% endcomment %}
+var vrijednost
+function funkcija(value)
+{
+    vrijednost=value
+    console.log(value)
+    var endpoint = '/api/chart/data/'+ value
+    var defaultData = []
+    var labels = [];
+$.ajax({
+    method: "GET",
+    url: endpoint,
+    success: function(data){
+        labels = data.labels
+        defaultData = data.default
+        defaultData2 = data.default2
+        ulazni_sve = data.ulazni_sve
+        setChart(vrijednost, labels, defaultData, tip)
+        
+    },
+    error: function(error_data){
+        console.log("error")
+        console.log(error_data)
+    }
+})
+}
+function funkcija_tip_charta(value1)
+{
+    tip=value1;
+   /* $.ajax({
+    method: "GET",
+    url: endpoint,
+    success: function(data){
+        labels = data.labels
+        defaultData = data.default
+        defaultData2 = data.default2
+        ulazni_sve = data.ulazni_sve
+        setChart(vrijednost, labels, defaultData, tip)
+        
+    },
+    error: function(error_data){
+        console.log("error")
+        console.log(error_data)
+    }
+})
+    */
+var temp = jQuery.extend(true, {}, data);
+temp.type = value1; // The new chart type
+myChart = new Chart(ctx, temp);
+}
+{% endblock %}
+</script>
+<script>
+function funkcija(button, drop)
+{
+   $(drop).slideToggle();
+  if($(button).css('background-color')=='#F0F0F0')
+         $(button).css('background-color', '#4285F4');
+   else {
+         $(button).css('background-color', '#F0F0F0');
+   }
+}
 </script>
 <body>
 <nav class="navbar navbar-expand-lg navbar-dark primary-color pb-2 pt-2 ">
@@ -42,9 +262,11 @@ $('.toggler').live('click',function(){
    <li class="navbar-brand" style="display: flex;
   justify-content: center;
   align-items: center;">   
-    Log out  <i class="fas fa-cog ml-1"></i> 
+   <a href="accounts/logout/" style="color:white;"> Log out</a>  <i class="fas fa-cog ml-1"></i> 
+  </li>  
     </nav>
-<div class="cijeli">
+    
+<div class="cijeli" id="cijeli1">
 
  {% comment %} <nav class="navbar navbar-expand-lg navbar-dark primary-color pb-2 pt-2 ">
   <div class="prvaTraka">
@@ -53,61 +275,79 @@ $('.toggler').live('click',function(){
   </nav> {% endcomment %}
   <div class="sadrzaj">
     <div class="navbar12">
+    <select id="pozadina" class="browser-default custom-select" onChange="Promijeni(this.value)" style="background-color:rgba(255,255,255,0.1);border:0px;">
+    <option selected>Odaberi pozadisnku temu</option>
+    <option value="0">Prva</option>
+    <option value="1">Druga</option>
+    <option value="2">Treca</option>
+    </select>
       <div class="lijevi">
+      
           <img src="https://cdn.pixabay.com/photo/2017/02/23/13/05/profile-2092113_960_720.png" alt="" class="user">
           <h3 class="name">IME PREZIME</h3>
+          
       </div>
+      
           <div class="menu">
+          
         <div class="dropdown"><button class="dropbtn"><i class="fas fa-home "></i>Home</button></div>
+        <div>
           <div class="dropdown">
-            <button class="dropbtn"><i class="fas fa-book-open"></i>Glavna knjiga<i class="fas fa-angle-down"></i></button>
-            <div class="">
-            <div class="dropdown-content">
+            <button class="dropbtn mr-4" type="button"
+ id="button" onclick="funkcija(button,drop)"><i class="fas fa-book-open"></i>Glavna knjiga</button>
             
-              <a href="#" class="animated jackInTheBox">Ulazni računi</a>
-              <a href="#" class="animated jackInTheBox">Izlazni računi</a>
-              <a href="#" class="animated jackInTheBox">Kreiranje računa</a>
-              <a href="#" class="animated jackInTheBox">Blagajna</a>
-              <a href="#" class="animated jackInTheBox">Konto</a>
+            <div class="dropdown-menu" id="drop" style="width:93%;position:relative;">
+              
+              <a href="#" class="dropdown-item">Ulazni računi</a>
+              <a href="#" class="dropdown-item">Izlazni računi</a>
+              <a href="#" class="dropdown-item">Kreiranje računa</a>
+              <a href="#" class="dropdown-item">Blagajna</a>
+              <a href="#" class="dropdown-item">Konto</a>
             </div>
             </div>
           </div>
-          <div class="dropdown"><button class="dropbtn"><i class="far fa-money-bill-alt"></i>Transakcije</button></div>
+          <div class="dropdown"><button class="dropbtn mr-4" type="button"
+ id="button"><i class="far fa-money-bill-alt"></i>Transakcije</button></div>
           <div class="dropdown">
-            <button class="dropbtn"><i class="fas fa-shopping-cart"></i>Asortiman<i class="fas fa-angle-down"></i></button>
-            <div class="dropdown-content">
-              <a href="#">Artikli</a>
-              <a href="#">Usluge</a>
+            <button class="dropbtn mr-4" type="button"
+ id="button1" onclick="funkcija(button1,drop1)"><i class="fas fa-shopping-cart"></i>Asortiman<i class="fas fa-angle-down"></i></button>
+            <div class="dropdown-menu" id="drop1" style="width:93%;position:relative;top:0%;">
+              <a href="#" class="dropdown-item">Artikli</a>
+              <a href="#" class="dropdown-item">Usluge</a>
             </div>
           </div>
           <div class="dropdown">
-            <button class="dropbtn"><i class="fas fa-users"></i>Partneri<i class="fas fa-angle-down"></i></button>
-            <div class="dropdown-content">
-              <a href="#">Partneri</a>
-              <a href="#">Ugovori</a>
+            <button class="dropbtn mr-4" type="button"
+ id="button2" onclick="funkcija(button2,drop2)"><i class="fas fa-users"></i>Partneri<i class="fas fa-angle-down"></i></button>
+            <div class="dropdown-menu" id="drop2" style="width:93%;position:relative;top:0%;">
+              <a href="#" class="dropdown-item">Partneri</a>
+              <a href="#" class="dropdown-item">Ugovori</a>
             </div>
           </div>
           <div class="dropdown">
-            <button class="dropbtn"><i class="fas fa-chart-bar"></i>Izvještaji<i class="fas fa-angle-down"></i></button>
-            <div class="dropdown-content">
-              <a href="#">Bilans</a>
-              <a href="#">Dnevni izvještaj</a>
-              <a href="#">Mjesečni izvještaj</a>
+            <button class="dropbtn mr-4" type="button"
+ id="button3" onclick="funkcija(button3,drop3)"><i class="fas fa-chart-bar"></i>Izvještaji<i class="fas fa-angle-down"></i></button>
+            <div class="dropdown-menu" id="drop3" style="width:93%;position:relative;top:0%;">
+              <a href="#" class="dropdown-item">Bilans</a>
+              <a href="#" class="dropdown-item">Dnevni izvještaj</a>
+              <a href="#" class="dropdown-item">Mjesečni izvještaj</a>
             </div>
           </div>
           <div class="dropdown">
-            <button class="dropbtn"><i class="fas fa-shopping-basket"></i>Nabavke<i class="fas fa-angle-down"></i></button>
-            <div class="dropdown-content">
-              <a href="#">Nabavke</a>
-              <a href="#">Ponude</a>
-              <a href="#">Avansi</a>
+            <button class="dropbtn mr-4" type="button"
+ id="button4"  onclick="funkcija(button4,drop4)"><i class="fas fa-shopping-basket"></i>Nabavke<i class="fas fa-angle-down"></i></button>
+            <div class="dropdown-menu" id="drop4" style="width:93%;position:relative;top:0%;">
+              <a href="#" class="dropdown-item">Nabavke</a>
+              <a href="#" class="dropdown-item">Ponude</a>
+              <a href="#" class="dropdown-item">Avansi</a>
             </div>
           </div>
           <div class="dropdown">
-            <button class="dropbtn"><i class="fas fa-clipboard-list"></i>Projekti<i class="fas fa-angle-down"></i></button>
-            <div class="dropdown-content">
-              <a href="#">Projekti</a>
-              <a href="#">Tenderi</a>
+            <button class="dropbtn mr-4" type="button"
+ id="button5"  onclick="funkcija(button5,drop5)"><i class="fas fa-clipboard-list"></i>Projekti<i class="fas fa-angle-down"></i></button>
+            <div class="dropdown-menu" id="drop5" style="width:93%;position:relative;top:0%;">
+              <a href="#" class="dropdown-item">Projekti</a>
+              <a href="#" class="dropdown-item">Tenderi</a>
             </div>
           </div>
           </div>
@@ -226,25 +466,33 @@ $('.toggler').live('click',function(){
             </div>
               <div class="grafik-obavijesti" style="margin-top:-100px;">
                 <div class="dugme-grafik">
-                  <div class="dropdown">
-                    <button class="dropbtn">Vrsta izvještaja<i class="fas fa-angle-down"></i></button>
-                    <div class="dropdown-content">
-                      <a href="#">Mjesečni</a>
-                      <a href="#">Sedmični</a>
-                      <a href="#">Dnevni</a>
-                    </div>
-                  </div>
-                  <div class="dropdown">
-                    <button class="dropbtn">Tip grafikona<i class="fas fa-angle-down"></i></button>
-                    <div class="dropdown-content">
-                      <a href="#">Linijski</a>
-                      <a href="#">Prstenasti</a>
-                    </div>
-                  </div>
+                  <select class="browser-default custom-select col-4 animated fadeIn mr-2">
+  <option selected>Odaberite godinu</option>
+  <option value="1">One</option>
+  <option value="2">Two</option>
+  <option value="3">Three</option>
+</select>
+                  <select class="browser-default custom-select  col-4 animated fadeIn" onChange="funkcija_tip_charta(this.value)">
+  <option selected>Odaberite tip grafa</option>
+  <option value="1" class="animated fadeIn">One</option>
+  <option value="2"class="animated fadeIn">Two</option>
+  <option value="3"class="animated fadeIn">Three</option>
+</select>
                 </div>
                 <div class="desni-ugao">
-                <div class="grafik"></div>
-                <div class="profili">
+                <div class="grafika mt-5 mr-5 z-depth-5">
+                <div class='row'>
+    <div>
+        <div >
+            <canvas id="myChart2" width="500" height="350" class="ml-3"></canvas>
+        </div>
+
+
+    </div>
+</div>
+
+                </div>
+                <div class="profili ml-5">
                 <div class="obavijesti">
                   <button><img src="{% static 'img/zvono.png' %}" class="zvono">Pregledaj obavijesti</button>
                 </div>
@@ -256,9 +504,22 @@ $('.toggler').live('click',function(){
               </div>
             </div>
       </div>
-      <div class="drugaTraka">
-        <p>Sva prva zadržana &copy TIM05</p>
-      </div>
+      
     </div>
+    <div class="drugaTraka">
+        Sva prva zadržana &copy TIM05
+      </div>
+    
+
 </body>
 </html>
+<script>
+function Promijeni(value)
+{
+  pozadine = ["url('https://mdbootstrap.com/img/Photos/Others/gradient2.png')","url('https://mdbootstrap.com/img/Photos/Others/images/76.jpg')","url('https://mdbootstrap.com/img/Photos/Others/background.jpg')"]
+  
+  $('#cijeli1').css('backgroundImage', pozadine[value]);
+
+  
+}
+</script>

@@ -3,10 +3,24 @@ from django.conf import settings
 from django_countries.fields import CountryField
 from datetime import timezone
 import computed_property
+from django.core.mail import send_mail
+from django.contrib.auth.models import PermissionsMixin
+from django.contrib.auth.base_user import AbstractBaseUser
+from django.contrib.auth.models import AbstractUser
+
+
+class User(AbstractUser):
+    bio = models.TextField(max_length=500, blank=True)
+    location = models.CharField(max_length=30, blank=True)
+    birth_date = models.DateField(null=True, blank=True)
+
+
 CHATEGORY_CHOISES = (
     ('S', 'Shirt'),
     ('SW', 'Sport wear'),
     ('OW', 'Outwear')
+
+
 )
 
 LABEL_CHOISES = (

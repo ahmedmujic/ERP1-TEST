@@ -1,5 +1,4 @@
-{% extends "home-page.html"%}
-{% block content %}
+
 <!DOCTYPE html>
 
 {% load static %}
@@ -13,13 +12,16 @@
         <img src="{% static 'img/loginlogo.PNG' %}" alt="">
         <h1>Pridruži se TIM05 porodici!</h1>
         <h2>Računovodstvo nikad nije bilo jednostavnije</h2>
+        {% block content %}
         <form action="">
+         
             <input type="text" id="txt" name="txt" placeholder="Username" required>
             <br>
             <input type="password" id="pwd" name="pwd" placeholder="Password" required>
             <br>
-            <input type="submit" class="sub" value="Log in">
+            <button type="submit" class="sub" value="Log in"><button>
+            
         </form>
+       {% endblock %}
     </div>
 </html>
-{% endblock %}

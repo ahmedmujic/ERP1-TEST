@@ -15,13 +15,14 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.sites',
+    'core',
+    'rest_framework',
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
-    'core',
     'crispy_forms',
     'django_countries',
-    'rest_framework',
+
 ]
 
 MIDDLEWARE = [
@@ -39,7 +40,7 @@ ROOT_URLCONF = 'djecommerce.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'templates')],
+        'DIRS': [os.path.join(BASE_DIR, 'templates'), os.path.join(BASE_DIR, 'templates', 'accounts')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -88,8 +89,12 @@ AUTHENTICATION_BACKENDS = (
     'allauth.account.auth_backends.AuthenticationBackend',
 
 )
-LOGIN_REDIRECT_URL = '/'
+LOGIN_REDIRECT_URL = '/Pocetna'
+ACCOUNT_EMAIL_VERIFICATION = "none"
+ACCOUNT_LOGOUT_REDIRECT_URL = '/Pocetna12'
 SIGNUP_REDIRECT_URL = '/'
 CRISPY_TEMPLATE_PACK = "bootstrap4"
 SITE_ID = 1
 STATIC_ROOT = os.path.join(BASE_DIR, "static")
+AUTH_USER_MODEL = 'core.User'
+ACCOUNT_FORMS = {'signup': 'core.forms.Signup_Form'}

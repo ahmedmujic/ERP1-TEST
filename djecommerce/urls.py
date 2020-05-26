@@ -1,4 +1,4 @@
-from core.views import UlazniRacuniView, Nabavke, PregledRacuna1, NewBill, Avansi, Usluge, Partneri, Ugovori, UlazniRacuniView, Login, Konto1, Artikli, ChartData, Pocetna, Pocetna12, PregledRacunaUlazni, PregledRacunaIzlazni
+from core.views import UlazniRacuniView, Nabavke, PregledRacuna1, NewBill, MyLoginView, Avansi, Usluge, Partneri, Ugovori, UlazniRacuniView, Login, Konto1, Artikli, ChartData, Pocetna, Pocetna12, PregledRacunaUlazni, PregledRacunaIzlazni
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
@@ -23,7 +23,8 @@ urlpatterns = [
     path('Avansi', Avansi, name='Avansi'),
     path('Konto1', Konto1, name='Konto1'),
     path('Partneri', Partneri, name='Partneri'),
-    path('Nabavke', Nabavke, name='Nabavke')
+    path('Nabavke', Nabavke, name='Nabavke'),
+    path('accounts/login1/', MyLoginView.as_view(), name='login')
 ]
 
 if settings.DEBUG:

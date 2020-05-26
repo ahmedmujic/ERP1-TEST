@@ -1,47 +1,12 @@
-{% extends "home-page.html" %}
-
+{% extends "login1.html" %}
+ {% load crispy_forms_tags %}
 {% load i18n %}
 {% load account socialaccount %}
-{% load crispy_forms_tags %}
+
 {% block head_title %}{% trans "Sign In" %}{% endblock %}
 
-{% block content %}
- <!-- Navbar -->
-  <nav class="navbar fixed-top navbar-expand-lg navbar-light white scrolling-navbar">
-    <div class="container">
 
-      <!-- Brand -->
-      <a class="navbar-brand waves-effect"  target="_self">
-        <strong class="blue-text">Accounts</strong>
-      </a>
-  <ul class="navbar-nav nav-flex-icons">
-          <li class="nav-item">
-            <a class="nav-link waves-effect" href='/'>
-              <span class="clearfix d-none d-sm-inline-block"> Home </span>
-            </a>
-          </li>
-          </ul>
-      <!-- Collapse -->
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
 
-      <!-- Links -->
-      <div class="collapse navbar-collapse" id="navbarSupportedContent">
-
-       
-
-      </div>
-
-    </div>
-    
-  </nav>
-
-  <!-- Navbar -->
-<div  style="width:100%;display:flex;justify-content:center;">
-<div  style="margin-top:80px;width:80%">
-{% block content1%}
 <h1>{% trans "Sign In" %}</h1>
 
 {% get_providers as socialaccount_providers %}
@@ -67,18 +32,34 @@ for a {{ site_name }} account and sign in below:{% endblocktrans %}</p>
 <p>{% blocktrans %}If you have not created an account yet, then please
 <a href="{{ signup_url }}">sign up</a> first.{% endblocktrans %}</p>
 {% endif %}
-
+{% block content %}
 <form class="login" method="POST" action="{% url 'account_login' %}">
   {% csrf_token %}
-  {{ form|crispy }}
+  {% if form.errors %}
+    {% for field in form %}
+        {% for error in field.errors %}
+            <div class="alert alert-error">
+                <strong style="color:red;">{{ error|escape }}</strong>
+            </div>
+        {% endfor %}
+    {% endfor %}
+    {% for error in form.non_field_errors %}
+        <div class="alert alert-error">
+            <strong  style="color:red;">{{ error|escape }}</strong>
+        </div>
+    {% endfor %}
+
+  {% endif %}
+  
+  <input type="text" name="login" placeholder="Username" autofocus="autofocus" maxlength="150" required="" id="id_login" style="padding:0px 30px;">
+  
+    
+    <input type="password" name="password" placeholder="Password" required="" id="id_password" style="padding:0px 30px;">
   {% if redirect_field_value %}
   <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
   {% endif %}
-  <a class="btn btn-danger" href="{% url 'account_reset_password' %}">{% trans "Forgot Password?" %}</a>
-  <button class="btn btn-primary" type="submit">{% trans "Sign In" %}</button>
+  <a class="button secondaryAction" href="{% url 'account_reset_password' %}">{% trans "Forgot Password?" %}</a>
+  <input type="submit" class="sub" value="Log in">
 </form>
-{% endblock %}
-</div>
-</div>
 
 {% endblock %}

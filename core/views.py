@@ -16,6 +16,11 @@ from django.contrib.auth.models import User
 import datetime
 import json
 from dateutil.parser import parse
+from allauth.account.views import SignupView, LoginView
+
+
+class MyLoginView(SignupView):
+    template_name = 'login1.html'
 
 
 def Pocetna(request):

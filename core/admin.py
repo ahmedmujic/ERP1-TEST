@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Item, OrderItem, Nabavka, Order, FormInfoadress, Konto, Avans, Artikal, DugPartner, Racun, Budzet, ulazni_rac, Usluga, izlazni_rac, Partner, Ugovor, Kategorija, Asortiman
+from .models import *
 # Register your models here.
 admin.site.register(Artikal)
 admin.site.register(Kategorija)
@@ -13,5 +13,6 @@ admin.site.register(Usluga)
 admin.site.register(Budzet)
 admin.site.register(Avans)
 admin.site.register(Konto),
-admin.site.register(DugPartner),
+admin.site.register(DugPartner)
 admin.site.register(Nabavka)
+admin.site.register(User)
