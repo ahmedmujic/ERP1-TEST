@@ -273,7 +273,7 @@ function funkcija(button, drop)
     <div class="odjava"><i class="fas fa-cog"></i><p class="logout">Log out</p></div>
     </div>
   </nav> {% endcomment %}
-  <div class="sadrzaj">
+  <div class="sadrzaj" style="height:1000px;">
     <div class="navbar12">
     <select id="pozadina" class="browser-default custom-select" onChange="Promijeni(this.value)" style="background-color:rgba(255,255,255,0.1);border:0px;">
     <option selected>Odaberi pozadisnku temu</option>
@@ -281,10 +281,10 @@ function funkcija(button, drop)
     <option value="1">Druga</option>
     <option value="2">Treca</option>
     </select>
-      <div class="lijevi">
+      <div class="lijevi" style="width:80%;">
       
-          <img src="https://cdn.pixabay.com/photo/2017/02/23/13/05/profile-2092113_960_720.png" alt="" class="user">
-          <h3 class="name">IME PREZIME</h3>
+          <a href="User"><img src="/media/{{user.photo}}" alt="" class="user" style="width:100px;height:100px;"></a>
+          <div class="mt-4"><h3 class="name ml-2" style="line-height:1.5;" >{{user.first_name}} {{user.last_name}}<br>Zadnja prijava:<br> {{user.last_login}}<br></h3></div>
           
       </div>
       
@@ -298,9 +298,9 @@ function funkcija(button, drop)
             
             <div class="dropdown-menu" id="drop" style="width:93%;position:relative;">
               
-              <a href="#" class="dropdown-item">Ulazni računi</a>
-              <a href="#" class="dropdown-item">Izlazni računi</a>
-              <a href="#" class="dropdown-item">Kreiranje računa</a>
+              <a href="Ulazni" class="dropdown-item">Ulazni računi</a>
+              <a href="Izlazni" class="dropdown-item">Izlazni računi</a>
+              <a href="KreirajRacun" class="dropdown-item">Kreiranje računa</a>
               <a href="#" class="dropdown-item">Blagajna</a>
               <a href="#" class="dropdown-item">Konto</a>
             </div>
@@ -351,9 +351,9 @@ function funkcija(button, drop)
             </div>
           </div>
           </div>
-          <div class="informacije">
+            {% comment %} <div class="informacije">
               <p>Naziv firme<br>Adresa<br>Porezni broj:00000</p>
-          </div>
+          </div> {% endcomment %}
         </div>
         <div class="desni" >
           <div class="tim" style="margin-bottom:-30px;"><div class="dobrodosli">Welcome to</div><img src="{% static 'img/loginlogo.png' %}" class="logo mt-2"></div>
@@ -497,7 +497,7 @@ function funkcija(button, drop)
                   <button><img src="{% static 'img/zvono.png' %}" class="zvono">Pregledaj obavijesti</button>
                 </div>
                 <div class="profil">
-                  <button><img src="https://cdn.pixabay.com/photo/2017/02/23/13/05/profile-2092113_960_720.png" class="korisnik">Pregledaj profil</button>
+                  <a href="User"><button><img src="https://cdn.pixabay.com/photo/2017/02/23/13/05/profile-2092113_960_720.png" class="korisnik">Pregledaj profil</button></a>
                 </div>
               </div>
               </div>
@@ -506,12 +506,13 @@ function funkcija(button, drop)
       </div>
       
     </div>
+    
     <div class="drugaTraka">
         Sva prva zadržana &copy TIM05
       </div>
-    
 
 </body>
+
 </html>
 <script>
 function Promijeni(value)

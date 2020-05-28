@@ -3,19 +3,18 @@
 margin: 0px;
 
 }
+body
+{
+  
+}
 .cijeli
 {
-  background-image: url('https://mdbootstrap.com/img/Photos/Others/gradient2.png');
+  /* background-image: url('https://mdbootstrap.com/img/Photos/Others/gradient2.png');
   transition: background 1s linear;
   background-repeat: no-repeat;
-  background-size: cover;
-  height: 100%;
+  background-size: cover; */
 }
-html
-{
-background-image: url('https://mdbootstrap.com/img/Photos/Others/gradient2.png');
-z-index: 1000;
-}
+
 .prvaTraka
 {background-color:#5F7BEC;
 color:whitesmoke;
@@ -45,8 +44,8 @@ height: 800px;
 flex-direction: row;
 margin-top: 20px;
 justify-content: space-between;
-width: 170px;
-margin-left: 50px;
+width: 80%;
+margin-left: 15px;
 }
 .user
 {width: 70px;
@@ -119,8 +118,10 @@ height: 33px;}
 .dobrodosli
 {margin-top: 13px;}
 .sadrzaj
-{display: grid;
+{
+  display: grid;
 grid-template-columns: repeat(4,1fr);
+
 
 }
 .slika

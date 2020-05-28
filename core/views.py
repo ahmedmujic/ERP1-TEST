@@ -19,12 +19,55 @@ from dateutil.parser import parse
 from allauth.account.views import SignupView, LoginView
 
 
+def NoviRacun(request):
+    if request.method == 'POST':
+        artikal_naziv = request.POST.getlist('naziv_artikla', False)
+        cijena = request.POST.getlist('price', False)
+        kolicina = request.POST.getlist('qty', False)
+        popust = request.POST.getlist('discount', False)
+        datum_izdavanja = request.POST.get('datum_izdavanja', False)
+        rok_otplate = request.POST.get('rok_otplate', False)
+        racun = Racun.objects.create(
+            user=request.user, datum_racuna1=datum_izdavanja, rok_otplate1=datum_izdavanja)
+        for i in range(len(artikal_naziv)):
+            artikal = Asortiman.objects.create(
+                naziv=artikal_naziv[i], kolicina=kolicina[i], cijena_bez_pdv=cijena[i], popust=float(popust[i]))
+            artikal.cijena_s_pdvom = artikal.cijena_s_pdv(
+                float(cijena[i]), float(popust[i]))
+            artikal.save()
+            racun.asortiman.add(artikal)
+        racun.pdv = racun.pdv_km()
+        racun.osnovica1 = racun.osnovica()
+        racun.save()
+        racun.ukupno1 = racun.osnovica1 + racun.pdv
+        racun.save()
+    return redirect(Pocetna)
+
+
+def KreirajRacun(request):
+    return render(request, 'Kreiranje_računa.html')
+
+
+def UserView(request):
+    user = None
+    if request.user.is_authenticated:
+        context = {
+            'user': request.user
+        }
+    return render(request, "user.html", context)
+
+
 class MyLoginView(SignupView):
     template_name = 'login1.html'
 
 
 def Pocetna(request):
-    return render(request, 'Home_page.html',)
+    user = None
+    if request.user.is_authenticated:
+        context = {
+            'user': request.user
+        }
+    return render(request, 'Home_page.html', context)
 
 
 def racunajMjesec(racuni):

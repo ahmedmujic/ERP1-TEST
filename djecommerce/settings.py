@@ -97,4 +97,5 @@ CRISPY_TEMPLATE_PACK = "bootstrap4"
 SITE_ID = 1
 STATIC_ROOT = os.path.join(BASE_DIR, "static")
 AUTH_USER_MODEL = 'core.User'
+ACCOUNT_ADAPTER = 'core.adapter.AccountAdapter'
 ACCOUNT_FORMS = {'signup': 'core.forms.Signup_Form'}

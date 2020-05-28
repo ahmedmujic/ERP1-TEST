@@ -1,0 +1,105 @@
+*
+{padding:0px;
+margin:0px;}
+.fa-arrow-left
+{color:white;
+margin-top: 10px;
+margin-left:10px;
+float:left;
+}
+.prvaTraka
+{background-color: #5F7BEC;
+height: 40px;
+color:whitesmoke;
+font-family: corbel;
+font-weight: 600;
+text-align: center;
+}
+.cijeli
+{background-color: #EDF3F5;
+height: 880px;
+font-family: corbel;}
+.prvaForma
+{margin-top: 50px;
+display: flex;
+justify-content: space-around;
+align-items: center;
+text-decoration: none;
+font-family: Corbel;
+background-color: #D3DAEC;
+height: 50px;
+padding-top: 50px;
+}
+.forma{
+    border-radius: 10px;
+    height: 25px;
+    margin-left: 37px;  
+    padding: 5px;
+    border:1px solid #707070;
+}
+.nazivi1
+{display: flex;
+flex-direction: row;
+justify-content: space-around;
+padding-top:10px;
+padding-bottom: -40px;
+background-color: rgb(163, 183, 233);
+}
+.drugaForma
+{
+padding-top: 20px;}
+.ispis
+{background-color: rgb(163, 183, 233);
+height: 100px;
+width: 140px;
+}
+.drugi-dio
+{display: flex;
+justify-content: space-between;
+flex-direction: column;
+}
+.dodaj
+{background-color:rgb(163, 183, 233);
+width: 150px;
+height: 30px;
+border: none;
+border-radius: 25px;
+margin-left: 35px;}
+.dodaj:hover
+{background-color: rgb(94, 135, 247);
+color:whitesmoke;}
+.nazivi2
+{display: flex;
+flex-direction: row;
+justify-content: space-around;
+background-color: rgb(163, 183, 233);
+
+margin-top: 25px;}
+.kreiranje
+{display: flex;
+justify-content: space-around;
+align-items: center;
+margin-top: 100px;}
+input.kocka
+{transform: scale(2);
+}
+.naziv label
+{padding-left: 20px;}
+.prvi, 
+.drugi{
+   
+}
+.naziv
+{margin-left: 20px;
+font-weight: 600;}
+input[type=submit]
+{background-color: rgb(88, 129, 231);
+width: 100px;
+color:white;
+font-size: 12;
+border: none;
+height: 60px;
+border-radius: 20px;}
+input[type=submit]:hover
+{color: black;
+background-color: rgb(28, 141, 247);}

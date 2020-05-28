@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+{% extends "home-page.html"%}
+{% load countries %}
+{% load static %}
+{% get_countries as countries %}
+{% block content%}
+    <link rel="stylesheet" href="{% static 'css/novi1.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://kit.fontawesome.com/3690e9c9e4.js" crossorigin="anonymous"></script>
+    <title>Document</title>
+
+<body>
+
+    <div class="cijeli">
+        <div class="prvaTraka">
+            <div class="ikonica"><i class="fas fa-arrow-left"></i></div>
+           <div class="naslov"><h3>KREIRANJE RAČUNA</h3></div>
+        </div>
+    <div class="sadrzaj">
+    <form method="post" action="NoviRacun">
+    {% csrf_token %}
+        <div class="prvaForma pb-5">
+            <label for="">Broj računa</label><input type="number" class="forma" style="margin-left:-50px; height:35px; border-radius:50px; ">
+            <label for="">Broj poreznog obveznika</label><input type="number" class="forma" style="margin-left:-45px; height:35px; border-radius:50px; ">
+            <label for="">Datum izdavanja</label><input name="datum_izdavanja" type="date" class="forma" style="margin-left:-45px; height:35px; border-radius:50px; ">
+            <label for="">Rok otplate</label><input name="rok_otplate" type="date" class="forma" style="margin-left:-45px; height:35px; border-radius:50px; ">
+        </div>
+        <div class="nazivi1">
+            <p>Artikal</p>
+            <p>Šifra</p>
+            <p class="ml-5">Jedinična cijena</p>
+            <p class="ml-5">Količina</p>
+            <p class="ml-5">Popust</p>
+            <p >Iznos</p>
+        </div>
+        <div class="drugi-dio" id="forms">
+        <div class="drugaForma animated fadeIn" id="sadrzaj">
+            <input type="text" class="forma num" style="border-radius:5px;" name="naziv_artikla" >
+            <input type="number" class="forma num" style="margin-left:60px; border-radius:5px;">
+            <input type="number" class="forma num" id="price" style="margin-left:90px; border-radius:5px;" name="price">
+            <input type="number" class="forma num" id="qty" style="margin-left:105px; border-radius:5px;" name="qty">
+            <input type="number" class="forma num" style="margin-left:75px; border-radius:5px;" name="discount">
+            <output type="number" class="forma num mt-3" id="rezultat" style="width:150px; border-radius:5px;" value="0">
+            
+            
+        </div>
+         
+           
+    </div>
+        <div class="dugme"></div>
+            <button class="dodaj mt-5" onclick="Dodaj()"><i class="fas fa-plus-circle"></i> Dodaj artikal</button>
+        </div>
+        <div class="nazivi2">
+            <p>Stopa PDV</p>
+            <p>Cijena bez PDV</p>
+            <p>Cijena sa PDV</p>
+            <p>PDV</p>
+            <p>Ukupno</p>
+        </div>
+       <div class="kreiranje">
+          <div class="prvi"> <input type="radio" class="kocka" name="racun"checked><label class="naziv mb-1">Ulazni račun</label></div>
+           <div class="drugi"><input type="radio" class="kocka" name="racun"><label for="" class="naziv mb-1">Izlazni račun</label></div>
+           <input type="submit" value="Kreiraj račun" style="border-radius:10px;width:150px;">
+       </div>
+
+        </div>
+    </div>
+    </form> 
+</body>
+<script>
+function Dodaj()
+{
+  var itm = document.getElementById("sadrzaj")
+  var cln = itm.cloneNode(true);
+  document.getElementById("forms").appendChild(cln);
+}
+</script>
+<script
+  src="https://code.jquery.com/jquery-3.5.1.js"
+  integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
+  crossorigin="anonymous"></script>
+  <script>
+  var ukup=0;
+  $(document).ready(function()
+  {
+      $("#sadrzaj").change(function()
+      {
+          var ukupno=0;
+          $("input[name=price]").each(function()
+          {
+              ukupno+=parseFloat($(this).val())
+          })
+          $("input[name=qty]").each(function()
+          {
+              ukupno=ukupno*parseFloat($(this).val())
+          })
+          $("input[name=discount]").each(function()
+          {
+              ukupno=ukupno-((parseFloat($(this).val())/100)*ukupno)
+          })
+           /*$("input[name=qty]").each(function()
+          {
+              ukupno*=parseFloat($(this).val())
+          })*/
+          console.log(ukupno)
+          $("#rezultat").val(ukupno)
+      })
+  })
+  </script>
+{% endblock %}
