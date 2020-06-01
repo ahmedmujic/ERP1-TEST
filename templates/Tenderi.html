@@ -1,0 +1,192 @@
+{% extends "home-page.html"%}
+{% block content %}
+<script>
+$("#loadbasic").click(function(){   $("#result").html(ajax_load).load(loadUrl);
+    });
+</script>
+<style>
+.navbar-nav
+{
+  align-items:center;
+}
+.navbar.navbar-dark form .md-form input
+{
+  text-align:left;
+}
+.mr-auto, .mx-auto {
+    margin-left: auto!important;
+    margin-right: auto!important;
+}
+.naslov
+{
+  font-weight:800;
+}
+.dropdown-menu
+{
+  
+  left:1;
+}
+.dropdown-toggle::after
+{
+  display:none;
+}
+.dodaj {
+    background-color: rgb(163, 183, 233);
+    width: 225px;
+    height: 40px;
+    border: none;
+    border-radius: 25px;
+}
+</style>
+  <nav class="navbar navbar-expand-lg navbar-dark primary-color d-flex justify-content-center">
+
+  <!-- Navbar brand -->
+  <a class="navbar-brand" href="#">TENDERI</a>
+
+ 
+
+</nav>
+<!--/.Navbar-->
+<!--Table-->
+<table id="tablePreview" class="table table-bordered animated fadeIn">
+<!--Table head-->
+  <thead >
+  <tr>
+    <th rowspan="2" style="font-size: large; padding:0px; font-weight:400;">Redni broj</th>
+      <th rowspan="2" style="font-size: large; padding:0px; font-weight:400;">Naziv</th>
+      <th rowspan="2" style="font-size: large; padding:0px; font-weight:400;">Datum <br> objave</th>
+      <th rowspan="2" style="font-size: large; padding:0px; font-weight:400;">Datum <br> isteka</th>
+      <th colspan="2" style="font-size: large; padding:0px; font-weight:500;">Komisija</th>
+      <th rowspan="2" style="font-size: large; padding:0px; font-weight:400;">PDF dokument
+      <div class="dugme"></div>
+            <a href="unostendera"><button class="dodaj mt-5" onclick="Dodaj()" type="button" id="dugme"><i class="fas fa-plus-circle"></i> Dodaj novi tender</button></a>
+        </div>
+      </th>
+  </tr>
+    <tr id="drugiRed">
+      <th>Član 1</th>
+      <th>Član 2</th>
+    </tr>
+  </thead>
+  <!--Table head-->
+  <!--Table body-->
+  <tbody>
+      {% if page_obj %}
+      {% for tender in page_obj %}
+     {% if trenutno > tender.datum_isteka %}
+        <tr style="background-color:rgba(232, 44, 44, 0.5);">
+        <th scope="row">{{tender.id}}</th>
+      <td>{{tender.naziv}}</td>
+      <td>{{tender.datum_objave}}</td>
+      <td>{{tender.datum_isteka}}</td>
+      <td>{{tender.prvi}}</td>
+      <td>{{tender.drugi}}</td>
+      <td><a href="/media/{{tender.pdf}}">PDF</a></td>
+      <!-- <td>dummy txt/td>
+      <td>dummy txt</td>
+      <td>dummy txt/td> -->
+    </tr>
+      {% else %}
+      <tr>
+      
+      <th scope="row">{{tender.id}}</th>
+      <td>{{tender.naziv}}</td>
+      <td>{{tender.datum_objave}}</td>
+      <td>{{tender.datum_isteka}}</td>
+      <td>{{tender.prvi}}</td>
+      <td>{{tender.drugi}}</td>
+      <td><a href="/media/{{tender.pdf}}">PDF</a></td>
+      <!-- <td>dummy txt/td>
+      <td>dummy txt</td>
+      <td>dummy txt/td> -->
+    </tr>
+    {% endif %}
+    {% endfor %}
+    {% endif %}
+  </tbody>
+
+</table>
+<div>
+<nav class="d-flex justify-content-center wow fadeIn mt-5">
+        <ul class="pagination pg-blue">
+          {% if page_obj.has_previous %}
+          <!--Arrow left-->
+          <li class="page-item">
+            <a class="page-link" href="?page={{ page_obj.previous_page_number }}" aria-label="Previous">
+              <span aria-hidden="true">&laquo;</span>
+            </a>
+          </li>
+          {% endif %}
+          <li class="page-item active">
+            <span class="page-link">
+              Stranica {{ page_obj.number }} od {{ page_obj.paginator.num_pages }}
+            </span>
+
+          </li>
+
+          {% if page_obj.has_next %}
+          <li class="page-item">
+            <a class="page-link" href="?page={{ page_obj.next_page_number }}" aria-label="Next">
+              <span aria-hidden="true">&raquo;</span>
+            </a>
+          </li>
+          {% endif %}
+        </ul>
+      </nav>
+     </div> 
+
+<!-- <table id="tablePreview" class="table table-bordered" style=" position:fixed; bottom:0; width: 100%; margin:0px;">
+<thead>
+<tr>
+      <th ><div style="display:flex; justify-content:center; align-items:center; flex-direction:column">0,000 KM dugovanja<button type="button" class="btn btn-primary">Lista dužnika</button></div></th>
+      <th ><div style="display:flex; justify-content:center; align-items:center; flex-direction:column; line-height: 0.5;"><p>UKUPNO 0,000 KM</p><p>Osnovica: 0,000 KM</p><p>PDV: 0,000 KM</p></div></th>
+</tr>
+    </thead>
+</table> -->
+
+
+</body>
+</html>
+<style>
+
+th
+{
+    border-collapse:collapse;
+    border-spacing:0;
+    text-align:center;
+    vertical-align:middle;
+}
+.table thead th {
+    vertical-align: middle;
+    border-bottom: 2px solid #dee2e6;
+}
+thead
+{
+    background-color: #EDF3F5;
+    
+}
+thead th
+{
+    height:100px;
+    text-align: center;
+}
+thead #drugiRed th
+{
+    height:80px;
+}
+.btn
+{
+    border-radius:20px;
+    width:180px;
+    height:50px;
+}
+body
+{
+        height: 100vh;
+}
+*
+{
+    text-align: center;
+}
+</style>
+{% endblock %}

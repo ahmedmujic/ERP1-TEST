@@ -1,0 +1,107 @@
+{% extends "home-page.html"%}
+{% block content %}
+<script>
+$("#loadbasic").click(function(){   $("#result").html(ajax_load).load(loadUrl);
+    });
+</script>
+
+<body>
+
+  <nav class="navbar navbar-expand-lg navbar-dark primary-color d-flex justify-content-center">
+
+  <!-- Navbar brand -->
+  <a class="navbar-brand" href="#">Blagajna</a>
+
+ 
+
+</nav>
+<!--/.Navbar-->
+<!--Table-->
+<table id="tablePreview" class="table table-bordered">
+<!--Table head-->
+  <thead >
+  <tr>
+    <th rowspan="1" style="font-size: large; padding:0px; font-weight:400;">Redni broj</th>
+    <th rowspan="1" style="font-size: large; padding:0px; font-weight:400;">Šifra računa/ <br>izvještaja</th>
+    <th rowspan="1" style="font-size: large; padding:0px; font-weight:400;">Datum <br>obračuna</th>
+    <th rowspan="1" style="font-size: large; padding:0px; font-weight:400;">Blagajnik</th>
+    <th rowspan="1" style="font-size: large; padding:0px; font-weight:400;">Iznos <br> sa PDV</th>   
+    <th rowspan="1" style="font-size: large; padding:0px; font-weight:400;">Iznos <br> bez PDV</th> 
+    <th rowspan="1" style="font-size: large; padding:0px; font-weight:400;">Status</th> 
+  </tr>
+  </thead>
+  
+  <tbody>
+    {% if racuni %}
+    {% for racun in racuni %}
+    <tr>
+      <th scope="row">{{ racun.id}}</th>
+      <td>{{racun.sifra_racuna.id}}</td>
+      <td>{{racun.datum_obracuna}}</td>
+      <td>{{racun.blagajnik}}</td>
+      <td>{{racun.iznosPDV}}</td>
+      <td>{{racun.iznosBezPDV}}</td>
+      <th ><div style="display:flex; justify-content:center; align-items:center; flex-direction:column"><button type="button" class="btn btn-primary">Proknjiženo</button></div></th>
+    </tr>
+    {% endfor %}
+    {% endif %}
+  </tbody>
+
+</table>
+
+<!-- <table id="tablePreview" class="table table-bordered" style=" position:fixed; bottom:0; width: 100%; margin:0px;">
+<thead>
+<tr>
+      <th ><div style="display:flex; justify-content:center; align-items:center; flex-direction:column">0,000 KM dugovanja<button type="button" class="btn btn-primary">Lista dužnika</button></div></th>
+      <th ><div style="display:flex; justify-content:center; align-items:center; flex-direction:column; line-height: 0.5;"><p>UKUPNO 0,000 KM</p><p>Osnovica: 0,000 KM</p><p>PDV: 0,000 KM</p></div></th>
+</tr>
+    </thead>
+</table> -->
+
+
+</body>
+</html>
+<style>
+
+th
+{
+    border-collapse:collapse;
+    border-spacing:0;
+    text-align:center;
+    vertical-align:middle;
+}
+.table thead th {
+    vertical-align: middle;
+    border-bottom: 2px solid #dee2e6;
+}
+thead
+{
+    background-color: #EDF3F5;
+    
+}
+thead th
+{
+    height:100px;
+    text-align: center;
+}
+thead #drugiRed th
+{
+    height:80px;
+}
+.btn
+{
+    border-radius:20px;
+    width:180px;
+    height:50px;
+}
+body
+{
+        height: 100vh;
+}
+*
+{
+    text-align: center;
+}
+</style>
+ 
+{% endblock %}

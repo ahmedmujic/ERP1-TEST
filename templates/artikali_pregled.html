@@ -1,8 +1,5 @@
-{% extends "artikli.html"%}
-{% load static %}
-
+{% extends "home-page.html"%}
 {% block content %}
-<link rel="stylesheet" href="{% static 'flags/sprite-hq.css' %}">
 <style>
 .navbar-nav
 {
@@ -29,43 +26,43 @@
 {
   display:none;
 }
-.dodaj {
-    background-color: rgb(163, 183, 233);
-    width: 225px;
-    height: 40px;
-    border: none;
-    border-radius: 25px;
-}
 </style>
-
 <body>
 
   <nav class="navbar navbar-expand-lg navbar-dark primary-color pb-2 pt-2 ">
 <ul class="navbar-nav mr-auto" >
-    <li> <a class="navbar-brand" href="#" id="naslov" style="font-size: 25px; padding:0px; font-weight:300;">Partneri</a></li></li>
+    <li> <a class="navbar-brand" href="#" id="naslov" style="font-size: 25px; padding:0px; font-weight:300;">Artikli</a></li></li>
         </ul>
          <ul class="navbar-nav nav-flex-icons">
       <!-- Basic dropdown -->
    <li class="nav-item">   
     <a class="dropdown-toggle mr-4" type="button" data-toggle="dropdown" aria-haspopup="true"
       aria-expanded="false" style="color:white;">Pretraži<i class="fas fa-search ml-2"></i></a> 
-    <form class="animated fadeIn dropdown-menu " style="right:0;left:auto;background-color:rgba(66,133,244, 1);padding:10px;border:0px;" action="Partneri" method="post">
+    <form class="animated fadeIn dropdown-menu " style="right:0;left:auto;background-color:rgba(66,133,244, 1);padding:10px;border:0px;" action="Artikli" method="post">
       {% csrf_token %}
+      {% comment %} <select class="dropdown-item browser-default custom-select mb-5" data-toggle="dropdown" type="button"  aria-haspopup="true"
+      aria-expanded="false" style="opacity:0.3;">
+      <option class="dropdown-item" selected> Tip plaćanja</option>
+      <option class="dropdown-item" value="Kartica"> Kartica</option>
+      <option class="dropdown-item" value="Paypal"> Paypal</option>
+      <option class="dropdown-item" value="Master"> Master</option>
+
+      </select> {% endcomment %}
       
       <div>
       <div class="md-form">
-       <input style="color:black;"  id="inputMDEx" class="form-control" type="text" placeholder="Naziv partnera" name="naziv_artikal">
+       <input style="color:black;"  id="inputMDEx" class="form-control" type="text" placeholder="Naziv artikla" name="naziv_artikal">
       
       </div>
       </div>
       <div id="ugovor-info">
       <div class="mr-2">
-      <label style="color:white">Dug od</label>
-      <input class="form-control mb-4" id="defaultLoginFormPassword"  type="number" placeholder="Unesite vrijednost" name="cijena_od" style="opacity:0.3;">
+      <label style="color:white">Cijena od</label>
+      <input class="form-control mb-4" id="defaultLoginFormPassword"  type="number" placeholder="Naziv artikla" name="cijena_od" style="opacity:0.3;">
       </div>
       <div>
-      <label for="defaultLoginFormPassword" style="color:white">Dug do</label>
-      <input class="form-control mb-4" id="defaultLoginFormPassword" type="number"  placeholder="Unesite vrijednost" name="cijena_do" style="opacity:0.3;">
+      <label for="defaultLoginFormPassword" style="color:white">Cijena do</label>
+      <input class="form-control mb-4" id="defaultLoginFormPassword" type="number"  placeholder="Naziv artikla" name="cijena_do" style="opacity:0.3;">
       
       </div>
       </div>
@@ -100,17 +97,13 @@
   <thead >
   <tr>
     <th rowspan="1" style="font-size: large; padding:0px; font-weight:400;">Redni broj</th>
-    <th rowspan="1" style="font-size: large; padding:0px; font-weight:400;">Naziv</th>
-    {% comment %} <th rowspan="1" style="font-size: large; padding:0px; font-weight:400;">Ugovor</th> {% endcomment %}
-    <th rowspan="1" style="font-size: large; padding:0px; font-weight:400;">OIB</th>
-    <th rowspan="1" style="font-size: large; padding:0px; font-weight:400;">Adresa</th>   
-    <th rowspan="1" style="font-size: large; padding:0px; font-weight:400;">Država</th> 
-    <th rowspan="1" style="font-size: large; padding:0px; font-weight:400;">E-mail</th> 
-    <th rowspan="1" style="font-size: large; padding:0px; font-weight:400;">Dug
-    <div class="dugme"></div>
-            <a href="NewBill"><button class="dodaj mt-3" onclick="Dodaj()" type="button" id="dugme"><i class="fas fa-plus-circle"></i> Dodaj partnera</button></a>
-        </div>
-    </th> 
+      <th rowspan="1" style="font-size: large; padding:0px; font-weight:400;">Naziv</th>
+      <th rowspan="1" style="font-size: large; padding:0px; font-weight:400;">Dobavljač</th>
+      <th rowspan="1" style="font-size: large; padding:0px; font-weight:400;">Cijena bez PDV</th>
+      <th rowspan="1" style="font-size: large; padding:0px; font-weight:400;">Popust</th>
+      <th rowspan="1" style="font-size: large; padding:0px; font-weight:400;">Cijena sa PDV</th>
+      <th rowspan="1" style="font-size: large; padding:0px; font-weight:400;">Kategorija</th>
+     
   </tr>
   </thead>
   
@@ -118,34 +111,26 @@
   {% if racun_trazeni %}
   {% for racun in racun_trazeni %}
   <tr style="background-color:rgba(139, 240, 193, 0.5);" class="animated fadeIn">
-      <th scope="row">Traženi br. {{forloop.counter}}</th>
+      <th scope="row">Traženi račun: {{forloop.counter}}</th>
       <td>{{racun.naziv}}</td>
-      <td>{{racun.porezni_broj}}</td>
-      <td>{{racun.adresa}}</td>
-      <td>{{racun.drzava.name}} <i class="{{ racun.drzava.flag_css }}"></i></td>
-      <td>{{racun.email}}</td>
-      {% if racun.dug_prema > 1000 %}
-      <td style="color:red;">{{racun.dug_prema}} KM</td>
-      {% else %}
-      <td style="color:green;">{{racun.dug_prema}} KM</td>
-      {% endif %}
+      <td>{{racun.dobavljac.naziv}}</td>
+      <td>{{racun.cijena_bez_pdv}} KM</td>
+      <td>{{racun.popust}} %</td>
+      <td>{{racun.cijena_s_pdvom}} KM</td>
+      <td>{{racun.kategorija.naziv}}</td>
     </tr>
     {% endfor %}
   {% endif %}
  
-    {% for racun in page_obj %}
+    {% for artikal in page_obj %}
     <tr class="animated fadeIn">
       <th scope="row">{{forloop.counter}}</th>
-      <td>{{racun.naziv}}</td>
-      <td>{{racun.porezni_broj}}</td>
-      <td>{{racun.adresa}}</td>
-      <td>{{racun.drzava.name}} <i class="{{ racun.drzava.flag_css }}"></i></td>
-      <td>{{racun.email}}</td>
-      {% if racun.iznos_prema > 1000 %}
-      <td style="color:red;">{{racun.iznos_prema}} KM</td>
-      {% else %}
-      <td style="color:green;">{{racun.iznos_prema}} KM</td>
-      {% endif %}
+      <td>{{artikal.naziv}}</td>
+      <td>{{artikal.dobavljac.naziv}}</td>
+      <td>{{artikal.cijena_bez_pdv}} KM</td>
+      <td>{{artikal.popust}} %</td>
+      <td>{{artikal.cijena_s_pdvom}} KM</td>
+      <td>{{artikal.kategorija.naziv}}</td>
     </tr>
 {% endfor %}
   </tbody>

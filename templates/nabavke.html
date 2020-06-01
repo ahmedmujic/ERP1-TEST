@@ -135,6 +135,9 @@ $("#loadbasic").click(function(){   $("#result").html(ajax_load).load(loadUrl);
             style="font-size: large; padding: 0px; font-weight: 400;"
           >
             Iznos
+            <div class="dugme"></div>
+            <a href="unosnabavke"><button class="dodaj mt-2" onclick="Dodaj()" type="button" id="dugme"><i class="fas fa-plus-circle"></i> Dodaj novu nabavku</button></a>
+        </div>
           </th>
         </tr>
       </thead>
@@ -221,7 +224,13 @@ $("#loadbasic").click(function(){   $("#result").html(ajax_load).load(loadUrl);
 </body>
 </html>
 <style>
-
+.dodaj {
+    background-color: rgb(163, 183, 233);
+    width: 225px;
+    height: 40px;
+    border: none;
+    border-radius: 25px;
+}
 th
 {
     border-collapse:collapse;

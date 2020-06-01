@@ -1,0 +1,101 @@
+{% extends "home-page.html"%} {% block content %}
+<script>
+  $("#loadbasic").click(function () {
+    $("#result").html(ajax_load).load(loadUrl);
+  });
+</script>
+<div class="container animated fadeIn">
+  <form class="border border-light p-5" method="post" action="">
+    {% csrf_token %}
+    <p class="h4 mb-4 text-center">Unos projekta</p>
+    <label for="defaultLoginFormEmail">Izaberite partnera</label>
+    <select
+      id="partneri"
+      name="partner"
+      class="browser-default custom-select mb-4"
+    >
+      <option>Izaberite partnera</option>
+      {% if partneri %} {% for partner in partneri %}
+      <option value="{{partner.id}}">{{partner.naziv}}</option>
+      {% endfor %}
+    </select>
+     {% endif %}
+    <label for="defaultLoginFormEmail">Unesite naziv projekta</label>
+    <input
+      type="text"
+      id="defaultLoginFormEmail"
+      class="form-control mb-4"
+      name="naziv"
+      placeholder="Naziv projekta"
+    />
+    <label for="defaultLoginFormEmail">Unesite šifru projekta</label>
+    <input
+      type="number"
+      id="defaultLoginFormEmail"
+      class="form-control mb-4"
+      name="sifra"
+      placeholder="Šifra projekta"
+    />
+    <label for="defaultLoginFormEmail">Datum planiranog kraja</label>
+    <input
+      type="date"
+      id="defaultLoginFormEmail"
+      name="datumKraja"
+      class="form-control mb-4"
+    />
+
+    <!-- <div class="d-flex justify-content-between">
+      <div>
+        <div class="custom-control custom-checkbox">
+          <input
+            type="checkbox"
+            class="custom-control-input form-control"
+            id="defaultLoginFormRemember"
+          />
+          <label class="custom-control-label" for="defaultLoginFormRemember"
+            >Remember me</label
+          >
+        </div>
+      </div>
+      <div>
+        <a href="">Forgot password?</a>
+      </div>
+    </div> -->
+
+    <button class="btn btn-info btn-block my-4" type="submit">
+      Unesi projekat
+    </button>
+
+    <!-- <div class="text-center">
+      <p>
+        Not a member?
+        <a href="">Register</a>
+      </p>
+
+      <p>or sign in with:</p>
+      <a type="button" class="light-blue-text mx-2">
+        <i class="fab fa-facebook-f"></i>
+      </a>
+      <a type="button" class="light-blue-text mx-2">
+        <i class="fab fa-twitter"></i>
+      </a>
+      <a type="button" class="light-blue-text mx-2">
+        <i class="fab fa-linkedin-in"></i>
+      </a>
+      <a type="button" class="light-blue-text mx-2">
+        <i class="fab fa-github"></i>
+      </a>
+    </div> -->
+  </form>
+</div>
+
+<style>
+  .container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-top: 5rem;
+  }
+</style>
+
+{% endblock %}

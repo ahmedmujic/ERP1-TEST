@@ -2,8 +2,14 @@
 {% load countries %}
 {% get_countries as countries %}
 {% block content%}
+<nav class="navbar navbar-expand-lg navbar-dark primary-color pb-2 pt-2 ">
+<a href="Pocetna"><i class="fas fa-arrow-left cyan-text"></i></a>
+<ul class="navbar-nav" style="width:100%;display:flex;justify-content:center;" >
+    <li> <a class="navbar-brand" href="#" id="naslov" style="font-size: 25px; padding:0px; font-weight:300;">Unos partnera</a></li>
+        </ul>
+</nav>
 <div style="display: flex;justify-content: center;">
-<form class="border border-light p-5 col-5 mt-5" action="NewBill" method='POST' id="forma" enctype="multipart/form-data">
+<form class="border border-light p-5 col-5 mt-5 animated fadeIn" action="NewBill" method='POST' id="forma" enctype="multipart/form-data">
  
 <div id="forma1">
     {% csrf_token %}
@@ -22,8 +28,18 @@
   <input type="radio" class="custom-control-input" id="defaultChecked" name="defaultExampleRadios" checked onclick="brisi()">
   <label class="custom-control-label" for="defaultChecked">Bez ugovora</label>
 </div>
-<div id="ugovor-info" class="mt-5" style="display:none;">
+<div id="ugovor-info" class="mt-5 animated slideInDown" style="display:none;">
 <input class="form-control mb-4" id="defaultLoginFormPassword" type="textfield" placeholder="Kratak opis" name="ugovor_sadrzaj">
+<select class="browser-default custom-select mb-5"
+    name="tip_ugovor">
+    
+    <option selected >Odaberi tip ugovora...</option>
+    {% for ugovor in ugovori %}
+    <option value="{{ugovor}}">{{ugovor}}</option>
+    {% endfor %}
+</select>
+
+    </select>
   <input class="form-control mb-4" id="defaultLoginFormPassword" type="date" placeholder="Naziv artikla" name="ugovor_datum_potpis">
    <input class="form-control mb-4" id="defaultLoginFormPassword" type="date" placeholder="Naziv artikla" name="ugovor_datum_vazenje">
 </div>
@@ -39,7 +55,54 @@
   </div>
 </div>
 <label id="ins" >
-<select class="browser-default custom-select mb-5 mt-4" name="drzava" required="" id="id_drzava">
+
+<input class="form-control mt-4" id="defaultLoginFormPassword" type="text" placeholder="Adresa partnera" name="adresa_partner">
+{% comment %} <input class="form-control mb-4" id="defaultLoginFormPassword" type="date" placeholder="Naziv artikla" name="datum">
+<input class="form-control mb-4" id="defaultLoginFormPassword" type="date" placeholder="Rok otplate" name="datum_rok">
+
+<select class="browser-default custom-select mb-5"
+    name="selekcija">
+    
+    <option selected >Odaberi tip računa...</option>
+    <option value="Ulazni">Ulazni</option>
+    <option value="Izlazni">Izlazni</option>
+</select>
+
+    </select>
+    
+    <div id="artikli" >
+    <input class="form-control mb-4" id="defaultLoginFormPassword" type="text" placeholder="Naziv artikla" name="naziv_artikal">
+    <select class="browser-default custom-select mb-5"
+    name="kategorija">
+    
+    <option selected >Odaberite kateogriju</option>
+    <option >Artikal</option>
+    <option >Usluga</option>
+</select>
+    <input class="form-control mb-4" id="defaultLoginFormPassword" type="number" placeholder="Količina" name="kolicina_artikal">
+    <input type="number" step="0.01" class="form-control mb-4" placeholder="Cijena" name="cijena_artikal">
+    <div class="form-control mb-4" style="display:flex; flex-wrap:none; align-items:center; border:0px solid grey;"><input max="100" accuracy="2" min="0" class="form-control" id="defaultLoginFormPassword" type="number" placeholder="Popust" name="popust_artikal" style="text-align:left; width:100%"><span id="percent-sign">%</span></div>
+
+    <textarea id="textarea" class="form-control mb-4" placeholder="Opis" name="opis_artikal"></textarea>
+    <hr>
+    </div>
+    <div id="usluga" >
+    <input class="form-control mb-4" id="defaultLoginFormPassword" type="text" placeholder="Naziv usluga" name="naziv_usluga">
+    <input class="form-control mb-4" id="defaultLoginFormPassword" type="number" placeholder="Sati" name="sati_usluga">
+    
+    <input type="number" step="0.01" class="form-control mb-4" placeholder="Cijena" name="cijena_usluga">
+    <div class="form-control mb-4" style="display:flex; flex-wrap:none; align-items:center; border:0px solid grey;"><input max="100" accuracy="2" min="0" class="form-control" id="defaultLoginFormPassword" type="number" placeholder="Popust" name="popust_usluga" style="text-align:left; width:100%"><span id="percent-sign">%</span></div>
+
+    <textarea id="textarea" class="form-control mb-4" placeholder="Opis" name="opis_usluga"></textarea>
+    <hr>
+    </div>
+    </div>
+
+    
+   
+
+    {% endcomment %}
+    <select class="browser-default custom-select mb-5 mt-4" name="drzava" required="" id="id_drzava">
   <option value="" selected="">(Izaberite državu)</option>
 
   <option value="AF">Afghanistan</option>
@@ -542,57 +605,12 @@
 
 </select>
 </label>
-<input class="form-control mb-4" id="defaultLoginFormPassword" type="text" placeholder="Adresa partnera" name="adresa_partner">
-<input class="form-control mb-4" id="defaultLoginFormPassword" type="date" placeholder="Naziv artikla" name="datum">
-<input class="form-control mb-4" id="defaultLoginFormPassword" type="date" placeholder="Rok otplate" name="datum_rok">
-
-<select class="browser-default custom-select mb-5"
-    name="selekcija">
-    
-    <option selected >Odaberi tip računa...</option>
-    <option value="Ulazni">Ulazni</option>
-    <option value="Izlazni">Izlazni</option>
-</select>
-
-    </select>
-    
-    <div id="artikli" >
-    <input class="form-control mb-4" id="defaultLoginFormPassword" type="text" placeholder="Naziv artikla" name="naziv_artikal">
-    <select class="browser-default custom-select mb-5"
-    name="kategorija">
-    
-    <option selected >Odaberite kateogriju</option>
-    <option >Artikal</option>
-    <option >Usluga</option>
-</select>
-    <input class="form-control mb-4" id="defaultLoginFormPassword" type="number" placeholder="Količina" name="kolicina_artikal">
-    <input type="number" step="0.01" class="form-control mb-4" placeholder="Cijena" name="cijena_artikal">
-    <div class="form-control mb-4" style="display:flex; flex-wrap:none; align-items:center; border:0px solid grey;"><input max="100" accuracy="2" min="0" class="form-control" id="defaultLoginFormPassword" type="number" placeholder="Popust" name="popust_artikal" style="text-align:left; width:100%"><span id="percent-sign">%</span></div>
-
-    <textarea id="textarea" class="form-control mb-4" placeholder="Opis" name="opis_artikal"></textarea>
-    <hr>
-    </div>
-    <div id="usluga" >
-    <input class="form-control mb-4" id="defaultLoginFormPassword" type="text" placeholder="Naziv usluga" name="naziv_usluga">
-    <input class="form-control mb-4" id="defaultLoginFormPassword" type="number" placeholder="Sati" name="sati_usluga">
-    
-    <input type="number" step="0.01" class="form-control mb-4" placeholder="Cijena" name="cijena_usluga">
-    <div class="form-control mb-4" style="display:flex; flex-wrap:none; align-items:center; border:0px solid grey;"><input max="100" accuracy="2" min="0" class="form-control" id="defaultLoginFormPassword" type="number" placeholder="Popust" name="popust_usluga" style="text-align:left; width:100%"><span id="percent-sign">%</span></div>
-
-    <textarea id="textarea" class="form-control mb-4" placeholder="Opis" name="opis_usluga"></textarea>
-    <hr>
-    </div>
-    </div>
-
-    
-    <button class="btn btn-info btn-block my-4" type="submit" id="kreiraj" >Kreiraj!</button>
-
-   
+     <button class="btn btn-info btn-block my-4" type="submit" id="kreiraj" >Kreiraj!</button>
 </form>
 
 </div>
-<button class="btn btn-info btn-block my-4" onclick="Dodaj()">Dodaj artikal!</button>
-<button class="btn btn-info btn-block my-4" onclick="DodajUsluga()">Dodaj uslugu!</button>
+{% comment %} <button class="btn btn-info btn-block my-4" onclick="Dodaj()">Dodaj artikal!</button>
+<button class="btn btn-info btn-block my-4" onclick="DodajUsluga()">Dodaj uslugu!</button> {% endcomment %}
 <script>
 function Dodaj()
 {
@@ -659,7 +677,7 @@ function DodajUsluga()
 function stvori()
 {   
     document.getElementById("file_input").style.display="flex";
-    document.getElementById("ugovor-info").style.display="flex";
+    document.getElementById("ugovor-info").style.display="block";
      //var dugme61= document.createElement("div");
        // dugme61.setAttribute("class","file-upload-wrapper");
        // dugme61.setAttribute("id","file12");

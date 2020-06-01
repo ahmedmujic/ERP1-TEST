@@ -1,0 +1,47 @@
+{% extends "home-page.html"%} {% block content %}
+<script>
+  $("#loadbasic").click(function () {
+    $("#result").html(ajax_load).load(loadUrl);
+  });
+</script>
+<div class="container">
+  <form
+    class="border border-light p-5"
+    method="post"
+    action=""
+    enctype="multipart/form-data"
+  >
+    {% csrf_token %}
+    <p class="h4 mb-4 text-center">Unos konta</p>
+
+    <label for="defaultLoginFormEmail">Unesite šifru konta</label>
+    <input
+      type="number"
+      id="defaultLoginFormEmail"
+      class="form-control mb-4"
+      name="sifra"
+      placeholder="Sifra konta"
+    />
+    <label for="defaultLoginFormEmail ">Unesite naziv konta</label>
+    <input
+      type="text"
+      name="nazivkonta"
+      id="defaultLoginFormEmail"
+      class="form-control mb-4"
+    />
+    <button class="btn btn-info btn-block my-4" type="submit">
+      Unesi konto
+    </button>
+  </form>
+</div>
+
+<style>
+  .container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-top: 5rem;
+  }
+</style>
+
+{% endblock %}

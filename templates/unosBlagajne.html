@@ -1,0 +1,55 @@
+{% extends "home-page.html"%} {% block content %}
+<script>
+  $("#loadbasic").click(function () {
+    $("#result").html(ajax_load).load(loadUrl);
+  });
+</script>
+<div class="container">
+  <form class="border border-light p-5" method="post" action="">
+    {% csrf_token %}
+    <p class="h4 mb-4 text-center">Unos blagajne</p>
+    <label for="defaultLoginFormEmail">Izaberite račun</label>
+    <select
+      id="partneri"
+      name="racun"
+      class="browser-default custom-select mb-4"
+    >
+      <option>Izaberite račun</option>
+      {% if racuni %} {% for racun in racuni %}
+      <option value="{{racun.id}}">{{racun.id}}</option>
+      {% endfor %}
+    </select>
+     {% endif %}
+
+    <label for="defaultLoginFormEmail">Unesite ime i prezime blagajnika</label>
+    <input
+      type="text"
+      id="defaultLoginFormEmail"
+      class="form-control mb-4"
+      name="blagajnik"
+      placeholder="Ime i prezime blagajnika"
+    />
+    <label for="defaultLoginFormEmail">Datum obračuna</label>
+    <input
+      type="date"
+      id="defaultLoginFormEmail"
+      name="datumObracuna"
+      class="form-control mb-4"
+    />
+
+    <button class="btn btn-info btn-block my-4" type="submit">
+      Unesi blagajnu
+    </button>
+  </form>
+</div>
+
+<style>
+  .container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-top: 5rem;
+  }
+</style>
+
+{% endblock %}

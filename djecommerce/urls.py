@@ -11,7 +11,8 @@ urlpatterns = [
     path('NewBill', NewBill, name='NewBill'),
     path('UlazniRacuniView', UlazniRacuniView, name='UlazniRacuniView'),
     path('PregledRacuna1/<racun>', PregledRacuna1, name="PregledRacuna1"),
-    url('^api/chart/data/(?P<username>.+)/$', ChartData.as_view(), name="proc"),
+    url('^api/chart/data/(?P<username>.+)/(?P<mjesec>.+)$',
+        ChartData.as_view(), name="proc"),
     path('Pocetna', Pocetna, name='Pocetna'),
     path('Ulazni', PregledRacunaUlazni, name='Ulazni_racun'),
     path('Izlazni', PregledRacunaIzlazni, name='Izlazni'),
@@ -27,7 +28,22 @@ urlpatterns = [
     path('accounts/login1/', MyLoginView.as_view(), name='login'),
     path('User', UserView, name='User'),
     path('KreirajRacun', KreirajRacun, name='KreirajRacun'),
-    path('NoviRacun', NoviRacun, name='NoviRacun')
+    path('NoviRacun', NoviRacun, name='NoviRacun'),
+    path('IzlazniArtikli/<id>', Izlazni_Artikli_pregled, name="izlaz"),
+    path('Obavijest', Obavijest, name='Obavijest'),
+    path('Projekti', Projekt, name='Projekt'),
+    path('Tenderi', Tender, name='Tenderi'),
+    path('unostendera', unosTendera, name='unosTendera'),
+    path('unosprojekta', unosProjekta, name='unosProjekta'),
+    path('unosavansa', unosAvansa, name='unosAvansa'),
+    path('unoskonta', unosKonta, name='unosKonta'),
+    path('unosnabavke', unosNabavke, name='unosNabavke'),
+    path('unosblagajne', unosBlagajne, name='unosBlagajne'),
+    path('pregledBlagajne', pregledBlagajne, name='pregledBlagajne'),
+    path('Bilans', Bilansi, name='Bilans'),
+    path('Transakcije', Transakcij, name='Transakcije'),
+    path('Duznici', Duznici, name='Duznici'),
+    path('Duznici2', Duznici2, name='Duznici2')
 ]
 
 if settings.DEBUG:

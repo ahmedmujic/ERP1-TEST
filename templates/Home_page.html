@@ -26,9 +26,20 @@
     
 </head>
 <script>
+var godina 
 {% block jquery %}
+var pozadina = sessionStorage.getItem("pozadina");
+console.log(pozadina)
+$(document).ready(function()
+{
+$('#cijeli1').css('backgroundImage', " "+ pozadina);
+$('#cijeli1').css('backgroundSize', "cover");
+$('#cijeli1').css('backgroundRepeat', "noRepeat");
+}
+);
+
 var tip='line'
-var endpoint = '/api/chart/data/'+ 2020
+var endpoint = '/api/chart/data/'+ 2020 + '/' +1
 var defaultData = []
 var labels = [];
 $.ajax({
@@ -40,10 +51,13 @@ $.ajax({
         defaultData = data.default
         defaultData2 = data.default2
         ulazni_sve = data.ulazni_sve
+        mjeseci = data.mjeseci
+        mjeseci_ukupno_ulazni = data.mjeseci_ukupno_ulazni
+        mjeseci_ukupno_izlazni = data.mjeseci_ukupno_izlazni
         console.log(ulazni_sve)
         
-        //select(ulazni_sve)
-        setChart(2020, labels, defaultData, tip)
+        select(ulazni_sve, labels)
+        setChart(2020, 2,  labels, defaultData, defaultData2, tip)
         
     },
     error: function(error_data){
@@ -52,7 +66,7 @@ $.ajax({
     }
 })
 
-function setChart(value, labels, defaultData, tip1){
+function setChart(value,month, labels, defaultData, rashodi, tip1){
     var ctx = document.getElementById("myChart");
     var ctx2 = document.getElementById("myChart2");
     var myChart = new Chart(ctx2, {
@@ -63,12 +77,12 @@ function setChart(value, labels, defaultData, tip1){
             label: 'Prihodi za ' + value + ' godinu',
             data: defaultData,
             backgroundColor: [
-                'rgba(255, 99, 132, 0.3)',
-                'rgba(54, 162, 235, 0.3)',
-                'rgba(255, 206, 86, 0.3)',
-                'rgba(75, 192, 192, 0.3)',
-                'rgba(153, 102, 255, 0.3)',
-                'rgba(255, 159, 64, 0.3)'
+                'rgba(255, 99, 132, 0.5)',
+                'rgba(54, 162, 235, 0.5)',
+                'rgba(255, 206, 86, 0.5)',
+                'rgba(75, 192, 192, 0.5)',
+                'rgba(153, 102, 255, 0.5)',
+                'rgba(255, 159, 64, 0.5)'
             ],
             borderColor: [
                 'rgba(255,55,255,1)',
@@ -84,14 +98,14 @@ function setChart(value, labels, defaultData, tip1){
         },
         {
             label: 'Rashodi za ' + value + ' godinu',
-            data: defaultData2,
+            data: rashodi,
             backgroundColor: [
-                'rgba(15, 99, 132, 0.3)',
-                'rgba(54, 162, 235,0.3)',
-                'rgba(255, 206, 86, 0.3)',
-                'rgba(75, 192, 192, 0.3)',
-                'rgba(153, 102, 255,0.3)',
-                'rgba(255, 159, 64, 0.3)'
+                'rgba(15, 99, 132, 0.5)',
+                'rgba(54, 162, 235,0.5)',
+                'rgba(255, 206, 86, 0.5)',
+                'rgba(75, 192, 192, 0.5)',
+                'rgba(153, 102, 255,0.5)',
+                'rgba(255, 159, 64, 0.5)'
             ],
             borderColor: [
                 'rgba(255,55,255,1)',
@@ -171,10 +185,9 @@ function uniq_fast(a) {
     return out;
 }
 // var ctx = document.getElementById("myChart");
-{% comment %} function select(value_ulazni)
+function select(value_ulazni, value_mjesec)
 {
     var sele=document.getElementById('select')
-    console.log("sddsf" + value_ulazni)
     value_ulazni=uniq_fast(value_ulazni)
     for (var i=0;i<value_ulazni.length;i++)
     {
@@ -189,13 +202,30 @@ function uniq_fast(a) {
         node1.setAttribute("value",""+value_ulazni[i])
         sele.appendChild(node1)
     }
-} {% endcomment %}
+    /*var sele2=document.getElementById('select1')
+    value_ulazni2=uniq_fast(value_mjesec)
+    for (var i=0;i<value_ulazni2.length;i++)
+    {
+        console.log(value_ulazni2[i])
+    }
+    for (var i=0;i<value_ulazni2.length;i++)
+    {
+        var node12=document.createElement('option')
+        var text2=document.createTextNode(""+value_ulazni2[i])
+        node12.appendChild(text2)
+        node12.setAttribute("onselect","funkcija()")
+        node12.setAttribute("value",""+value_ulazni2[i])
+        sele2.appendChild(node12)
+    }*/
+} 
 var vrijednost
-function funkcija(value)
+var mjesec
+function funkcija1(value)
 {
+  godina = value
     vrijednost=value
     console.log(value)
-    var endpoint = '/api/chart/data/'+ value
+    var endpoint = '/api/chart/data/'+ value +'/'+ 1
     var defaultData = []
     var labels = [];
 $.ajax({
@@ -206,7 +236,41 @@ $.ajax({
         defaultData = data.default
         defaultData2 = data.default2
         ulazni_sve = data.ulazni_sve
-        setChart(vrijednost, labels, defaultData, tip)
+        mjeseci = data.mjeseci
+        mjeseci_ukupno_ulazni = data.mjeseci_ukupno_ulazni
+        mjeseci_ukupno_izlazni = data.mjeseci_ukupno_izlazni
+        select(ulazni_sve, labels)
+        setChart(vrijednost,1, labels, defaultData,defaultData2, tip)
+        
+        
+    },
+    error: function(error_data){
+        console.log("error")
+        console.log(error_data)
+    }
+})
+}
+function funkcija1_mjesec(value)
+{
+  /*d = {'Januar':1, 'Februar':2,  'Mart':3, 'April':4, 'Maj' :5, 'Juni':6, 'Juli':7, 'August':8, 'Septembar':9, 'Oktobar':10, 'Novembar':11, 'Decembar' :12}
+    vrijednost=d[value]*/
+    mjesec=value
+    console.log(value)
+    var endpoint = '/api/chart/data/'+ godina +'/'+value
+    var defaultData = []
+    var labels = [];
+$.ajax({
+    method: "GET",
+    url: endpoint,
+    success: function(data){
+        labels = data.labels
+        defaultData = data.default
+        defaultData2 = data.default2
+        ulazni_sve = data.ulazni_sve
+       mjeseci = data.mjeseci
+        mjeseci_ukupno_ulazni = data.mjeseci_ukupno_ulazni
+        mjeseci_ukupno_izlazni = data.mjeseci_ukupno_izlazni
+        setChart(godina,vrijednost, mjeseci, mjeseci_ukupno_izlazni,mjeseci_ukupno_ulazni, tip)
         
     },
     error: function(error_data){
@@ -218,7 +282,7 @@ $.ajax({
 function funkcija_tip_charta(value1)
 {
     tip=value1;
-   /* $.ajax({
+    $.ajax({
     method: "GET",
     url: endpoint,
     success: function(data){
@@ -226,15 +290,24 @@ function funkcija_tip_charta(value1)
         defaultData = data.default
         defaultData2 = data.default2
         ulazni_sve = data.ulazni_sve
-        setChart(vrijednost, labels, defaultData, tip)
-        
+       mjeseci = data.mjeseci
+        mjeseci_ukupno_ulazni = data.mjeseci_ukupno_ulazni
+        mjeseci_ukupno_izlazni = data.mjeseci_ukupno_izlazni
+        if (document.getElementById('select1').value==" ")
+        {
+            setChart(2020, 2,  labels, defaultData, defaultData2, tip)
+        }
+        else
+        {
+          setChart(godina,mjesec, mjeseci, mjeseci_ukupno_izlazni, mjeseci_ukupno_ulazni, tip)
+        }
     },
     error: function(error_data){
         console.log("error")
         console.log(error_data)
     }
 })
-    */
+
 var temp = jQuery.extend(true, {}, data);
 temp.type = value1; // The new chart type
 myChart = new Chart(ctx, temp);
@@ -266,20 +339,34 @@ function funkcija(button, drop)
   </li>  
     </nav>
     
-<div class="cijeli" id="cijeli1">
+<div class="cijeli animated fadeIn" id="cijeli1" style="background-size:cover">
 
+<div class="animated slideInDown">
+    {% if messages %}
+    
+    {% for message in messages %}
+        <div class="alert alert-success" role="alert" style="margin-bottom:0px;     position: relative;
+    width: 100%;
+    z-index: 350;">{{message}}</div>
+        
+    {% endfor %}
+
+{% endif %}
+</div>
  {% comment %} <nav class="navbar navbar-expand-lg navbar-dark primary-color pb-2 pt-2 ">
   <div class="prvaTraka">
     <div class="odjava"><i class="fas fa-cog"></i><p class="logout">Log out</p></div>
     </div>
   </nav> {% endcomment %}
-  <div class="sadrzaj" style="height:1000px;">
-    <div class="navbar12">
-    <select id="pozadina" class="browser-default custom-select" onChange="Promijeni(this.value)" style="background-color:rgba(255,255,255,0.1);border:0px;">
+  <div class="sadrzaj" style="height:1000px; background-color:rgba(255,255,255,0.4); " >
+    <div class="navbar12" style="opacity:0.8;">
+    <select id="pozadina" class="browser-default custom-select" onChange="Promijeni_pozadinu(this.value)" style="background-color:rgba(255,255,255,0.1);border:0px;">
     <option selected>Odaberi pozadisnku temu</option>
     <option value="0">Prva</option>
     <option value="1">Druga</option>
     <option value="2">Treca</option>
+    <option value="3">Cetvrta</option>
+    <option value="4">Peta</option>
     </select>
       <div class="lijevi" style="width:80%;">
       
@@ -301,34 +388,34 @@ function funkcija(button, drop)
               <a href="Ulazni" class="dropdown-item">Ulazni računi</a>
               <a href="Izlazni" class="dropdown-item">Izlazni računi</a>
               <a href="KreirajRacun" class="dropdown-item">Kreiranje računa</a>
-              <a href="#" class="dropdown-item">Blagajna</a>
-              <a href="#" class="dropdown-item">Konto</a>
+              <a href="pregledBlagajne" class="dropdown-item">Blagajna</a>
+              <a href="Konto1" class="dropdown-item">Konto</a>
             </div>
             </div>
           </div>
-          <div class="dropdown"><button class="dropbtn mr-4" type="button"
- id="button"><i class="far fa-money-bill-alt"></i>Transakcije</button></div>
+          <div class="dropdown"><a href="Transakcije"><button class="dropbtn mr-4" type="button"
+ id="button"><i class="far fa-money-bill-alt"></i>Transakcije</button></div></a>
           <div class="dropdown">
             <button class="dropbtn mr-4" type="button"
  id="button1" onclick="funkcija(button1,drop1)"><i class="fas fa-shopping-cart"></i>Asortiman<i class="fas fa-angle-down"></i></button>
             <div class="dropdown-menu" id="drop1" style="width:93%;position:relative;top:0%;">
-              <a href="#" class="dropdown-item">Artikli</a>
-              <a href="#" class="dropdown-item">Usluge</a>
+              <a href="Artikli" class="dropdown-item">Artikli</a>
+              <a href="Usluge" class="dropdown-item">Usluge</a>
             </div>
           </div>
           <div class="dropdown">
             <button class="dropbtn mr-4" type="button"
  id="button2" onclick="funkcija(button2,drop2)"><i class="fas fa-users"></i>Partneri<i class="fas fa-angle-down"></i></button>
             <div class="dropdown-menu" id="drop2" style="width:93%;position:relative;top:0%;">
-              <a href="#" class="dropdown-item">Partneri</a>
-              <a href="#" class="dropdown-item">Ugovori</a>
+            <a href="Partneri" class="dropdown-item">Partneri</a>
+            <a href="Ugovori" class="dropdown-item">Ugovori</a>
             </div>
           </div>
           <div class="dropdown">
             <button class="dropbtn mr-4" type="button"
  id="button3" onclick="funkcija(button3,drop3)"><i class="fas fa-chart-bar"></i>Izvještaji<i class="fas fa-angle-down"></i></button>
             <div class="dropdown-menu" id="drop3" style="width:93%;position:relative;top:0%;">
-              <a href="#" class="dropdown-item">Bilans</a>
+              <a href="Bilans" class="dropdown-item">Bilans</a>
               <a href="#" class="dropdown-item">Dnevni izvještaj</a>
               <a href="#" class="dropdown-item">Mjesečni izvještaj</a>
             </div>
@@ -337,17 +424,17 @@ function funkcija(button, drop)
             <button class="dropbtn mr-4" type="button"
  id="button4"  onclick="funkcija(button4,drop4)"><i class="fas fa-shopping-basket"></i>Nabavke<i class="fas fa-angle-down"></i></button>
             <div class="dropdown-menu" id="drop4" style="width:93%;position:relative;top:0%;">
-              <a href="#" class="dropdown-item">Nabavke</a>
+              <a href="Nabavke" class="dropdown-item">Nabavke</a>
               <a href="#" class="dropdown-item">Ponude</a>
-              <a href="#" class="dropdown-item">Avansi</a>
+              <a href="Avansi" class="dropdown-item">Avansi</a>
             </div>
           </div>
           <div class="dropdown">
             <button class="dropbtn mr-4" type="button"
  id="button5"  onclick="funkcija(button5,drop5)"><i class="fas fa-clipboard-list"></i>Projekti<i class="fas fa-angle-down"></i></button>
             <div class="dropdown-menu" id="drop5" style="width:93%;position:relative;top:0%;">
-              <a href="#" class="dropdown-item">Projekti</a>
-              <a href="#" class="dropdown-item">Tenderi</a>
+              <a href="Projekti" class="dropdown-item">Projekti</a>
+              <a href="Tenderi" class="dropdown-item">Tenderi</a>
             </div>
           </div>
           </div>
@@ -356,7 +443,7 @@ function funkcija(button, drop)
           </div> {% endcomment %}
         </div>
         <div class="desni" >
-          <div class="tim" style="margin-bottom:-30px;"><div class="dobrodosli">Welcome to</div><img src="{% static 'img/loginlogo.png' %}" class="logo mt-2"></div>
+          <div class="tim" style="margin-bottom:-30px; text-align:center;"><div class="dobrodosli">Welcome to</div><img src="{% static 'img/logo.png' %}"style="width:35px;height:30px;margin-top:20px;" class="logo mt-2"><div class="dobrodosli ml-2"> Tim 05</div></div>
             <div class="dugmad">
               <div class="container my-5 py-5">
 
@@ -371,23 +458,31 @@ function funkcija(button, drop)
       <div class="col-lg-4 ">
 
         <!-- Admin card -->
-        <div class="card mt-3">
+        <div class="card mt-3"  style="background-color:rgba(255,255,255,0.9);">
 
           <div class="">
             <div class="far fa-lg primary-color z-depth-2 p-2 ml-3 mt-n3 rounded text-white"><img src="{% static 'img/slika.png' %}" style="height: 50px; width:50px"></div>
             <div class="float-right text-right p-3">
               <small>Budzet</small>
               <p class="text-uppercase text-muted mb-1"></p>
-              <h4 class="font-weight-bold mb-0">23 000KM</h4>
+             
+              <h4 class="font-weight-bold mb-0">{{budzet}} KM</h4>
             </div>
           </div>
 
-          <div class="card-body pt-0">
+          <div class="card-body pt-0" >
             <div class="progress md-progress">
+             {% if budzet > 10000 %}
               <div class="progress-bar bg-success" role="progressbar" style="width: 100%" aria-valuenow="5" aria-valuemin="0"
                 aria-valuemax="100"></div>
             </div>
             <p class="card-text">Stanje je zadovoljavajuće </p>
+            {% else %}
+            <div class="progress-bar bg-danger" role="progressbar" style="width: 100%" aria-valuenow="5" aria-valuemin="0"
+                aria-valuemax="100"></div>
+            </div>
+            <p class="card-text">Posavjerujte se za svoje poslovanje</p>
+{% endif %}
           </div>
 
         </div>
@@ -400,23 +495,31 @@ function funkcija(button, drop)
       <div class="col-lg-4 col-md-6 mb-4">
 
         <!-- Admin card -->
-        <div class="card mt-3">
+        <div class="card mt-3" style="background-color:rgba(255,255,255,0.9);">
 
           <div class="">
            <div class="far fa-lg primary-color z-depth-2 p-3 ml-3 mt-n3 rounded text-white"><img src="{% static 'img/3.png' %}" style="height: 40px; width:40px"></div>
             <div class="float-right text-right p-3">
             <small>Nabavke:</small>
               <p class="text-uppercase text-muted mb-1"></p>
-              <h4 class="font-weight-bold mb-0">3534 KM</h4>
+             
+              <h4 class="font-weight-bold mb-0">{{zarada}} KM</h4>
             </div>
           </div>
 
           <div class="card-body pt-0">
             <div class="progress md-progress">
-              <div class="progress-bar bg-danger" role="progressbar" style="width: 46%" aria-valuenow="46" aria-valuemin="0"
+             {% if zarada > trosak %}
+              <div class="progress-bar bg-success" role="progressbar" style="width: 100%" aria-valuenow="46" aria-valuemin="0"
                 aria-valuemax="100"></div>
             </div>
-            <p class="card-text">Worse than last week (46%)</p>
+            <p class="card-text">Odlično!</p>
+            {% else %}
+            <div class="progress-bar bg-danger" role="progressbar" style="width: 100%" aria-valuenow="46" aria-valuemin="0"
+                aria-valuemax="100"></div>
+            </div>
+            <p class="card-text">Loše!</p>
+            {% endif %}
           </div>
 
         </div>
@@ -427,27 +530,33 @@ function funkcija(button, drop)
 
       <!--Grid column-->
       <div class="col-lg-4 col-md-6 mb-4">
-
+      
         <!-- Admin card -->
-        <div class="card mt-3">
+        <div class="card mt-3" style="background-color:rgba(255,255,255,0.9);">
 
           <div class="">
             <div class="far fa-lg primary-color z-depth-2 p-2 ml-3 mt-n3 rounded text-white" style="height: 70px; width:70px;"><img class="ml-1"src="{% static 'img/2.png' %}" style="height: 50px; width:40px;"></div>
             <div class="float-right text-right p-3">
             <small>Prodaje</small>
               <p class="text-uppercase text-muted mb-1"></p>
-              <h4 class="font-weight-bold mb-0">6564 KM</h4>
+              <h4 class="font-weight-bold mb-0">{{trosak}} KM</h4>
             </div>
           </div>
 
           <div class="card-body pt-0">
             <div class="progress md-progress">
-              <div class="progress-bar bg-success" role="progressbar" style="width: 31%" aria-valuenow="31" aria-valuemin="0"
+            {% if zarada > trosak %}
+              <div class="progress-bar bg-success" role="progressbar" style="width: 100%" aria-valuenow="46" aria-valuemin="0"
                 aria-valuemax="100"></div>
             </div>
-            <p class="card-text">Better than last week (31%)</p>
-          </div>
-
+            <p class="card-text">Odlično!</p>
+            {% else %}
+            <div class="progress-bar bg-danger" role="progressbar" style="width: 100%" aria-valuenow="46" aria-valuemin="0"
+                aria-valuemax="100"></div>
+            </div>
+            <p class="card-text">Loše!</p>
+            {% endif %}
+</div>
         </div>
         <!-- Admin card -->
 
@@ -466,17 +575,30 @@ function funkcija(button, drop)
             </div>
               <div class="grafik-obavijesti" style="margin-top:-100px;">
                 <div class="dugme-grafik">
-                  <select class="browser-default custom-select col-4 animated fadeIn mr-2">
+                  <select class="browser-default custom-select col-4 animated fadeIn mr-2" id="select" onChange="funkcija1(this.value)" style="background-color:rgba(255,255,255,0.9);">
   <option selected>Odaberite godinu</option>
-  <option value="1">One</option>
-  <option value="2">Two</option>
-  <option value="3">Three</option>
 </select>
-                  <select class="browser-default custom-select  col-4 animated fadeIn" onChange="funkcija_tip_charta(this.value)">
-  <option selected>Odaberite tip grafa</option>
-  <option value="1" class="animated fadeIn">One</option>
-  <option value="2"class="animated fadeIn">Two</option>
-  <option value="3"class="animated fadeIn">Three</option>
+                  <select  class="browser-default custom-select  col-4 animated fadeIn" name="selekcija" onChange="funkcija_tip_charta(this.value)" style="background-color:rgba(255,255,255,0.9);">
+<option value="" disabled selected>Select your chart</option>
+<option value="bar">Bar</option>
+<option value="line">Line</option>
+<option value="radar">Rine</option>
+<option value="polarArea">Polar area</option>
+</select>
+<select class="browser-default custom-select col-4 animated fadeIn mr-2 mt-1" id="select1" onChange="funkcija1_mjesec(this.value)" style="background-color:rgba(255,255,255,0.9);">
+  <option selected value=" ">Odaberite mjesec (ostavite prazno za godišnji izvj.)</option>
+  <option value="1">Januar</option>
+  <option value="2">Februar</option>
+  <option value="3">Mart</option>
+  <option value="4">April</option>
+  <option value="5">Maj</option>
+  <option value="6">Jun</option>
+  <option value="7">Juli</option>
+  <option value="8">August</option>
+  <option value="9">Septembar</option>
+  <option value="10">Oktobar</option>
+  <option value="11">Novembar</option>
+  <option value="12">Decembar</option>
 </select>
                 </div>
                 <div class="desni-ugao">
@@ -494,10 +616,10 @@ function funkcija(button, drop)
                 </div>
                 <div class="profili ml-5">
                 <div class="obavijesti">
-                  <button><img src="{% static 'img/zvono.png' %}" class="zvono">Pregledaj obavijesti</button>
+                  <a href="Obavijest"><button><img src="{% static 'img/zvono.png' %}" class="zvono">Pregledaj obavijesti</button></a>
                 </div>
                 <div class="profil">
-                  <a href="User"><button><img src="https://cdn.pixabay.com/photo/2017/02/23/13/05/profile-2092113_960_720.png" class="korisnik">Pregledaj profil</button></a>
+                  <a href="User" ><button><img src="https://cdn.pixabay.com/photo/2017/02/23/13/05/profile-2092113_960_720.png" class="korisnik" style="outline: none;">Pregledaj profil</button></a>
                 </div>
               </div>
               </div>
@@ -507,7 +629,7 @@ function funkcija(button, drop)
       
     </div>
     
-    <div class="drugaTraka">
+    <div class="drugaTraka" style="position:fixed;bottom:0;opacity:0.7;width:100%">
         Sva prva zadržana &copy TIM05
       </div>
 
@@ -515,12 +637,12 @@ function funkcija(button, drop)
 
 </html>
 <script>
-function Promijeni(value)
+function Promijeni_pozadinu(value)
 {
-  pozadine = ["url('https://mdbootstrap.com/img/Photos/Others/gradient2.png')","url('https://mdbootstrap.com/img/Photos/Others/images/76.jpg')","url('https://mdbootstrap.com/img/Photos/Others/background.jpg')"]
+  pozadine = ["url('https://mdbootstrap.com/img/Photos/Others/gradient2.png')","url('https://mdbootstrap.com/img/Photos/Others/images/76.jpg')","url('https://cdn.pixabay.com/photo/2015/12/08/00/26/desk-1081708_1280.jpg')","url('https://cdn.pixabay.com/photo/2012/11/07/02/55/tulips-65036_1280.jpg')","url('https://images.pexels.com/photos/1054222/pexels-photo-1054222.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940')"]
   
   $('#cijeli1').css('backgroundImage', pozadine[value]);
-
+  sessionStorage.setItem("pozadina", pozadine[value]);
   
 }
 </script>

@@ -13,7 +13,7 @@
 
     <div class="cijeli">
         <div class="prvaTraka">
-            <div class="ikonica"><i class="fas fa-arrow-left"></i></div>
+            <div class="ikonica"><a href="Pocetna"><i class="fas fa-arrow-left"></i></a></div>
            <div class="naslov"><h3>KREIRANJE RAČUNA</h3></div>
         </div>
     <div class="sadrzaj">
@@ -21,45 +21,73 @@
     {% csrf_token %}
         <div class="prvaForma pb-5">
             <label for="">Broj računa</label><input type="number" class="forma" style="margin-left:-50px; height:35px; border-radius:50px; ">
-            <label for="">Broj poreznog obveznika</label><input type="number" class="forma" style="margin-left:-45px; height:35px; border-radius:50px; ">
+            <label for="">Broj poreznog obveznika</label><input name="broj_racuna" type="number" class="forma" style="margin-left:-45px; height:35px; border-radius:50px; ">
             <label for="">Datum izdavanja</label><input name="datum_izdavanja" type="date" class="forma" style="margin-left:-45px; height:35px; border-radius:50px; ">
             <label for="">Rok otplate</label><input name="rok_otplate" type="date" class="forma" style="margin-left:-45px; height:35px; border-radius:50px; ">
         </div>
-        <div class="nazivi1">
-            <p>Artikal</p>
-            <p>Šifra</p>
-            <p class="ml-5">Jedinična cijena</p>
-            <p class="ml-5">Količina</p>
-            <p class="ml-5">Popust</p>
-            <p >Iznos</p>
-        </div>
-        <div class="drugi-dio" id="forms">
-        <div class="drugaForma animated fadeIn" id="sadrzaj">
-            <input type="text" class="forma num" style="border-radius:5px;" name="naziv_artikla" >
-            <input type="number" class="forma num" style="margin-left:60px; border-radius:5px;">
-            <input type="number" class="forma num" id="price" style="margin-left:90px; border-radius:5px;" name="price">
-            <input type="number" class="forma num" id="qty" style="margin-left:105px; border-radius:5px;" name="qty">
-            <input type="number" class="forma num" style="margin-left:75px; border-radius:5px;" name="discount">
-            <output type="number" class="forma num mt-3" id="rezultat" style="width:150px; border-radius:5px;" value="0">
+        <table  style="width:100%" >
+        <thead style=" font-weight: 900 ">
+        <tr style="text-align:center; background-color:rgb(163, 183, 233);height:45px;   ">
+            <th style=" font-weight: 900 ">Artikal</th>
+            <th style=" font-weight: 900 ">Tip</th>
+            <th style=" font-weight: 900 ">Šifra</th>
+            <th class="ml-5" style=" font-weight: 900 ">Jedinična cijena</th>
+            <th class="ml-5" style=" font-weight: 900 ">Količina</th>
+            <th class="ml-5" style=" font-weight: 900 ">Popust</th>
+            <th >Iznos</th>
+            </tr>
+        </thead>
+        
+        <tbody class="drugaForma animated fadeIn" id="tijelo">
+       
+        <tr style="text-align:center" id="sadrzaj" >
+            <td ><input type="text" class="forma num" id="naziv" style="margin-left:0px; border-radius:5px;" name="naziv_artikla" ></td>
+            <td><div style="width:100px; margin:0px;">
+            <select class="browser-default custom-select"
+     name="kategorija" style="width:100px;">
+    {% for kategorija in kategorije %}    
+    <option value="{{ kategorija.id }}" >{{ kategorija.naziv }}</option>
+    {% endfor %}
+</select>
+</div></td>
+            <td><input type="text" class="forma num" style=" margin:0px;border-radius:5px;" name="sifra"></td>
+            <td><input type="number" class="forma num" id="price" style=" margin:0px;border-radius:5px;" name="price"></td>
+            <td><input type="number" class="forma num" id="qty" style="margin:0px; border-radius:5px;" name="qty"></td>
+            <td><input type="number" class="forma num" id="discount" style="margin:0px; border-radius:5px;" name="discount"></td>
+            <td><output class="forma num mt-3" id="rezultat" name="rez" style="margin:0px; width:150px; border-radius:5px;" for="price qty discount"></td>
             
-            
-        </div>
+        </tr>    
+        </tbody>
          
            
-    </div>
+    </table>
         <div class="dugme"></div>
-            <button class="dodaj mt-5" onclick="Dodaj()"><i class="fas fa-plus-circle"></i> Dodaj artikal</button>
+            <button class="dodaj mt-5" onclick="Dodaj()" type="button" id="dugme"><i class="fas fa-plus-circle"></i> Dodaj artikal</button>
         </div>
-        <div class="nazivi2">
-            <p>Stopa PDV</p>
-            <p>Cijena bez PDV</p>
-            <p>Cijena sa PDV</p>
-            <p>PDV</p>
-            <p>Ukupno</p>
-        </div>
+        <table class="nazivi2" style="width:100%;display:table;text-align:center;padding:50px 0px;">
+        <thead style="padding:10px 0px;">
+            <tr style="font-weight:900;" >
+            <th style="font-weight:900;" >Stopa PDV</th>
+            <th style="font-weight:900;" >Cijena bez PDV</th>
+            <th style="font-weight:900;" >Cijena sa PDV</th>
+            <th style="font-weight:900;" >PDV</th>
+            <th style="font-weight:900;" >Ukupno</th>
+            </tr>
+           
+        </thead>
+        <tbody>
+        <tr>
+            <td id="stopa">17%</td>
+            <td id="cijena_bez_pdva">0KM</td>
+            <td id="cijena_sa_pdv">0KM</td>
+            <td id="PDV">0KM</td>
+            <td id="Ukupno">0KM</td>
+            </tr>
+        </tbody>
+        </table>
        <div class="kreiranje">
-          <div class="prvi"> <input type="radio" class="kocka" name="racun"checked><label class="naziv mb-1">Ulazni račun</label></div>
-           <div class="drugi"><input type="radio" class="kocka" name="racun"><label for="" class="naziv mb-1">Izlazni račun</label></div>
+          <div class="prvi"> <input type="radio" class="kocka" name="racun_tip"checked value="Ulazni"><label class="naziv mb-1">Ulazni</label></div>
+           <div class="drugi"><input type="radio" class="kocka" name="racun_tip" value="Izlazni"><label for="" class="naziv mb-1">Izlazni</label></div>
            <input type="submit" value="Kreiraj račun" style="border-radius:10px;width:150px;">
        </div>
 
@@ -67,44 +95,75 @@
     </div>
     </form> 
 </body>
+<script
+  src="https://code.jquery.com/jquery-3.5.1.js"
+  integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
+  crossorigin="anonymous"></script>
+<script>
+
+
+  
+  $(document).ready(function()
+  {
+    
+    var br=0
+    $("#dugme").mouseenter(function(){     
+    
+    var rezultati = document.querySelectorAll("#rezultat");
+    var kolicine = document.querySelectorAll("#qty");
+    var cijene = document.querySelectorAll("#price");
+    var popusti = document.querySelectorAll("#discount");
+    
+    
+  if(br<kolicine.length)
+  {
+      var ukupno=0
+    for(var i=0;i<kolicine.length;i++)
+    {
+       
+        ukupno = ukupno + (((cijene[i].value)-(cijene[i].value*(popusti[i].value/100))))*kolicine[i].value
+        rezultati[i].value=(((cijene[i].value)-(cijene[i].value*(popusti[i].value/100))))*kolicine[i].value
+       
+       /* if 
+        rezultati[i].value=(((cijene[i].value)-(cijene[i].value*(popusti[i].value/100))))*kolicine[i].value
+        console.log(rezultati[i].value)
+        /*$(popusti[i]).next("#rezultat").value = ((cijene[i].value)-(cijene[i].value*(popusti[i].value/100)))*kolicine[i].value
+        console.log($(popusti[i]).next("#rezultat"))*/
+        
+    }
+    $("#stopa").empty()
+    $("#cijena_bez_pdva").empty()
+    $("#cijena_sa_pdv").empty()
+    $("#PDV").empty()
+    $("#Ukupno").empty()
+    var para = document.getElementById("stopa")
+    var node1 = document.createTextNode("17 %");
+    para.appendChild(node1);
+    var para2 = document.getElementById("cijena_bez_pdva")
+    var node2 = document.createTextNode(Math.round(ukupno-(ukupno*0.17),2)+" KM");
+    para2.appendChild(node2);
+    var para3 = document.getElementById("cijena_sa_pdv")
+    var node3 = document.createTextNode(ukupno +" KM");
+    para3.appendChild(node3);
+    var para4 = document.getElementById("PDV")
+    var node4 = document.createTextNode(Math.round(ukupno*0.17,2)+" KM");
+    para4.appendChild(node4);
+    var para5 = document.getElementById("Ukupno")
+    var node5 = document.createTextNode(Math.round(ukupno-(ukupno*0.17),2) + " + " +  Math.round(ukupno*0.17,2)+" KM" + "="+ Math.round(ukupno,2)+" KM");
+    para5.appendChild(node5);
+    br++;
+   }
+  });
+ });
+  </script>
 <script>
 function Dodaj()
 {
   var itm = document.getElementById("sadrzaj")
   var cln = itm.cloneNode(true);
-  document.getElementById("forms").appendChild(cln);
+  document.getElementById("tijelo").appendChild(cln);
 }
 </script>
-<script
-  src="https://code.jquery.com/jquery-3.5.1.js"
-  integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
-  crossorigin="anonymous"></script>
-  <script>
-  var ukup=0;
-  $(document).ready(function()
-  {
-      $("#sadrzaj").change(function()
-      {
-          var ukupno=0;
-          $("input[name=price]").each(function()
-          {
-              ukupno+=parseFloat($(this).val())
-          })
-          $("input[name=qty]").each(function()
-          {
-              ukupno=ukupno*parseFloat($(this).val())
-          })
-          $("input[name=discount]").each(function()
-          {
-              ukupno=ukupno-((parseFloat($(this).val())/100)*ukupno)
-          })
-           /*$("input[name=qty]").each(function()
-          {
-              ukupno*=parseFloat($(this).val())
-          })*/
-          console.log(ukupno)
-          $("#rezultat").val(ukupno)
-      })
-  })
-  </script>
+
+  
 {% endblock %}

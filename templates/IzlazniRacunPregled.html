@@ -111,7 +111,7 @@ body
 </style>
 <nav class="navbar navbar-expand-lg navbar-dark primary-color pb-2 pt-2 ">
 <ul class="navbar-nav mr-auto" >
-    <li> <a class="navbar-brand" href="#" id="naslov" style="font-size: 25px; padding:0px; font-weight:300;">Knjiga izlaznih računa</a></li>
+    <li> <a class="navbar-brand" href="Pocetna" id="naslov" style="font-size: 25px; padding:0px; font-weight:300;">Knjiga izlaznih računa</a></li>
         </ul>
          <ul class="navbar-nav nav-flex-icons">
       <!-- Basic dropdown -->
@@ -236,8 +236,9 @@ body
     {% endfor %}
   {% endif %}
   {% for racun in page_obj %}
+  
     <tr class="animated fadeIn">
-      <th scope="row">{{forloop.counter}}</th>
+      <th scope="row"><a href="{% url 'izlaz' id=racun.id %}">{{forloop.counter}}</a></th>
       <td>{{racun.id}}</td>
       <td>{{racun.datum_racuna1}}</td>
       <td>{{racun.rok_otplate1}}</td>
@@ -245,9 +246,10 @@ body
       <td>{{racun.partner.porezni_broj}}</td>
       <td>{{racun.partner.porezni_broj}}</td>
       <td>{{racun.ukupno1}} KM</td>
-      <td>{{racun.osnovica1}} KM</td>
+      <td>{{racun.osnovica1}} KMsda</td>
       <td>{{racun.pdv}} KM</td>
     </tr>
+    
 {% endfor %}
   </tbody>
 
@@ -303,7 +305,7 @@ body
  <table id="tablePreview" class="table table-bordered" >
 <thead>
 <tr>
-      <th ><div style="display:flex; justify-content:center; align-items:center; flex-direction:column">0,000 KM dugovanja<button type="button" class="btn btn-primary">Lista dužnika</button></div></th>
+      <th ><div style="display:flex; justify-content:center; align-items:center; flex-direction:column">{{ukupno_dugovanja}} KM dugovanja <a href="Duznici"><button type="button" class="btn btn-primary">Lista dužnika</button></a></div></th>
       <th ><div style="display:flex; justify-content:center; align-items:center; flex-direction:column; line-height: 0.5;"><p>UKUPNO {{ukupno}}</p><p>Osnovica: {{osnovica}} KM</p><p>PDV: {{pdv}} KM</p></div></th>
 </tr>
     </thead>

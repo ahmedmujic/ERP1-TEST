@@ -1,0 +1,128 @@
+{% extends "home-page.html"%}
+{% block content %}
+<script>
+$("#loadbasic").click(function(){   $("#result").html(ajax_load).load(loadUrl);
+    });
+</script>
+
+  <body>
+    <nav
+      class="navbar navbar-expand-lg navbar-dark primary-color d-flex justify-content-center"
+    >
+      <!-- Navbar brand -->
+      <a class="navbar-brand" href="#">BILANS</a>
+    </nav>
+    <!--/.Navbar-->
+    <!--Table-->
+    <table id="tablePreview" class="table table-bordered">
+      <!--Table head-->
+      <thead>
+        <tr>
+          <th
+            rowspan="2"
+            style="font-size: large; padding: 0px; font-weight: 400;"
+          >
+            Redni broj
+          </th>
+          <th
+            rowspan="2"
+            style="font-size: large; padding: 0px; font-weight: 400;"
+          >
+            Naziv <br />
+            konta
+          </th>
+          <th
+            rowspan="2"
+            style="font-size: large; padding: 0px; font-weight: 400;"
+          >
+            Datum
+          </th>
+
+          <th
+            colspan="2"
+            style="font-size: large; padding: 0px; font-weight: 500;"
+          >
+            Bilans stanja
+          </th>
+          <th
+            colspan="2"
+            style="font-size: large; padding: 0px; font-weight: 500;"
+          >
+            Bilans uspjeha
+          </th>
+        </tr>
+        <tr id="drugiRed">
+          <th>Aktiva</th>
+          <th>Pasiva</th>
+          <th>Prihodi</th>
+          <th>Rashodi</th>
+        </tr>
+      </thead>
+      <!--Table head-->
+      <!--Table body-->
+      <tbody>
+          {% if bilansi %}
+          {% for bilans in bilansi %}
+        <tr>
+          <th scope="row">{{bilans.id}}</th>
+          <td>{{bilans.konto.naziv}}</td>
+          <td>{{bilans.datum}}</td>
+          <td>{{bilans.aktiva}}</td>
+          <td>{{bilans.pasiva}}</td>
+          <td>{{prihodi}}</td>
+          <td>{{rashodi}}</td>
+
+          <!-- <td>dummy txt/td>
+      <td>dummy txt</td>
+      <td>dummy txt/td> -->
+        </tr>
+        {% endfor %}
+        {% endif %}
+
+      </tbody>
+    </table>
+
+    <!-- <table id="tablePreview" class="table table-bordered" style=" position:fixed; bottom:0; width: 100%; margin:0px;">
+<thead>
+<tr>
+      <th ><div style="display:flex; justify-content:center; align-items:center; flex-direction:column">0,000 KM dugovanja<button type="button" class="btn btn-primary">Lista dužnika</button></div></th>
+      <th ><div style="display:flex; justify-content:center; align-items:center; flex-direction:column; line-height: 0.5;"><p>UKUPNO 0,000 KM</p><p>Osnovica: 0,000 KM</p><p>PDV: 0,000 KM</p></div></th>
+</tr>
+    </thead>
+</table> -->
+  </body>
+</html>
+<style>
+  th {
+    border-collapse: collapse;
+    border-spacing: 0;
+    text-align: center;
+    vertical-align: middle;
+  }
+  .table thead th {
+    vertical-align: middle;
+    border-bottom: 2px solid #dee2e6;
+  }
+  thead {
+    background-color: #edf3f5;
+  }
+  thead th {
+    height: 100px;
+    text-align: center;
+  }
+  thead #drugiRed th {
+    height: 80px;
+  }
+  .btn {
+    border-radius: 20px;
+    width: 180px;
+    height: 50px;
+  }
+  body {
+    height: 100vh;
+  }
+  * {
+    text-align: center;
+  }
+</style>
+{% endblock %}

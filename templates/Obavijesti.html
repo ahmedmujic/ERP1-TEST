@@ -1,0 +1,131 @@
+{% extends "home-page.html"%}
+{% block content %}
+<script>
+$("#loadbasic").click(function(){   $("#result").html(ajax_load).load(loadUrl);
+    });
+</script>
+<style>
+.navbar-nav
+{
+  align-items:center;
+}
+.navbar.navbar-dark form .md-form input
+{
+  text-align:left;
+}
+.mr-auto, .mx-auto {
+    margin-left: auto!important;
+    margin-right: auto!important;
+}
+.naslov
+{
+  font-weight:800;
+}
+.dropdown-menu
+{
+  
+  left:1;
+}
+.dropdown-toggle::after
+{
+  display:none;
+}
+</style>
+<body>
+
+  <nav class="navbar navbar-expand-lg navbar-dark primary-color d-flex justify-content-center">
+
+  <!-- Navbar brand -->
+  
+  <a class="navbar-brand" href="#">OBAVIJESTI</a>
+
+ 
+
+</nav>
+<!--/.Navbar-->
+<!--Table-->
+<table id="tablePreview" class="table table-bordered">
+<!--Table head-->
+  
+   <thead>
+        <tr>
+          <th
+            rowspan="1"
+            style="font-size: large; padding: 0px; font-weight: 400;"
+          >
+            Datum obavijesti
+          </th>
+          <th
+            rowspan="1"
+            style="font-size: large; padding: 0px; font-weight: 400;"
+          >
+            Vrijeme
+          </th>
+          <th
+            rowspan="6"
+            style="font-size: large; padding: 0px; font-weight: 400;"
+          >
+            Opis obavijesti
+          </th>
+    </thead>
+
+  <tbody>
+ {% if obavijesti %}
+  {% for obavijest in obavijesti reversed %}
+    <tr>
+      <th class="ob">{{ obavijest.date.date }}</th>
+      <th class="ob">{{ obavijest.date.time }}</th>
+      <th class="ob">{{ obavijest.opisObavijesti}}</th>
+    </tr>
+  {% endfor %}
+  {% endif %}
+  </tbody>
+
+</table>
+
+
+
+
+</body>
+</html>
+<style>
+
+th
+{
+    border-collapse:collapse;
+    border-spacing:0;
+    text-align: center;
+    vertical-align:middle;
+}
+.table thead th {
+    vertical-align: middle;
+    border-bottom: 2px solid #dee2e6;
+}
+thead
+{
+    background-color: #EDF3F5;
+    
+}
+thead th
+{
+    height:100px;
+    text-align: center;
+}
+thead #drugiRed th
+{
+    height:80px;
+}
+.btn
+{
+    border-radius:20px;
+    width:180px;
+    height:50px;
+}
+body
+{
+        height: 100vh;
+}
+
+
+</style>
+{% endblock %}

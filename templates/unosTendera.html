@@ -1,0 +1,133 @@
+{% extends "home-page.html"%} {% block content %}
+<script>
+  $("#loadbasic").click(function () {
+    $("#result").html(ajax_load).load(loadUrl);
+  });
+</script>
+<div class="container animated fadeIn">
+  <form
+    class="border border-light p-5"
+    method="post"
+    action=""
+    enctype="multipart/form-data"
+  >
+    {% csrf_token %}
+    <p class="h4 mb-4 text-center">Unos tendera</p>
+
+    <label for="defaultLoginFormEmail">Unesi naziv tendera</label>
+    <input
+      type="text"
+      id="defaultLoginFormEmail"
+      class="form-control mb-4"
+      name="naziv"
+      placeholder="Naziv tendera"
+    />
+    <label for="defaultLoginFormEmail ">Datum objave tendera</label>
+    <input
+      type="date"
+      name="datumObjave"
+      id="defaultLoginFormEmail"
+      class="form-control mb-4"
+    />
+    <label for="defaultLoginFormEmail">Datum isteka tendera</label>
+    <input
+      type="date"
+      id="defaultLoginFormEmail"
+      name="datumIsteka"
+      class="form-control mb-4"
+    />
+
+    <label for="defaultLoginFormEmail"
+      >Unesite ime i prezime prvog člana komisije</label
+    >
+    <input
+      type="text"
+      id="defaultLoginFormEmail"
+      class="form-control mb-4"
+      name="prviclan"
+      placeholder="Ime i prezime člana"
+    />
+
+    <label for="defaultLoginFormEmail"
+      >Unesite ime i prezime drugog člana komisije</label
+    >
+    <input
+      type="text"
+      id="defaultLoginFormEmail"
+      class="form-control mb-4"
+      name="drugiclan"
+      placeholder="Ime i prezime člana"
+    />
+    <div class="input-group">
+      <div class="input-group-prepend">
+        <span class="input-group-text" id="inputGroupFileAddon01">Upload</span>
+      </div>
+      <div class="custom-file">
+        <input
+          type="file"
+          class="custom-file-input"
+          id="inputGroupFile01"
+          aria-describedby="inputGroupFileAddon01"
+          name="pdf"
+        />
+        <label class="custom-file-label" for="inputGroupFile01"
+          >Choose file</label
+        >
+      </div>
+    </div>
+
+    <!-- <div class="d-flex justify-content-between">
+      <div>
+        <div class="custom-control custom-checkbox">
+          <input
+            type="checkbox"
+            class="custom-control-input form-control"
+            id="defaultLoginFormRemember"
+          />
+          <label class="custom-control-label" for="defaultLoginFormRemember"
+            >Remember me</label
+          >
+        </div>
+      </div>
+      <div>
+        <a href="">Forgot password?</a>
+      </div>
+    </div> -->
+
+    <button class="btn btn-info btn-block my-4" type="submit">
+      Unesi tender
+    </button>
+
+    <!-- <div class="text-center">
+      <p>
+        Not a member?
+        <a href="">Register</a>
+      </p>
+
+      <p>or sign in with:</p>
+      <a type="button" class="light-blue-text mx-2">
+        <i class="fab fa-facebook-f"></i>
+      </a>
+      <a type="button" class="light-blue-text mx-2">
+        <i class="fab fa-twitter"></i>
+      </a>
+      <a type="button" class="light-blue-text mx-2">
+        <i class="fab fa-linkedin-in"></i>
+      </a>
+      <a type="button" class="light-blue-text mx-2">
+        <i class="fab fa-github"></i>
+      </a>
+    </div> -->
+  </form>
+</div>
+
+<style>
+  .container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-top: 5rem;
+  }
+</style>
+
+{% endblock %}

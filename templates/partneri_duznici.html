@@ -29,20 +29,13 @@
 {
   display:none;
 }
-.dodaj {
-    background-color: rgb(163, 183, 233);
-    width: 225px;
-    height: 40px;
-    border: none;
-    border-radius: 25px;
-}
 </style>
 
 <body>
 
   <nav class="navbar navbar-expand-lg navbar-dark primary-color pb-2 pt-2 ">
 <ul class="navbar-nav mr-auto" >
-    <li> <a class="navbar-brand" href="#" id="naslov" style="font-size: 25px; padding:0px; font-weight:300;">Partneri</a></li></li>
+    <li> <a class="navbar-brand" href="Pocetna" id="naslov" style="font-size: 25px; padding:0px; font-weight:300;">Duznici</a></li></li>
         </ul>
          <ul class="navbar-nav nav-flex-icons">
       <!-- Basic dropdown -->
@@ -106,11 +99,7 @@
     <th rowspan="1" style="font-size: large; padding:0px; font-weight:400;">Adresa</th>   
     <th rowspan="1" style="font-size: large; padding:0px; font-weight:400;">Država</th> 
     <th rowspan="1" style="font-size: large; padding:0px; font-weight:400;">E-mail</th> 
-    <th rowspan="1" style="font-size: large; padding:0px; font-weight:400;">Dug
-    <div class="dugme"></div>
-            <a href="NewBill"><button class="dodaj mt-3" onclick="Dodaj()" type="button" id="dugme"><i class="fas fa-plus-circle"></i> Dodaj partnera</button></a>
-        </div>
-    </th> 
+    <th rowspan="1" style="font-size: large; padding:0px; font-weight:400;">Dug</th> 
   </tr>
   </thead>
   
@@ -124,16 +113,17 @@
       <td>{{racun.adresa}}</td>
       <td>{{racun.drzava.name}} <i class="{{ racun.drzava.flag_css }}"></i></td>
       <td>{{racun.email}}</td>
-      {% if racun.dug_prema > 1000 %}
-      <td style="color:red;">{{racun.dug_prema}} KM</td>
+      {% if racun.iznos > 1000 %}
+      <td style="color:red;">{{racun.iznos}} KM</td>
       {% else %}
-      <td style="color:green;">{{racun.dug_prema}} KM</td>
+      <td style="color:green;">{{racun.iznos}} KM</td>
       {% endif %}
     </tr>
     {% endfor %}
   {% endif %}
  
     {% for racun in page_obj %}
+    {% if racun.dug_prema > 0 %}
     <tr class="animated fadeIn">
       <th scope="row">{{forloop.counter}}</th>
       <td>{{racun.naziv}}</td>
@@ -141,12 +131,15 @@
       <td>{{racun.adresa}}</td>
       <td>{{racun.drzava.name}} <i class="{{ racun.drzava.flag_css }}"></i></td>
       <td>{{racun.email}}</td>
-      {% if racun.iznos_prema > 1000 %}
-      <td style="color:red;">{{racun.iznos_prema}} KM</td>
+      {% if racun.dug_prema > 100 %}
+      <td style="color:red;">{{racun.dug_prema}} KM</td>
       {% else %}
-      <td style="color:green;">{{racun.iznos_prema}} KM</td>
+      <td style="color:green;">{{racun.dug_prema}} KM</td>
       {% endif %}
     </tr>
+    
+    {% endif %}
+    
 {% endfor %}
   </tbody>
 

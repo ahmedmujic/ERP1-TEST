@@ -1,0 +1,106 @@
+{% extends "home-page.html"%}
+{% block content %}
+<script>
+  $("#loadbasic").click(function () {
+    $("#result").html(ajax_load).load(loadUrl);
+  });
+</script>
+<div class="container">
+  <form
+    class="border border-light p-5"
+    method="post"
+    action=""
+    enctype="multipart/form-data"
+  >
+    {% csrf_token %}
+    <p class="h4 mb-4 text-center">Unos nabavke</p>
+
+    <label for="defaultLoginFormEmail">Unesi razlog nabavke</label>
+    <input
+      type="text"
+      id="defaultLoginFormEmail"
+      class="form-control mb-4"
+      name="razlog"
+      placeholder="Naziv tendera"
+    />
+    <label for="defaultLoginFormEmail ">Datum nabavke</label>
+    <input
+      type="date"
+      name="datumNabavke"
+      id="defaultLoginFormEmail"
+      class="form-control mb-4"
+    />
+    <label for="defaultLoginFormEmail">Izaberite partnera</label>
+    <select
+      id="partneri"
+      name="partner"
+      class="browser-default custom-select mb-4"
+    >
+      <option>Unesite dobavljača</option>
+      {% if partneri %} {% for partner in partneri %}
+      <option value="{{ partner.id }}">{{ partner.naziv }}</option>
+       {% endfor %} 
+    </select>
+   {% endif %}
+
+    <label for="defaultLoginFormEmail">Unesite ugovor</label>
+    <select
+      id="partneri"
+      name="ugovor"
+      class="browser-default custom-select mb-4"
+    >
+      <option>Izaberite ugovor</option>
+      {% if ugovori %} {% for ugovor in ugovori %}
+      <option value="{{ ugovor.id }}">{{ ugovor.naziv }}</option>
+    </select>
+    {% endfor %} {% endif %}
+
+    <label for="defaultLoginFormEmail">Unesite račun </label>
+    <select
+      id="partneri"
+      name="racun"
+      class="browser-default custom-select mb-4"
+    >
+      <option>Izaberite račun</option>
+      {% if racuni %} {% for racun in racuni %}
+      <option value="{{ racun.id }}">{{ racun.naziv }}</option>
+    </select>
+    {% endfor %} {% endif %}
+
+    <button class="btn btn-info btn-block my-4" type="submit">
+      Unesi nabavku
+    </button>
+
+    <!-- <div class="text-center">
+      <p>
+        Not a member?
+        <a href="">Register</a>
+      </p>
+
+      <p>or sign in with:</p>
+      <a type="button" class="light-blue-text mx-2">
+        <i class="fab fa-facebook-f"></i>
+      </a>
+      <a type="button" class="light-blue-text mx-2">
+        <i class="fab fa-twitter"></i>
+      </a>
+      <a type="button" class="light-blue-text mx-2">
+        <i class="fab fa-linkedin-in"></i>
+      </a>
+      <a type="button" class="light-blue-text mx-2">
+        <i class="fab fa-github"></i>
+      </a>
+    </div> -->
+  </form>
+</div>
+
+<style>
+  .container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-top: 5rem;
+  }
+</style>
+
+{% endblock %}
