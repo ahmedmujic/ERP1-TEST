@@ -7,7 +7,7 @@
 </script>
 <div class="container">
   <form
-    class="border border-light p-5"
+    class="border border-light p-5 animated fadeIn"
     method="post"
     action=""
     enctype="multipart/form-data"
@@ -15,14 +15,12 @@
     {% csrf_token %}
     <p class="h4 mb-4 text-center">Unos nabavke</p>
 
-    <label for="defaultLoginFormEmail">Unesi razlog nabavke</label>
-    <input
-      type="text"
-      id="defaultLoginFormEmail"
-      class="form-control mb-4"
-      name="razlog"
-      placeholder="Naziv tendera"
-    />
+    <label for="defaultLoginFormEmail">Unesi razlog nabavke (plan)</label>
+     <div class="custom-file">
+    <input type="file" class="custom-file-input" id="inputGroupFile01"
+      aria-describedby="inputGroupFileAddon01" name="razlog">
+    <label class="custom-file-label" for="inputGroupFile01">Choose file</label>
+  </div>
     <label for="defaultLoginFormEmail ">Datum nabavke</label>
     <input
       type="date"
@@ -51,9 +49,10 @@
     >
       <option>Izaberite ugovor</option>
       {% if ugovori %} {% for ugovor in ugovori %}
-      <option value="{{ ugovor.id }}">{{ ugovor.naziv }}</option>
+      <option value="{{ ugovor.id }}">{{ ugovor.id }}</option>
+      {% endfor %}
     </select>
-    {% endfor %} {% endif %}
+     {% endif %}
 
     <label for="defaultLoginFormEmail">Unesite račun </label>
     <select
@@ -63,9 +62,10 @@
     >
       <option>Izaberite račun</option>
       {% if racuni %} {% for racun in racuni %}
-      <option value="{{ racun.id }}">{{ racun.naziv }}</option>
+      <option value="{{ racun.id }}">{{ racun.id }}</option>
+      {% endfor %}
     </select>
-    {% endfor %} {% endif %}
+     {% endif %}
 
     <button class="btn btn-info btn-block my-4" type="submit">
       Unesi nabavku

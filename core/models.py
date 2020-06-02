@@ -113,7 +113,7 @@ class Asortiman(models.Model):
 
     def cijena_s_pdv(self, cijena, popust):
         cijena_s_pdv = cijena + ((17 / 100) * cijena)
-        return (cijena_s_pdv - (cijena_s_pdv * (popust / 100.0)))
+        return round((cijena_s_pdv - (cijena_s_pdv * (popust / 100.0))), 2)
 
 
 class Kategorija(models.Model):
@@ -121,8 +121,8 @@ class Kategorija(models.Model):
 
 
 TIP_RACUNA = [
-    ('ulazni', 'Ulazni'),
-    ('izlazni', 'Izlazni')
+    ('Ulazni', 'Ulazni'),
+    ('Izlazni', 'Izlazni')
 ]
 
 
@@ -172,6 +172,9 @@ class Partner(models.Model):
     dugovanje_prema = models.ManyToManyField(DugPartner, null=True, blank=True)
     dugovanje_od = models.ManyToManyField(DugNas, null=True, blank=True)
 
+    def __str__(self):
+        return self.naziv
+
     def dug_prema(self):
         ukupno1 = 0
         for dug in self.dugovanje_prema.all():
@@ -213,6 +216,9 @@ class Artikal(Asortiman):
         Kategorija, on_delete=models.CASCADE, default="Pocetna")
     dobavljac = models.ForeignKey(
         Partner, on_delete=models.CASCADE, related_name='Partner_id1_id', null=True, blank=True)
+
+    def __str__(self):
+        return self.naziv
 
 
 class Racun(models.Model):
@@ -344,7 +350,8 @@ class Blagajna(models.Model):
     iznosBezPDV = models.FloatField(default=0.0)
 
     def iznos(self):
-        self.iznosPDV = self.sifra_racuna.ukupno1
+        self.iznosPDV = round(self.sifra_racuna.ukupno1, 2)
+        self.iznosBezPDV = round((self.iznosPDV - (self.iznosPDV * 0.17)), 2)
 
 
 PAYMENT_CHOISES = (

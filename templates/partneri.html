@@ -42,7 +42,7 @@
 
   <nav class="navbar navbar-expand-lg navbar-dark primary-color pb-2 pt-2 ">
 <ul class="navbar-nav mr-auto" >
-    <li> <a class="navbar-brand" href="#" id="naslov" style="font-size: 25px; padding:0px; font-weight:300;">Partneri</a></li></li>
+    <li> <a class="navbar-brand" href="Pocetna" id="naslov" style="font-size: 25px; padding:0px; font-weight:300;">Partneri</a></li></li>
         </ul>
          <ul class="navbar-nav nav-flex-icons">
       <!-- Basic dropdown -->
@@ -96,6 +96,18 @@
 <!--/.Navbar-->
 <!--Table-->
 <table id="tablePreview" class="table table-bordered animated fadeIn">
+<div class="animated slideInDown">
+    {% if messages %}
+    
+    {% for message in messages %}
+        <div class="alert alert-success" role="alert" style="margin-bottom:0px;     position: relative;
+    width: 100%;
+    z-index: 350;">{{message}}</div>
+        
+    {% endfor %}
+
+{% endif %}
+</div>
 <!--Table head-->
   <thead >
   <tr>
@@ -107,9 +119,7 @@
     <th rowspan="1" style="font-size: large; padding:0px; font-weight:400;">Država</th> 
     <th rowspan="1" style="font-size: large; padding:0px; font-weight:400;">E-mail</th> 
     <th rowspan="1" style="font-size: large; padding:0px; font-weight:400;">Dug
-    <div class="dugme"></div>
-            <a href="NewBill"><button class="dodaj mt-3" onclick="Dodaj()" type="button" id="dugme"><i class="fas fa-plus-circle"></i> Dodaj partnera</button></a>
-        </div>
+   
     </th> 
   </tr>
   </thead>
@@ -133,7 +143,7 @@
     {% endfor %}
   {% endif %}
  
-    {% for racun in page_obj %}
+    {% for racun in page_obj reversed %}
     <tr class="animated fadeIn">
       <th scope="row">{{forloop.counter}}</th>
       <td>{{racun.naziv}}</td>
@@ -151,8 +161,8 @@
   </tbody>
 
 </table>
-<nav class="d-flex justify-content-center fadeIn mt-5" style=" position:fixed; bottom:0; width: 100%; margin:0px;visibility: visible;">
-        <ul class="pagination pg-blue">
+<nav class="d-flex justify-content-center fadeIn mb-5" style=" position:fixed; bottom:0; width: 100%; margin-bottom:30px;visibility: visible;">
+        <ul class="pagination pg-blue mb-5">
           {% if page_obj.has_previous %}
           <!--Arrow left-->
           <li class="page-item">
@@ -178,6 +188,19 @@
         </ul>
       </nav>
      </div> 
+     <footer class=" font-small blue" style="position:fixed;bottom:0;width:100%;height:65px;" style="background-color:#4285F4;">
+
+  <!-- Copyright -->
+  <div class="footer-copyright text-right py-3 pr-5 animated slideInUp"><a href="NewBill"><button style="background-color: rgb(163, 183, 233);
+    width: 225px;
+    height: 40px;
+    border: none;
+    border-radius: 25px;
+    color:white;"><i class="fas fa-plus-circle mr-2"></i>Unos novog partnera</button></a>
+  </div>
+  <!-- Copyright -->
+
+</footer>
       <!--Pagination-
 
 <!-- <table id="tablePreview" class="table table-bordered" style=" position:fixed; bottom:0; width: 100%; margin:0px;">

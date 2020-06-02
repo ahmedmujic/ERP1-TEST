@@ -6,7 +6,7 @@
 </script>
 <div class="container">
   <form
-    class="border border-light p-5"
+    class="border border-light p-5 animated fadeIn"
     method="post"
     action=""
     enctype="multipart/form-data"
@@ -16,11 +16,11 @@
 
     <label for="defaultLoginFormEmail">Unesi iznos avansa</label>
     <input
-      type="text"
+      type="number"
       id="defaultLoginFormEmail"
       class="form-control mb-4"
       name="iznos"
-      placeholder="Naziv tendera"
+      placeholder="Unos avansa"
     />
     <label for="defaultLoginFormEmail ">Unesite datum isteka avansa</label>
     <input
@@ -38,8 +38,9 @@
       <option>Izaberite partnera</option>
       {% if partneri %} {% for partner in partneri %}
       <option value="{{partner.id}}">{{partner.naziv}}</option>
+      {% endfor %}
     </select>
-    {% endfor %} {% endif %}
+     {% endif %}
 
     <label for="defaultLoginFormEmail">Unesite napomenu</label>
     <input

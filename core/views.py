@@ -44,7 +44,6 @@ def NoviRacun(request):
             racun.partner = partner
             i = 0
             for kategorija1 in kategorija:
-                i
                 print(kategorija1)
                 kategorija = Kategorija.objects.get(id=kategorija1)
                 if kategorija.naziv == "Usluga":
@@ -86,6 +85,14 @@ def NoviRacun(request):
             racun.save()
             racun.ukupno1 = racun.osnovica1 + racun.pdv
             racun.save()
+            if racun_tip == "Ulazni":
+                budzet = Budzet.objects.get(id=1)
+                budzet.ukupno = budzet.ukupno - racun.ukupno1
+                budzet.save()
+            elif racun_tip == "Izlazni":
+                budzet = Budzet.objects.get(id=1)
+                budzet.ukupno = budzet.ukupno + racun.ukupno1
+                budzet.save()
             obavjest = Obavijesti.create(
                 request.user, 'Kreirali ste ' + racun_tip + " račun.")
             obavjest.save()
@@ -187,21 +194,23 @@ class MyLoginView(SignupView):
 
 def Pocetna(request):
     user = None
-    ulazni_racuni = Racun.objects.filter(tip="Ulazni")
-    izlazni_racuni = Racun.objects.filter(tip="Izlazni")
+    ulazni_racuni = Racun.objects.all().filter(tip__startswith="Ulazni")
+    izlazni_racuni = Racun.objects.all().filter(tip__startswith="Izlazni")
     ukupno_zarada = 0
     ukupno_trosak = 0
     for racun in ulazni_racuni:
         ukupno_trosak = ukupno_trosak + racun.ukupno1
     for racun in izlazni_racuni:
         ukupno_zarada = ukupno_zarada + racun.ukupno1
-    budzet = ukupno_zarada - ukupno_trosak
+    print(ukupno_trosak)
+    print(ukupno_zarada)
+    budzet = Budzet.objects.get(id=1)
     if request.user.is_authenticated:
         context = {
             'user': request.user,
             'zarada': round(ukupno_zarada, 2),
             'trosak': round(ukupno_trosak, 2),
-            'budzet': round(budzet, 2)
+            'budzet': round(budzet.ukupno, 2)
         }
     return render(request, 'Home_page.html', context)
 
@@ -571,7 +580,8 @@ def NewBill(request):
         obavjest = Obavijesti.create(
             request.user, 'Unijeli ste novog partnera')
         obavjest.save()
-        return render(request, "NewBill.html")
+        messages.info(request, "Uspješno ste unijeli partnera")
+        return redirect(Partneri)
     if request.method == 'GET':
         ugovori = ['Ugovor o djelu', 'Na daljinu', 'Potpisani']
         context = {
@@ -741,7 +751,7 @@ def Artikli(request):
     racun_trazeni = 0
     ukupno_svi = 0
     racuni = Artikal.objects.all()
-    paginator = Paginator(racuni, 8)
+    paginator = Paginator(racuni, 6)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
     context = {
@@ -756,9 +766,9 @@ def Artikli(request):
         artikal_naziv = request.POST.get('naziv_artikal', False)
         cijena1 = request.POST.get('cijena_od', False)
         cijena2 = request.POST.get('cijena_do', False)
-        racuni1 = Asortiman.objects.all().select_related('artikal')
-        things = Asortiman.objects.filter(
-            naziv__contains=artikal_naziv).select_related('artikal')
+        racuni1 = Artikal.objects.all()
+        things = Artikal.objects.filter(
+            naziv__contains=artikal_naziv)
         if cijena1 and cijena2:
             for artikal12 in racuni1:
                 if artikal12.cijena_s_pdvom > float(cijena1) and artikal12.cijena_s_pdvom < float(cijena2):
@@ -790,7 +800,7 @@ def Usluge(request):
     racun_trazeni = 0
     ukupno_svi = 0
     racuni = Usluga.objects.all()
-    paginator = Paginator(racuni, 8)
+    paginator = Paginator(racuni, 6)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
     context = {
@@ -805,9 +815,9 @@ def Usluge(request):
         artikal_naziv = request.POST.get('naziv_artikal', False)
         cijena1 = request.POST.get('cijena_od', False)
         cijena2 = request.POST.get('cijena_do', False)
-        racuni1 = Asortiman.objects.all().select_related('usluga')
-        things = Asortiman.objects.filter(
-            naziv__contains=artikal_naziv).select_related('usluga')
+        racuni1 = Usluga.objects.all()
+        things = Usluga.objects.filter(
+            naziv__contains=artikal_naziv)
         if cijena1 and cijena2:
             for artikal12 in racuni1:
                 if artikal12.cijena_s_pdvom > float(cijena1) and artikal12.cijena_s_pdvom < float(cijena2):
@@ -839,7 +849,7 @@ def Ugovori(request):
     racun_trazeni = 0
     ukupno_svi = 0
     racuni = Ugovor.objects.all()
-    paginator = Paginator(racuni, 8)
+    paginator = Paginator(racuni, 6)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
     context = {
@@ -893,7 +903,7 @@ class Pregled():
         ukupno2 = 0
         racun_trazeni = 0
         ukupno_svi = 0
-        paginator = Paginator(self.sadrzaj, 8)
+        paginator = Paginator(self.sadrzaj, 8 - 2)
         page_obj = paginator.get_page(self.page_number)
         context = {
             'artikli': self.sadrzaj,
@@ -1028,7 +1038,7 @@ def Partneri(request):
         return render(request, "partneri.html", context)
     if request.method == "POST":
         for partner in sadrzaj:
-            partner.iznos = partner.dug()
+            partner.iznos_prema = partner.dug_prema()
         artikal_naziv = request.POST.get('naziv_artikal', False)
         things = Partner.objects.filter(
             naziv__contains=artikal_naziv)
@@ -1050,11 +1060,9 @@ def Nabavke(request):
         context = cont1.get_metoda(sadrzaj, page_number)
         return render(request, "nabavke.html", context)
     if request.method == "POST":
-        for partner in sadrzaj:
-            partner.iznos = partner.dug()
         artikal_naziv = request.POST.get('naziv_artikal', False)
         things = Nabavka.objects.filter(
-            naziv__contains=artikal_naziv)
+            partneri__naziv__contains=artikal_naziv)
         my_date1 = request.POST.get('cijena_od', False)
         my_date2 = request.POST.get('cijena_do', False)
         cont1 = Pregled()
@@ -1126,7 +1134,7 @@ def unosTendera(request):
         obavjest = Obavijesti.create(request.user, 'Kreirali ste tender')
         obavjest.save()
         messages.success(request, "Uspješno ste unijeli tender.")
-        return redirect(Pocetna)
+        return redirect(Tender)
 
     elif request.method == 'GET':
         return render(request, 'unosTendera.html')
@@ -1144,7 +1152,7 @@ def unosProjekta(request):
         obavjest = Obavijesti.create(request.user, 'Kreirali ste projekat')
         obavjest.save()
         messages.success(request, "Uspješno ste kreirali projekat.")
-        return redirect(Pocetna)
+        return redirect(Projekt)
     elif request.method == 'GET':
         partneri = Partner.objects.all()
         context = {
@@ -1167,7 +1175,7 @@ def unosAvansa(request):
         avans = Avans.objects.create(
             iznos=iznos, datum_validnosti=datum_validnosti, napomena=napomena, partner=partner)
         messages.success(request, "Uspješno ste unijeli plaćeni avans.")
-        return redirect(Pocetna)
+        return redirect(Avansi)
     elif request.method == 'GET':
         partneri = Partner.objects.all()
         context = {
@@ -1184,14 +1192,14 @@ def unosKonta(request):
         obavjest = Obavijesti.create(request.user, 'Unijeli ste konto')
         obavjest.save()
         messages.success(request, "Uspješno ste unijeli konto.")
-        return redirect(Pocetna)
+        return redirect(Konto1)
     elif request.method == 'GET':
         return render(request, 'unosKonta.html')
 
 
 def unosNabavke(request):
     if request.method == 'POST':
-        razlog = request.POST['razlog']
+        razlog = request.FILES.get('razlog', False)
         datum = request.POST['datumNabavke']
         ugovor = request.POST['ugovor']
         dobavljac = request.POST['partner']
@@ -1200,13 +1208,13 @@ def unosNabavke(request):
         ugovori = Ugovor.objects.get(pk=ugovor)
         partneri = Partner.objects.get(pk=dobavljac)
         racuni = Racun.objects.get(pk=racun)
-        nabavka.s_ugovori.add(ugovori)
-        nabavka.partner.add(partneri)
+        nabavka.s_ugovor.add(ugovori)
+        nabavka.partneri.add(partneri)
         nabavka.racuni.add(racuni)
         obavjest = Obavijesti.create(request.user, 'Unijeli  ste novu nabavku')
         obavjest.save()
         messages.success(request, "Uspješno ste unijeli nabavku.")
-        return redirect(Pocetna)
+        return redirect(Nabavke)
     elif request.method == 'GET':
         racun2 = NoviRacun(request)
         partneri = Partner.objects.all()
@@ -1220,6 +1228,14 @@ def unosNabavke(request):
         return render(request, 'unosNabavke.html', context)
 
 
+def pregledBlagajne(request):
+    blagajna = Blagajna.objects.all()
+    context = {
+        'racuni': blagajna
+    }
+    return render(request, 'Blagajna.html', context)
+
+
 def unosBlagajne(request):
     if request.method == 'POST':
         racun = request.POST['racun']
@@ -1230,22 +1246,16 @@ def unosBlagajne(request):
         racun = Racun.objects.get(pk=racun)
         blagajna = Blagajna.objects.create(
             sifra_racuna=racun, datum_obracuna=datum_obracuna, blagajnik=blagajnik)
+        blagajna.iznos()
+        blagajna.save()
         messages.success(request, "Uspješno ste unijeli poslovanje blagajne.")
-        return redirect(Pocetna)
+        return redirect(pregledBlagajne)
     elif request.method == 'GET':
         racuni = Racun.objects.all()
         context = {
             'racuni': racuni
         }
         return render(request, 'unosBlagajne.html', context)
-
-
-def pregledBlagajne(request):
-    blagajna = Blagajna.objects.all()
-    context = {
-        'racuni': blagajna
-    }
-    return render(request, 'Blagajna.html', context)
 
 
 def Transakcij(request):
@@ -1344,3 +1354,48 @@ def Bilansi(request):
         'prihodi': prihodi
     }
     return render(request, 'Bilans.html', conext)
+
+
+def unosArtikala(request):
+    if request.method == "POST":
+        naziv = request.POST.getlist('naziv_artikal', False)
+        popust = request.POST.getlist('popust_artikal', False)
+        kolicina = request.POST.getlist('kolicina_artikal', False)
+        cijena = request.POST.getlist('cijena_artikal', False)
+        opis = request.POST.getlist('opis_artikal', False)
+        selekcija1 = request.POST.getlist('kategorija', False)
+        dobavljac = request.POST.getlist('dobavljac', False)
+        for i in range(len(naziv)):
+            dobavljac1 = Partner.objects.get(id=dobavljac[i])
+            kategorija, created = Kategorija.objects.get_or_create(
+                naziv=selekcija1[i])
+            novi_racun = Artikal.objects.create(
+                naziv=naziv[i], opis=opis[i], kolicina=kolicina[i], cijena_bez_pdv=cijena[i], dobavljac=dobavljac1, popust=float(popust[i]), kategorija=kategorija)
+
+            novi_racun.cijena_s_pdvom = novi_racun.cijena_s_pdv(
+                float(cijena[i]), float(popust[i]))
+            novi_racun.save()
+        naziv_usluga = request.POST.getlist('naziv_usluga', False)
+        popust_usluga = request.POST.getlist('popust_usluga', False)
+        kolicina_usluga = request.POST.getlist('sati_usluga', False)
+        cijena_usluga = request.POST.getlist('cijena_usluga', False)
+        opis_usluga = request.POST.getlist('opis_usluga', False)
+        for i in range(len(naziv_usluga)):
+            novi_racun = Usluga.objects.create(
+                naziv=naziv_usluga[i], opis=opis_usluga[i], kolicina=kolicina_usluga[i], cijena_bez_pdv=cijena_usluga[i], popust=float(popust_usluga[i]))
+            novi_racun.cijena_s_pdvom = novi_racun.cijena_s_pdv(
+                float(cijena_usluga[i]), float(popust_usluga[i]))
+            novi_racun.save()
+        obavjest = Obavijesti.create(
+            request.user, 'Unijeli ste artikal/uslugu')
+        obavjest.save()
+        messages.info(request, "Uspješno ste unijeli artikal/uslugu")
+        return redirect(Artikli)
+    else:
+        kategorije = Kategorija.objects.all()
+        partneri = Partner.objects.all()
+        context = {
+            'kategorije': kategorije,
+            'partneri': partneri
+        }
+        return render(request, "unos_artikala.html", context)

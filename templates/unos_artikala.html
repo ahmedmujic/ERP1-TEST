@@ -1,0 +1,154 @@
+{% extends "home-page.html"%}
+{% load countries %}
+{% get_countries as countries %}
+{% block content%}
+<nav class="navbar navbar-expand-lg navbar-dark primary-color pb-2 pt-2 ">
+<a href="Pocetna"><i class="fas fa-arrow-left cyan-text"></i></a>
+<ul class="navbar-nav" style="width:100%;display:flex;justify-content:center;" >
+    <li> <a class="navbar-brand" href="#" id="naslov" style="font-size: 25px; padding:0px; font-weight:300;">Unos artikla</a></li>
+        </ul>
+</nav>
+<div style="display: flex;justify-content: center;">
+<form class="border border-light p-5 col-5 mt-5 animated fadeIn" action="unosArtikala" method='POST' id="forma" enctype="multipart/form-data">
+ 
+<div id="forma1">
+    {% csrf_token %}
+    
+    
+<div id="artikli" >
+    <input class="form-control mb-4" id="defaultLoginFormPassword" type="text" placeholder="Naziv artikla" name="naziv_artikal">
+    <select class="browser-default custom-select mb-5"
+    name="kategorija">
+    
+    <option selected >Odaberite kateogriju</option>
+    {% for kategorija in kategorije %}
+    <option value="{{ kategorija.naziv }}">{{ kategorija.naziv }}</option>
+    {% endfor %}
+</select>
+<select class="browser-default custom-select mb-5"
+    name="dobavljac">
+    
+    <option selected >Odaberite dobavljača</option>
+    {% for dobavljac in partneri %}
+    <option value="{{ dobavljac.id }}">{{ dobavljac.naziv }}</option>
+    {% endfor %}
+</select>
+    <input class="form-control mb-4" id="defaultLoginFormPassword" type="number" placeholder="Količina" name="kolicina_artikal">
+    <input type="number" step="0.01" class="form-control mb-4" placeholder="Cijena" name="cijena_artikal">
+    <div class="form-control mb-4" style="display:flex; flex-wrap:none; align-items:center; border:0px solid grey;"><input max="100" accuracy="2" min="0" class="form-control" id="defaultLoginFormPassword" type="number" placeholder="Popust" name="popust_artikal" style="text-align:left; width:100%"><span id="percent-sign">%</span></div>
+
+    <textarea id="textarea" class="form-control mb-4" placeholder="Opis" name="opis_artikal"></textarea>
+    <hr>
+    </div>
+    <div id="usluga" >
+    <input class="form-control mb-4" id="defaultLoginFormPassword" type="text" placeholder="Naziv usluga" name="naziv_usluga">
+    <input class="form-control mb-4" id="defaultLoginFormPassword" type="number" placeholder="Sati" name="sati_usluga">
+    
+    <input type="number" step="0.01" class="form-control mb-4" placeholder="Cijena" name="cijena_usluga">
+    <div class="form-control mb-4" style="display:flex; flex-wrap:none; align-items:center; border:0px solid grey;"><input max="100" accuracy="2" min="0" class="form-control" id="defaultLoginFormPassword" type="number" placeholder="Popust" name="popust_usluga" style="text-align:left; width:100%"><span id="percent-sign">%</span></div>
+
+    <textarea id="textarea" class="form-control mb-4" placeholder="Opis" name="opis_usluga"></textarea>
+    <hr>
+    </div>
+    </div>
+</div>
+</label>
+     <button class="btn btn-info btn-block my-4" type="submit" id="kreiraj" >Kreiraj!</button>
+</form>
+
+</div>
+ <button class="btn btn-info btn-block my-4" onclick="Dodaj()">Dodaj artikal!</button>
+<button class="btn btn-info btn-block my-4" onclick="DodajUsluga()">Dodaj uslugu!</button> 
+<script>
+function Dodaj()
+{
+  var itm = document.getElementById("artikli")
+  var cln = itm.cloneNode(true);
+  document.getElementById("forma1").appendChild(cln);
+}
+function DodajUsluga()
+{
+    var itm = document.getElementById("usluga")
+  var cln = itm.cloneNode(true);
+  document.getElementById("forma1").appendChild(cln);
+}
+function stvori()
+{   
+    document.getElementById("file_input").style.display="flex";
+    document.getElementById("ugovor-info").style.display="block";
+
+}
+function brisi()
+{
+    document.getElementById("file_input").style.display="none";
+     document.getElementById("ugovor-info").style.display="none";
+}
+</script>
+<style>
+/* The container */
+.container {
+  display: block;
+  position: relative;
+  padding-left: 35px;
+  margin-bottom: 12px;
+  cursor: pointer;
+  user-select: none;
+}
+
+/* Hide the browser's default radio button */
+.container input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+}
+
+/* Create a custom radio button */
+.checkmark {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 25px;
+  width: 25px;
+  background-color: #eee;
+  border-radius: 50%;
+}
+
+/* On mouse-over, add a grey background color */
+.container:hover input ~ .checkmark {
+  background-color: #ccc;
+}
+
+/* When the radio button is checked, add a blue background */
+.container input:checked ~ .checkmark {
+  background-color: #2196F3;
+}
+
+/* Create the indicator (the dot/circle - hidden when not checked) */
+.checkmark:after {
+  content: "";
+  position: absolute;
+  display: none;
+}
+
+/* Show the indicator (dot/circle) when checked */
+.container input:checked ~ .checkmark:after {
+  display: block;
+}
+
+/* Style the indicator (dot/circle) */
+.container .checkmark:after {
+ 	top: 9px;
+	left: 9px;
+	width: 8px;
+	height: 8px;
+	border-radius: 50%;
+	background: white;
+ #percent-sign {
+        top: 8px;
+        left: 45px;
+        color: #555;
+        position: absolute;
+        z-index: 1;
+    }
+</style>
+{% endblock %}

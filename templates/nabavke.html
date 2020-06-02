@@ -35,14 +35,14 @@ $("#loadbasic").click(function(){   $("#result").html(ajax_load).load(loadUrl);
 
   <nav class="navbar navbar-expand-lg navbar-dark primary-color pb-2 pt-2 ">
 <ul class="navbar-nav mr-auto" >
-    <li> <a class="navbar-brand" href="#" id="naslov" style="font-size: 25px; padding:0px; font-weight:300;">Nabavke</a></li></li>
+    <li> <a class="navbar-brand" href="Pocetna" id="naslov" style="font-size: 25px; padding:0px; font-weight:300;">Nabavke</a></li></li>
         </ul>
          <ul class="navbar-nav nav-flex-icons">
       <!-- Basic dropdown -->
    <li class="nav-item">   
     <a class="dropdown-toggle mr-4" type="button" data-toggle="dropdown" aria-haspopup="true"
       aria-expanded="false" style="color:white;">Pretraži<i class="fas fa-search ml-2"></i></a> 
-    <form class="animated fadeIn dropdown-menu " style="right:0;left:auto;background-color:rgba(66,133,244, 1);padding:10px;border:0px;" action="Artikli" method="post">
+    <form class="animated fadeIn dropdown-menu " style="right:0;left:auto;background-color:rgba(66,133,244, 1);padding:10px;border:0px;" action="Nabavke" method="post">
       {% csrf_token %}
       {% comment %} <select class="dropdown-item browser-default custom-select mb-5" data-toggle="dropdown" type="button"  aria-haspopup="true"
       aria-expanded="false" style="opacity:0.3;">
@@ -96,6 +96,18 @@ $("#loadbasic").click(function(){   $("#result").html(ajax_load).load(loadUrl);
 </nav>
 <!--/.Navbar-->
 <!--Table-->
+<div class="animated slideInDown">
+    {% if messages %}
+    
+    {% for message in messages %}
+        <div class="alert alert-success" role="alert" style="margin-bottom:0px;     position: relative;
+    width: 100%;
+    z-index: 350;">{{message}}</div>
+        
+    {% endfor %}
+
+{% endif %}
+</div>
 <table id="tablePreview" class="table table-bordered animated fadeIn">
 <!--Table head-->
   <thead>
@@ -135,24 +147,33 @@ $("#loadbasic").click(function(){   $("#result").html(ajax_load).load(loadUrl);
             style="font-size: large; padding: 0px; font-weight: 400;"
           >
             Iznos
-            <div class="dugme"></div>
-            <a href="unosnabavke"><button class="dodaj mt-2" onclick="Dodaj()" type="button" id="dugme"><i class="fas fa-plus-circle"></i> Dodaj novu nabavku</button></a>
-        </div>
+            
           </th>
         </tr>
       </thead>
   
   <tbody>
   {% if racun_trazeni %}
-  {% for racun in racun_trazeni %}
-  <tr style="background-color:rgba(139, 240, 193, 0.5);" class="animated fadeIn">
-      <th scope="row">Traženi račun: {{forloop.counter}}</th>
-      <td>{{racun.naziv}}</td>
-      <td>{{racun.dobavljac.naziv}}</td>
-      <td>{{racun.cijena_bez_pdv}} KM</td>
-      <td>{{racun.popust}} %</td>
-      <td>{{racun.cijena_s_pdvom}} KM</td>
-      <td>{{racun.kategorija.naziv}}</td>
+  {% for artikal in racun_trazeni %}
+       <tr style="background-color:rgba(139, 240, 193, 0.5);" class="animated fadeIn">
+      <th scope="row">{{forloop.counter}}</th>
+      <td>{{artikal.datum}}</td>
+      <td>
+      <a href="/media/{{artikal.razlog}}">Pregledaj razlog nabavke</a></td>
+      <td>
+      {% for ugovor in artikal.s_ugovor.all%}
+      {{ugovor.id}}
+      {% endfor %}
+      </td>
+      <td>
+      {% for partner in artikal.partneri.all%}
+      {{partner.naziv}}
+      {% endfor %}
+      </td>
+      <td>
+      {{artikal.iznos}} KM
+      
+      </td>
     </tr>
     {% endfor %}
   {% endif %}
@@ -209,6 +230,46 @@ $("#loadbasic").click(function(){   $("#result").html(ajax_load).load(loadUrl);
         </ul>
       </nav>
      </div> 
+     <nav class="d-flex justify-content-center fadeIn mb-5" style=" position:fixed; bottom:0; width: 100%; margin-bottom:30px;visibility: visible;">
+        <ul class="pagination pg-blue mb-5">
+          {% if page_obj.has_previous %}
+          <!--Arrow left-->
+          <li class="page-item">
+            <a class="page-link" href="?page={{ page_obj.previous_page_number }}" aria-label="Previous">
+              <span aria-hidden="true">&laquo;</span>
+            </a>
+          </li>
+          {% endif %}
+          <li class="page-item active">
+            <span class="page-link">
+              Stranica {{ page_obj.number }} od {{ page_obj.paginator.num_pages }}
+            </span>
+
+          </li>
+
+          {% if page_obj.has_next %}
+          <li class="page-item">
+            <a class="page-link" href="?page={{ page_obj.next_page_number }}" aria-label="Next">
+              <span aria-hidden="true">&raquo;</span>
+            </a>
+          </li>
+          {% endif %}
+        </ul>
+      </nav>
+     </div> 
+     <footer class=" font-small blue" style="position:fixed;bottom:0;width:100%;height:65px;" style="background-color:#4285F4;">
+
+  <!-- Copyright -->
+  <div class="footer-copyright text-right py-3 pr-5 animated slideInUp"><a href="unosnabavke"><button style="background-color: rgb(163, 183, 233);
+    width: 225px;
+    height: 40px;
+    border: none;
+    border-radius: 25px;
+    color:white;"><i class="fas fa-plus-circle mr-2"></i>Unos nove nabavke</button></a>
+  </div>
+  <!-- Copyright -->
+
+</footer>
       <!--Pagination-
 
 <!-- <table id="tablePreview" class="table table-bordered" style=" position:fixed; bottom:0; width: 100%; margin:0px;">

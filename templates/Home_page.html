@@ -74,7 +74,7 @@ function setChart(value,month, labels, defaultData, rashodi, tip1){
     data: {
         labels: labels,
         datasets: [{
-            label: 'Prihodi za ' + value + ' godinu',
+            label: 'Rashodi za ' + value + ' godinu',
             data: defaultData,
             backgroundColor: [
                 'rgba(255, 99, 132, 0.5)',
@@ -97,7 +97,7 @@ function setChart(value,month, labels, defaultData, rashodi, tip1){
         
         },
         {
-            label: 'Rashodi za ' + value + ' godinu',
+            label: 'Prihodi za ' + value + ' godinu',
             data: rashodi,
             backgroundColor: [
                 'rgba(15, 99, 132, 0.5)',
@@ -381,7 +381,7 @@ function funkcija(button, drop)
         <div>
           <div class="dropdown">
             <button class="dropbtn mr-4" type="button"
- id="button" onclick="funkcija(button,drop)"><i class="fas fa-book-open"></i>Glavna knjiga</button>
+ id="button" onclick="funkcija(button,drop)"><i class="fas fa-book-open"></i>Glavna knjiga<i class="fas fa-angle-down"></i></button>
             
             <div class="dropdown-menu" id="drop" style="width:93%;position:relative;">
               
@@ -416,8 +416,6 @@ function funkcija(button, drop)
  id="button3" onclick="funkcija(button3,drop3)"><i class="fas fa-chart-bar"></i>Izvještaji<i class="fas fa-angle-down"></i></button>
             <div class="dropdown-menu" id="drop3" style="width:93%;position:relative;top:0%;">
               <a href="Bilans" class="dropdown-item">Bilans</a>
-              <a href="#" class="dropdown-item">Dnevni izvještaj</a>
-              <a href="#" class="dropdown-item">Mjesečni izvještaj</a>
             </div>
           </div>
           <div class="dropdown">
@@ -425,7 +423,6 @@ function funkcija(button, drop)
  id="button4"  onclick="funkcija(button4,drop4)"><i class="fas fa-shopping-basket"></i>Nabavke<i class="fas fa-angle-down"></i></button>
             <div class="dropdown-menu" id="drop4" style="width:93%;position:relative;top:0%;">
               <a href="Nabavke" class="dropdown-item">Nabavke</a>
-              <a href="#" class="dropdown-item">Ponude</a>
               <a href="Avansi" class="dropdown-item">Avansi</a>
             </div>
           </div>
@@ -481,7 +478,7 @@ function funkcija(button, drop)
             <div class="progress-bar bg-danger" role="progressbar" style="width: 100%" aria-valuenow="5" aria-valuemin="0"
                 aria-valuemax="100"></div>
             </div>
-            <p class="card-text">Posavjerujte se za svoje poslovanje</p>
+            <p class="card-text">Loše</p>
 {% endif %}
           </div>
 
@@ -503,7 +500,7 @@ function funkcija(button, drop)
             <small>Nabavke:</small>
               <p class="text-uppercase text-muted mb-1"></p>
              
-              <h4 class="font-weight-bold mb-0">{{zarada}} KM</h4>
+              <h4 class="font-weight-bold mb-0">{{trosak}} KM</h4>
             </div>
           </div>
 
@@ -539,7 +536,7 @@ function funkcija(button, drop)
             <div class="float-right text-right p-3">
             <small>Prodaje</small>
               <p class="text-uppercase text-muted mb-1"></p>
-              <h4 class="font-weight-bold mb-0">{{trosak}} KM</h4>
+              <h4 class="font-weight-bold mb-0">{{zarada}} KM</h4>
             </div>
           </div>
 

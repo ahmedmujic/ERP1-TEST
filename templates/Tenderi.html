@@ -41,13 +41,25 @@ $("#loadbasic").click(function(){   $("#result").html(ajax_load).load(loadUrl);
   <nav class="navbar navbar-expand-lg navbar-dark primary-color d-flex justify-content-center">
 
   <!-- Navbar brand -->
-  <a class="navbar-brand" href="#">TENDERI</a>
+  <a class="navbar-brand" href="Pocetna">TENDERI</a>
 
  
 
 </nav>
 <!--/.Navbar-->
 <!--Table-->
+<div class="animated slideInDown">
+    {% if messages %}
+    
+    {% for message in messages %}
+        <div class="alert alert-success" role="alert" style="margin-bottom:0px;     position: relative;
+    width: 100%;
+    z-index: 350;">{{message}}</div>
+        
+    {% endfor %}
+
+{% endif %}
+</div>
 <table id="tablePreview" class="table table-bordered animated fadeIn">
 <!--Table head-->
   <thead >
@@ -58,9 +70,7 @@ $("#loadbasic").click(function(){   $("#result").html(ajax_load).load(loadUrl);
       <th rowspan="2" style="font-size: large; padding:0px; font-weight:400;">Datum <br> isteka</th>
       <th colspan="2" style="font-size: large; padding:0px; font-weight:500;">Komisija</th>
       <th rowspan="2" style="font-size: large; padding:0px; font-weight:400;">PDF dokument
-      <div class="dugme"></div>
-            <a href="unostendera"><button class="dodaj mt-5" onclick="Dodaj()" type="button" id="dugme"><i class="fas fa-plus-circle"></i> Dodaj novi tender</button></a>
-        </div>
+   
       </th>
   </tr>
     <tr id="drugiRed">
@@ -106,8 +116,7 @@ $("#loadbasic").click(function(){   $("#result").html(ajax_load).load(loadUrl);
   </tbody>
 
 </table>
-<div>
-<nav class="d-flex justify-content-center wow fadeIn mt-5">
+<nav class="d-flex justify-content-center fadeIn mt-5" style=" position:fixed; bottom:0; width: 100%; margin:0px;visibility: visible;">
         <ul class="pagination pg-blue">
           {% if page_obj.has_previous %}
           <!--Arrow left-->
@@ -134,7 +143,46 @@ $("#loadbasic").click(function(){   $("#result").html(ajax_load).load(loadUrl);
         </ul>
       </nav>
      </div> 
+     <nav class="d-flex justify-content-center fadeIn mb-5" style=" position:fixed; bottom:0; width: 100%; margin-bottom:30px;visibility: visible;">
+        <ul class="pagination pg-blue mb-5">
+          {% if page_obj.has_previous %}
+          <!--Arrow left-->
+          <li class="page-item">
+            <a class="page-link" href="?page={{ page_obj.previous_page_number }}" aria-label="Previous">
+              <span aria-hidden="true">&laquo;</span>
+            </a>
+          </li>
+          {% endif %}
+          <li class="page-item active">
+            <span class="page-link">
+              Stranica {{ page_obj.number }} od {{ page_obj.paginator.num_pages }}
+            </span>
 
+          </li>
+
+          {% if page_obj.has_next %}
+          <li class="page-item">
+            <a class="page-link" href="?page={{ page_obj.next_page_number }}" aria-label="Next">
+              <span aria-hidden="true">&raquo;</span>
+            </a>
+          </li>
+          {% endif %}
+        </ul>
+      </nav>
+     </div> 
+     <footer class=" font-small blue" style="position:fixed;bottom:0;width:100%;height:65px;" style="background-color:#4285F4;">
+
+  <!-- Copyright -->
+  <div class="footer-copyright text-right py-3 pr-5 animated slideInUp"><a href="unostendera"><button style="background-color: rgb(163, 183, 233);
+    width: 225px;
+    height: 40px;
+    border: none;
+    border-radius: 25px;
+    color:white;"><i class="fas fa-plus-circle mr-2"></i>Unos novog tendera</button></a>
+  </div>
+  <!-- Copyright -->
+
+</footer>
 <!-- <table id="tablePreview" class="table table-bordered" style=" position:fixed; bottom:0; width: 100%; margin:0px;">
 <thead>
 <tr>

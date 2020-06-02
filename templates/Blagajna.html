@@ -10,14 +10,26 @@ $("#loadbasic").click(function(){   $("#result").html(ajax_load).load(loadUrl);
   <nav class="navbar navbar-expand-lg navbar-dark primary-color d-flex justify-content-center">
 
   <!-- Navbar brand -->
-  <a class="navbar-brand" href="#">Blagajna</a>
+  <a class="navbar-brand" href="Pocetna">Blagajna</a>
 
  
 
 </nav>
 <!--/.Navbar-->
 <!--Table-->
-<table id="tablePreview" class="table table-bordered">
+<div class="animated slideInDown">
+    {% if messages %}
+    
+    {% for message in messages %}
+        <div class="alert alert-success" role="alert" style="margin-bottom:0px;     position: relative;
+    width: 100%;
+    z-index: 350;">{{message}}</div>
+        
+    {% endfor %}
+
+{% endif %}
+</div>
+<table id="tablePreview" class="table table-bordered animated fadeIn" >
 <!--Table head-->
   <thead >
   <tr>
@@ -34,13 +46,13 @@ $("#loadbasic").click(function(){   $("#result").html(ajax_load).load(loadUrl);
   <tbody>
     {% if racuni %}
     {% for racun in racuni %}
-    <tr>
-      <th scope="row">{{ racun.id}}</th>
-      <td>{{racun.sifra_racuna.id}}</td>
-      <td>{{racun.datum_obracuna}}</td>
-      <td>{{racun.blagajnik}}</td>
-      <td>{{racun.iznosPDV}}</td>
-      <td>{{racun.iznosBezPDV}}</td>
+    <tr style="text-align:center">
+      <th scope="row" style="text-align:center;line-height: 60px;">{{ racun.id}}</th>
+      <td style="text-align:center;line-height: 60px;">{{racun.sifra_racuna.id}}</td>
+      <td style="text-align:center;line-height: 60px;">{{racun.datum_obracuna}}</td>
+      <td style="text-align:center;line-height: 60px;">{{racun.blagajnik}}</td>
+      <td style="text-align:center;line-height: 60px;">{{racun.iznosPDV}} KM</td>
+      <td style="text-align:center;line-height: 60px;">{{racun.iznosBezPDV}} KM</td>
       <th ><div style="display:flex; justify-content:center; align-items:center; flex-direction:column"><button type="button" class="btn btn-primary">Proknjiženo</button></div></th>
     </tr>
     {% endfor %}
@@ -48,7 +60,21 @@ $("#loadbasic").click(function(){   $("#result").html(ajax_load).load(loadUrl);
   </tbody>
 
 </table>
+<!-- Footer -->
+<footer class=" font-small blue" style="position:fixed;bottom:0;width:100%" style="background-color:#4285F4;">
 
+  <!-- Copyright -->
+  <div class="footer-copyright text-right py-3 pr-5 animated slideInUp"><a href="unosblagajne"><button style="background-color: rgb(163, 183, 233);
+    width: 225px;
+    height: 40px;
+    border: none;
+    border-radius: 25px;
+    color:white;"><i class="fas fa-plus-circle mr-2"></i>Unos poslovanja blagajne</button></a>
+  </div>
+  <!-- Copyright -->
+
+</footer>
+<!-- Footer -->
 <!-- <table id="tablePreview" class="table table-bordered" style=" position:fixed; bottom:0; width: 100%; margin:0px;">
 <thead>
 <tr>

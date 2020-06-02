@@ -16,7 +16,7 @@
             <div class="ikonica"><a href="Pocetna"><i class="fas fa-arrow-left"></i></a></div>
            <div class="naslov"><h3>KREIRANJE RAČUNA</h3></div>
         </div>
-    <div class="sadrzaj">
+    <div class="sadrzaj  animated slideInDown">
     <form method="post" action="NoviRacun">
     {% csrf_token %}
         <div class="prvaForma pb-5">
@@ -40,7 +40,7 @@
         
         <tbody class="drugaForma animated fadeIn" id="tijelo">
        
-        <tr style="text-align:center" id="sadrzaj" >
+        <tr style="text-align:center" id="sadrzaj" class="animated slideInDown">
             <td ><input type="text" class="forma num" id="naziv" style="margin-left:0px; border-radius:5px;" name="naziv_artikla" ></td>
             <td><div style="width:100px; margin:0px;">
             <select class="browser-default custom-select"
@@ -64,7 +64,7 @@
         <div class="dugme"></div>
             <button class="dodaj mt-5" onclick="Dodaj()" type="button" id="dugme"><i class="fas fa-plus-circle"></i> Dodaj artikal</button>
         </div>
-        <table class="nazivi2" style="width:100%;display:table;text-align:center;padding:50px 0px;">
+        <table class="nazivi2 animated slideInUp" style="width:100%;display:table;text-align:center;padding:50px 0px;">
         <thead style="padding:10px 0px;">
             <tr style="font-weight:900;" >
             <th style="font-weight:900;" >Stopa PDV</th>
@@ -85,7 +85,7 @@
             </tr>
         </tbody>
         </table>
-       <div class="kreiranje">
+       <div class="kreiranje animated fadeIn">
           <div class="prvi"> <input type="radio" class="kocka" name="racun_tip"checked value="Ulazni"><label class="naziv mb-1">Ulazni</label></div>
            <div class="drugi"><input type="radio" class="kocka" name="racun_tip" value="Izlazni"><label for="" class="naziv mb-1">Izlazni</label></div>
            <input type="submit" value="Kreiraj račun" style="border-radius:10px;width:150px;">

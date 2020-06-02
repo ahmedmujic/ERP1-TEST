@@ -21,7 +21,7 @@
       id="defaultLoginFormEmail"
       class="form-control mb-4"
       name="razlog"
-      placeholder="Naziv tendera"
+      placeholder="Razlog"
     />
     <label for="defaultLoginFormEmail ">Datum nabavke</label>
     <input
@@ -50,9 +50,10 @@
     >
       <option>Izaberite ugovor</option>
       {% if ugovori %} {% for ugovor in ugovori %}
-      <option value="{{ ugovor.id }}">{{ ugovor.naziv }}</option>
+      <option value="{{ ugovor.id }}">{{ ugovor.partner }}</option>
+       {% endfor %}
     </select>
-    {% endfor %} {% endif %}
+    {% endif %}
 
     <label for="defaultLoginFormEmail">Unesite račun </label>
     <select
@@ -62,9 +63,10 @@
     >
       <option>Izaberite račun</option>
       {% if racuni %} {% for racun in racuni %}
-      <option value="{{ racun.id }}">{{ racun.naziv }}</option>
+      <option value="{{ racun.id }}">{{ racun.id }}</option>
+      {% endfor %}
     </select>
-    {% endfor %} {% endif %}
+     {% endif %}
 
     <button class="btn btn-info btn-block my-4" type="submit">
       Unesi nabavku

@@ -43,7 +43,8 @@ urlpatterns = [
     path('Bilans', Bilansi, name='Bilans'),
     path('Transakcije', Transakcij, name='Transakcije'),
     path('Duznici', Duznici, name='Duznici'),
-    path('Duznici2', Duznici2, name='Duznici2')
+    path('Duznici2', Duznici2, name='Duznici2'),
+    path('unosArtikala', unosArtikala, name='unosArtikala')
 ]
 
 if settings.DEBUG:
